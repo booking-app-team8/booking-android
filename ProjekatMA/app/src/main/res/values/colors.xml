@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="background_color">#8FC6EE</color>
+    <color name="red">#ED0014</color>
+    <color name="login_button">#3A589E</color>
+    <color name="stroke_color">#D7B8B8B8</color>
+    <color name="delete_account_button">#9E7C3A</color>
+</resources>
