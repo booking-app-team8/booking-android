@@ -1,8 +1,10 @@
-package com.example.bookingapp;
+package com.example.bookingapp.statrtup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.bookingapp.R;
 
 public class LogInActivity extends AppCompatActivity {
 

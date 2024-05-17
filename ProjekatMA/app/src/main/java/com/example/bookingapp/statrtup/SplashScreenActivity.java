@@ -1,11 +1,10 @@
-package com.example.bookingapp;
+package com.example.bookingapp.statrtup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,10 +12,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
 import android.provider.Settings;
 
-import com.example.bookingapp.MainActivity;
 import com.example.bookingapp.R;
 
 import java.util.Timer;
