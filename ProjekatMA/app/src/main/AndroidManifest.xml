@@ -16,10 +16,10 @@
         android:theme="@style/Theme.BookingApp"
         tools:targetApi="31">
         <activity
-            android:name=".statrtup.LogInActivity"
+            android:name=".activities.startup.LogInActivity"
             android:exported="false" />
         <activity
-            android:name=".statrtup.SplashScreenActivity"
+            android:name=".activities.startup.SplashScreenActivity"
             android:exported="true"
             android:label="@string/title_activity_splash_screen"
             android:theme="@style/Theme.BookingApp">
@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".statrtup.MainActivity"
+            android:name=".activities.startup.MainActivity"
             android:exported="true" />
     </application>
 

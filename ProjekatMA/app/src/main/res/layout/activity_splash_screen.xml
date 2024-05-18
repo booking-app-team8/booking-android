@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".statrtup.SplashScreenActivity"
+    tools:context=".activities.startup.SplashScreenActivity"
     android:background="@color/background_color"
     android:theme="@style/Theme.BookingApp">
 

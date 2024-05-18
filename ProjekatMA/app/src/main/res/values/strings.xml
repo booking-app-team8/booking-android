@@ -1,4 +1,43 @@
 <resources>
     <string name="app_name">BookingApp</string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login_header">LOGIN NOW</string>
+    <string name="login_button">LOGIN</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="address">Address</string>
+    <string name="phone_number">Phone number</string>
+    <string name="register_button">CREATE ACCOUNT</string>
+    <string name="have_account">Already have an account?</string>
+    <string name="radio_owner">Owner</string>
+    <string name="radio_guest">Guest</string>
+    <string name="home">Home</string>
+    <string name="choose_role">Choose role:</string>
+    <string name="submit_button">SUBMIT</string>
+    <string name="return_to_login">Return to login</string>
+    <string name="reset_password">Reset password</string>
+    <string name="hotel_queen">Hotel Queen</string>
+    <string name="queen_address">Trg Oslobodjenja 45, Belrade</string>
+    <string name="queen_price1">1000RSD per night</string>
+    <string name="queen_price2">8000RSD</string>
+    <string name="nav_log_in">Log in</string>
+    <string name="nav_create_account">Create account</string>
+    <string name="navigation_drawer_open" translatable="false">Navigation Drawer Open</string>
+    <string name="navigation_drawer_close" translatable="false">Navigation Drawer Close</string>
+    <string name="nav_accommodation">Accommodations</string>
+    <string name="settings">Settings</string>
+    <string name="language">Language</string>
+    <string name="nav_profile">Profile</string>
+    <string name="filters">Filters</string>
+    <string name="sort">Sort</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save_changes_button">Save changes</string>
+    <string name="delete_account_button">Delete your account</string>
+    <string name="show_more_button">Show more</string>
 </resources>
