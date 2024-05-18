@@ -1,4 +1,4 @@
-package com.example.bookingapp.statrtup;
+package com.example.bookingapp.activities.startup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,7 +33,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SplashScreenActivity.this, LogInActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -79,7 +79,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             // Provera da li je Wi-Fi omogućen nakon povratka sa ekrana postavki
             if (isConnectedToInternet()) {
                 // Pokrenice se MainActivity
-                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                Intent intent = new Intent(SplashScreenActivity.this, LogInActivity.class);
                 startActivity(intent);
                 finish();
             } else {
