@@ -1,7 +1,6 @@
 package com.example.bookingapp.activities.startup;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.compose.ui.semantics.Role;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +11,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.bookingapp.R;
+import com.example.bookingapp.activities.home.guest.GuestMainActivity;
 import com.example.bookingapp.dtos.LoginGETDTO;
 import com.example.bookingapp.dtos.LoginPOSTDTO;
+import com.example.bookingapp.models.enums.Role;
 import com.example.bookingapp.utils.ApiClient;
 import com.example.bookingapp.utils.ApiUtils;
 import com.example.bookingapp.utils.AuthService;
@@ -36,6 +37,7 @@ public class LogInActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         Button loginButton = findViewById(R.id.loginButton);
+        
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,27 +73,28 @@ public class LogInActivity extends AppCompatActivity {
             public void onResponse(Call<LoginGETDTO> call, Response<LoginGETDTO> response) {
                 if (response.isSuccessful()) {
                     AuthService.setAccessToken(response.body().getToken());
-                    new AuthService().getMyInfo();  // load current user
-//                    for (Role r: AuthService.getCurrentUser().getRoles()) {
-//                        switch (r.getName()) {
-//                            case "ROLE_DRIVER": {
-//                                Toast.makeText(UserLoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
-//                                Intent intent = new Intent(UserLoginActivity.this, DriverMainActivity.class);
-//                                startActivity(intent);
-//                                break;
-//                            }
-//                            case "ROLE_PASSENGER": {
+                    new AuthService().getMyInfo(request.getEmail());  // load current user
+                    Role r = AuthService.getCurrentUser().getRole();
+                    switch (r.toString()) {
+                        case "GUEST": {
+                                Toast.makeText(LogInActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(LogInActivity.this, GuestMainActivity.class);
+                                startActivity(intent);
+                            break;
+                        }
+                        case "OWNER": {
 //                                Toast.makeText(UserLoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
 //                                Intent intent = new Intent(UserLoginActivity.this, PassengerMainActivity.class);
 //                                startActivity(intent);
-//                                break;
-//                            }
-//                            case "ROLE_ADMIN":
+                            break;
+                        }
+                        case "ADMIN":
+                            System.out.println("usao");
 //                                AuthService.logout();
 //                                Toast.makeText(UserLoginActivity.this, "Admin cannot log in", Toast.LENGTH_LONG).show();
-//                                return;
-//                        }
-//                    }
+                            return;
+                    }
+
 
                 } else
                     Toast.makeText(LogInActivity.this, "Login Failed", Toast.LENGTH_LONG).show();

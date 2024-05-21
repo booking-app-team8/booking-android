@@ -9,6 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface IUserService {
     @Headers("Content-Type: application/json")
@@ -16,8 +17,8 @@ public interface IUserService {
     Call<LoginGETDTO> login(@Body LoginPOSTDTO loginRequest);
 
     @Headers("Content-Type: application/json")
-    @GET("currentUser")
-    Call<User> getCurrentUser();
+    @GET("{email}")
+    Call<User> findUser(@Path("email") String email);
 
-    
+
 }
