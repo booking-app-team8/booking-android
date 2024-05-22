@@ -1,13 +1,16 @@
 package com.example.bookingapp.activities.startup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookingapp.R;
@@ -37,7 +40,16 @@ public class LogInActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         Button loginButton = findViewById(R.id.loginButton);
-        
+        TextView textViewSignUp = findViewById(R.id.sign_up);
+
+//        TextView textViewForgotPassword = view.findViewById(R.id.forgotPasswordTextView);
+        textViewSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LogInActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,10 +68,16 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                finishAffinity();
+            }
+        };
+        // Dodavanje callback-a na onBackPressedDispatcher
+        getOnBackPressedDispatcher().addCallback(this, callback);
 
     }
-
-
 
     public void login() throws JSONException {
         LoginPOSTDTO request = new LoginPOSTDTO();
@@ -84,14 +102,14 @@ public class LogInActivity extends AppCompatActivity {
                         }
                         case "OWNER": {
 //                                Toast.makeText(UserLoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
-//                                Intent intent = new Intent(UserLoginActivity.this, PassengerMainActivity.class);
+//                                Intent intent = new Intent(LogInActivity.this, .class);
 //                                startActivity(intent);
                             break;
                         }
                         case "ADMIN":
                             System.out.println("usao");
 //                                AuthService.logout();
-//                                Toast.makeText(UserLoginActivity.this, "Admin cannot log in", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(LogInActivity.this, "Admin cannot log in", Toast.LENGTH_LONG).show();
                             return;
                     }
 
@@ -104,17 +122,26 @@ public class LogInActivity extends AppCompatActivity {
             public void onFailure(Call<LoginGETDTO> call, Throwable t) {
                 Toast.makeText(LogInActivity.this, "Throwable " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
+
         });
+
     }
 
 
 
+
+
+
     private void saveToken(String token) {
-        // Sačuvajte token (npr. u SharedPreferences)
+        // Sačuvaj token (npr. u SharedPreferences)
+        //DODATI OVO OBAVEZNO
+        //kao localStorage
         getSharedPreferences("app_prefs", MODE_PRIVATE)
                 .edit()
                 .putString("jwt_token", token)
                 .apply();
     }
+
+
 
 }
