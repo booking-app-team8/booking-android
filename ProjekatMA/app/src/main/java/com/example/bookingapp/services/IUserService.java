@@ -2,6 +2,7 @@ package com.example.bookingapp.services;
 
 import com.example.bookingapp.dtos.LoginGETDTO;
 import com.example.bookingapp.dtos.LoginPOSTDTO;
+import com.example.bookingapp.dtos.UserPOSTDTO;
 import com.example.bookingapp.models.users.User;
 
 import retrofit2.Call;
@@ -19,6 +20,10 @@ public interface IUserService {
     @Headers("Content-Type: application/json")
     @GET("{email}")
     Call<User> findUser(@Path("email") String email);
+
+    @Headers("Content-Type: application/json")
+    @POST("register")
+    Call<String> register(@Body UserPOSTDTO userPOSTDTO);
 
 
 }

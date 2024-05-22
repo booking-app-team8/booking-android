@@ -72,6 +72,7 @@
                         app:layout_constraintStart_toStartOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/userEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textEmailAddress"
@@ -101,6 +102,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/email_field">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPassword"
@@ -129,6 +131,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/password_field">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/confirmPassword"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPassword"
@@ -156,6 +159,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/confirm_password">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPersonName"
@@ -183,6 +187,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/first_name">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/surname"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPersonName"
@@ -210,6 +215,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/last_name">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/homeAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text"
@@ -237,6 +243,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/address">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/phoneNumber"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="phone"
@@ -257,6 +264,7 @@
                         android:layout_marginTop="16dp" />
 
                     <RadioGroup
+                        android:id="@+id/radioGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
