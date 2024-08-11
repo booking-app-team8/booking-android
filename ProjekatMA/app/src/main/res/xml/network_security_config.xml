@@ -9,5 +9,6 @@
 <!--        <domain includeSubdomains="true">192.168.0.147</domain>-->
         <domain includeSubdomains="true">192.168.1.5</domain> <!--TELEFON LUKA-->
         <domain includeSubdomains="true">192.168.0.15</domain> <!--TELEFON LUKA ZR-->
+        <domain includeSubdomains="true">192.168.1.7</domain>  <!--SUTJ-->
     </domain-config>
 </network-security-config>

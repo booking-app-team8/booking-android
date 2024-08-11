@@ -1,0 +1,45 @@
+package com.example.bookingapp.activities.accommodations;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+import com.example.bookingapp.R;
+import com.example.bookingapp.fragments.accommodations.BasicInfoFragment;
+import com.example.bookingapp.fragments.accommodations.LocationFragment;
+
+public class CreateAccommodationActivity extends AppCompatActivity {
+
+    public String name;
+    public String description;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_accommodation);
+
+        if (savedInstanceState == null) {
+            // Prikazujemo prvi fragment prilikom kreiranja aktivnosti
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new BasicInfoFragment())
+                    .commit();
+        }
+
+
+    }
+
+    public void setLocationData(String location, String address) {
+        this.name = location;
+        this.description = address;
+    }
+
+    public void loadLocationFragment() {
+        System.out.println(this.name);
+        LocationFragment photosFragment = new LocationFragment();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, photosFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+}
