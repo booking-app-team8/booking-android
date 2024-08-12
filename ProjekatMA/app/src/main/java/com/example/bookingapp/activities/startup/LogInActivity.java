@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.bookingapp.R;
 import com.example.bookingapp.activities.home.guest.GuestMainActivity;
+import com.example.bookingapp.activities.user.User_Account;
 import com.example.bookingapp.dtos.LoginGETDTO;
 import com.example.bookingapp.dtos.LoginPOSTDTO;
 import com.example.bookingapp.models.enums.Role;
@@ -96,7 +97,7 @@ public class LogInActivity extends AppCompatActivity {
                     switch (r.toString()) {
                         case "GUEST": {
                                 Toast.makeText(LogInActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(LogInActivity.this, GuestMainActivity.class);
+                                Intent intent = new Intent(LogInActivity.this, User_Account.class);
                                 startActivity(intent);
                             break;
                         }

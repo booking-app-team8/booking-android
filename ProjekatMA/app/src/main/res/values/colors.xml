@@ -7,4 +7,11 @@
     <color name="login_button">#3A589E</color>
     <color name="stroke_color">#D7B8B8B8</color>
     <color name="delete_account_button">#9E7C3A</color>
+    <color name="colorRed">#C82126</color>
+    <color name="colorAccent1">#609ba8</color>
+    <color name="colorAccent2">#929292</color>
+    <color name="colorButton">#414141</color>
+    <color name="primary">#4CAF50 </color>
+    <color name="delete">#D32F2F</color>
+
 </resources>

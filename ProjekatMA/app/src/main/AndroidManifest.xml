@@ -30,6 +30,9 @@
         android:theme="@style/Theme.BookingApp"
         tools:targetApi="31">
         <activity
+            android:name=".activities.user.User_Account"
+            android:exported="false" />
+        <activity
             android:name=".activities.startup.RegisterActivity"
             android:exported="false" />
         <activity
