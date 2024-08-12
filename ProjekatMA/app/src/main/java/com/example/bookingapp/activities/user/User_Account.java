@@ -6,11 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.bookingapp.R;
+import com.example.bookingapp.models.users.User;
+import com.example.bookingapp.utils.AuthService;
 
 public class User_Account extends AppCompatActivity {
+
+    private EditText emailField, passwordField, firstNameField, lastNameField, addressField, phoneNumberField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +25,27 @@ public class User_Account extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        emailField = findViewById(R.id.email);
+        passwordField = findViewById(R.id.password);
+        firstNameField = findViewById(R.id.first_name);
+        lastNameField = findViewById(R.id.last_name);
+        addressField = findViewById(R.id.address);
+        phoneNumberField = findViewById(R.id.phone_number);
+
+        User currentUser = AuthService.getCurrentUser();
+
+        if (currentUser != null) {
+            emailField.setText(currentUser.getEmail());
+            firstNameField.setText(currentUser.getName());
+            lastNameField.setText(currentUser.getSurname());
+            addressField.setText(currentUser.getAddress());
+            phoneNumberField.setText(currentUser.getPhoneNumber());
+
+            // Lozinku možda ne želiš direktno prikazivati iz sigurnosnih razloga,
+            // ali možeš ostaviti ovo mesto za unos nove lozinke
+            passwordField.setText("");  // Ostavlja polje prazno
+        }
     }
 
     @Override
