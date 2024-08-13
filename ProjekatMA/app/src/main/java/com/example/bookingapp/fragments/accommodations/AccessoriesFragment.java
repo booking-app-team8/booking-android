@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.bookingapp.R;
+import com.example.bookingapp.activities.accommodations.CreateAccommodationActivity;
 import com.example.bookingapp.adapters.AccessoryAdapter;
 import com.example.bookingapp.models.accommodations.Accessories;
 import com.example.bookingapp.services.IAccessoriesService;
@@ -91,6 +92,7 @@ public class AccessoriesFragment extends Fragment {
                 selectedAccessories.add(accessory);
             }
         }
+        ((CreateAccommodationActivity) getActivity()).loadPhotosFragment();
         // Ovde sačuvajte izabrane dodatke, npr. u bazu ili pošaljite na backend
     }
 }

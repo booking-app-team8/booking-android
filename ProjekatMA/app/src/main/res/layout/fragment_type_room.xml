@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Accommodation Details"
+        android:textSize="18sp"
+        android:paddingBottom="16dp" />
+
+    <EditText
+        android:id="@+id/editTextMinGuests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Min Number of Guests"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editTextMaxGuests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Max Number of Guests"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/spinnerAccommodationType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/editTextCancellationDays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Number of Days for Cancellation"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/buttonSaveDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Details"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

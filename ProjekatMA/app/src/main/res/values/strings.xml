@@ -40,4 +40,10 @@
     <string name="save_changes_button">Save changes</string>
     <string name="delete_account_button">Delete your account</string>
     <string name="show_more_button">Show more</string>
+
+    <string-array name="accommodation_types">
+        <item>Room</item>
+        <item>Studio</item>
+        <item>Apartment</item>
+    </string-array>
 </resources>
