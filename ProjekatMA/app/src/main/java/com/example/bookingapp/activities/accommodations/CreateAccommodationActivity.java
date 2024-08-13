@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.bookingapp.R;
+import com.example.bookingapp.fragments.accommodations.AccessoriesFragment;
 import com.example.bookingapp.fragments.accommodations.BasicInfoFragment;
 import com.example.bookingapp.fragments.accommodations.LocationFragment;
 
@@ -36,6 +37,15 @@ public class CreateAccommodationActivity extends AppCompatActivity {
     public void loadLocationFragment() {
         System.out.println(this.name);
         LocationFragment photosFragment = new LocationFragment();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, photosFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+    public void loadAccessoriesFragment() {
+        System.out.println(this.name);
+        AccessoriesFragment photosFragment = new AccessoriesFragment();
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, photosFragment)
