@@ -2,7 +2,9 @@ package com.example.bookingapp.services;
 
 import com.example.bookingapp.dtos.LoginGETDTO;
 import com.example.bookingapp.dtos.LoginPOSTDTO;
+import com.example.bookingapp.dtos.UserDto;
 import com.example.bookingapp.dtos.UserPOSTDTO;
+import com.example.bookingapp.dtos.UserPutDTO;
 import com.example.bookingapp.models.users.User;
 
 import retrofit2.Call;
@@ -10,6 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface IUserService {
@@ -24,6 +27,12 @@ public interface IUserService {
     @Headers("Content-Type: application/json")
     @POST("register")
     Call<String> register(@Body UserPOSTDTO userPOSTDTO);
+    //@Headers("Content-Type: application/json")
+    @PUT("user/{id}")
+    Call<User> updateUser(@Path("id") Long id, @Body UserPutDTO userPutDTO);
 
+    @Headers("Content-Type: application/json")
+    @GET("user/by-email/{email}")
+    Call<UserDto> getUserByEmailAddress(@Path("email") String email);
 
 }
