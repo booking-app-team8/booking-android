@@ -22,9 +22,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Ostatak sadržaja unutar ConstraintLayout-a -->
-        <!-- Ovde možeš da dodaš svoje UI komponente -->
-
         <!-- Naslov - Pretraži smeštaje -->
         <TextView
             android:id="@+id/tv_search_title"
@@ -63,7 +60,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintWidth_percent="0.9" />
 
-        <!-- Polja za unos datuma u istom redu -->
+        <!-- Polja za unos datuma -->
         <EditText
             android:id="@+id/et_start_date"
             android:layout_width="0dp"
@@ -90,6 +87,7 @@
 
         <!-- Button Pretrazi i ikonica za filtriranje -->
         <LinearLayout
+            android:id="@+id/ll_search_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -119,9 +117,16 @@
                 android:layout_marginStart="28dp"/>
         </LinearLayout>
 
-
-
-
+        <!-- RecyclerView za prikaz rezultata pretrage -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search_results"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/ll_search_filter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
