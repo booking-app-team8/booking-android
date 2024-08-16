@@ -46,4 +46,9 @@
         <item>Studio</item>
         <item>Apartment</item>
     </string-array>
+    <string-array name="price_per_unit">
+        <item>Per_accommodation_unit</item>
+        <item>Per_guest</item>
+
+    </string-array>
 </resources>

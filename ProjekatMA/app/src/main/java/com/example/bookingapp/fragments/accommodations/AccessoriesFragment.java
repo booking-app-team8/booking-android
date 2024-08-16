@@ -92,7 +92,12 @@ public class AccessoriesFragment extends Fragment {
                 selectedAccessories.add(accessory);
             }
         }
+        if (selectedAccessories.isEmpty()) {
+            Toast.makeText(getContext(), "You must select minimum one accessory!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ((CreateAccommodationActivity) getActivity()).setAccessories(selectedAccessories);
         ((CreateAccommodationActivity) getActivity()).loadPhotosFragment();
-        // Ovde sačuvajte izabrane dodatke, npr. u bazu ili pošaljite na backend
+
     }
 }

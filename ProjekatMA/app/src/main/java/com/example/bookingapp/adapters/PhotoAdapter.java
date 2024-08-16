@@ -38,7 +38,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     public void onBindViewHolder(@NonNull PhotoViewHolder holder, int position) {
         Uri uri = photoUris.get(position);
         holder.imageView.setImageURI(uri);
-        holder.buttonRemove.setOnClickListener(v -> onPhotoRemoveListener.onRemove(position));
+        holder.buttonRemove.setOnClickListener(v -> {
+            int adapterPosition = holder.getAdapterPosition();
+            if (adapterPosition != RecyclerView.NO_POSITION) {
+                onPhotoRemoveListener.onRemove(adapterPosition);
+            }
+        });
+//        holder.buttonRemove.setOnClickListener(v -> onPhotoRemoveListener.onRemove(position));
     }
 
     @Override

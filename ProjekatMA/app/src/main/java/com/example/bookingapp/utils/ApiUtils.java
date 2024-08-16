@@ -2,6 +2,7 @@ package com.example.bookingapp.utils;
 
 
 import com.example.bookingapp.services.IAccessoriesService;
+import com.example.bookingapp.services.IAccommodationService;
 import com.example.bookingapp.services.IUserService;
 
 //192.168.1.5
@@ -17,6 +18,10 @@ public class ApiUtils {
 
     public static IAccessoriesService getAccessoriesService() {
         return ApiClient.getClient(BASE_URL).create(IAccessoriesService.class);
+    }
+
+    public static IAccommodationService getAccommodationService() {
+        return ApiClient.getClient(BASE_URL).create(IAccommodationService.class);
     }
 
 

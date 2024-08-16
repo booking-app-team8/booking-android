@@ -39,6 +39,21 @@
         android:hint="Number of Days for Cancellation"
         android:inputType="number" />
 
+    <EditText
+        android:id="@+id/editTextDefaultedPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Defaulted price:"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/spinnerPricePerUnit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
+
+
     <Button
         android:id="@+id/buttonSaveDetails"
         android:layout_width="wrap_content"
