@@ -100,6 +100,10 @@ public class User_Account extends AppCompatActivity {
 
         });
 
+        deleteAccountButton.setOnClickListener(v -> {
+            showDeleteAccountConfirmationDialog(user.getId());
+        });
+
         logOutButton.setOnClickListener(v -> {
             AuthService.logout();
             Intent intent = new Intent(User_Account.this, LogInActivity.class);
@@ -164,6 +168,40 @@ public class User_Account extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
+    }
+
+    private void showDeleteAccountConfirmationDialog(Long userId) {
+        new AlertDialog.Builder(User_Account.this)
+                .setTitle("Confirm deletion")
+                .setMessage("Are you sure you want to delete your account?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    deleteUserAccount(userId);
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void deleteUserAccount(Long userId) {
+        Call<Void> call = userService.deleteUserAccount(userId);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(User_Account.this, "Account successfully deleted!", Toast.LENGTH_SHORT).show();
+                    AuthService.logout();
+                    Intent intent = new Intent(User_Account.this, LogInActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(User_Account.this, "Account deletion failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(User_Account.this, "An error occurred!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /*
