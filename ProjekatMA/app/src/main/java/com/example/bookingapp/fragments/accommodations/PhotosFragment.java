@@ -2,6 +2,7 @@ package com.example.bookingapp.fragments.accommodations;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -11,6 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
+import android.provider.OpenableColumns;
+import android.content.ContentResolver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +35,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import android.webkit.MimeTypeMap;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -110,7 +115,10 @@ public class PhotosFragment extends Fragment {
                     Toast.makeText(getContext(), "Must choose minimum 9 images!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                ((CreateAccommodationActivity) getActivity()).setPhotos(images);
+
+                MultipartBody.Part[] lista = prepareFileParts(photoUris);
+
+                ((CreateAccommodationActivity) getActivity()).setPhotos(images, lista);
                 ((CreateAccommodationActivity) getActivity()).loadTypeFragment();
             }});
 
@@ -166,22 +174,84 @@ public class PhotosFragment extends Fragment {
     }
 
 
-    private List<MultipartBody.Part> prepareFileParts(List<Uri> uris) {
-        List<MultipartBody.Part> parts = new ArrayList<>();
-        for (Uri uri : uris) {
-            String fileName = getFileName(uri);
-            File file = new File(uri.getPath());
-            RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part part = MultipartBody.Part.createFormData("photos", fileName, requestFile);
-            parts.add(part);
+//    private MultipartBody.Part[] prepareFileParts(List<Uri> uris) {
+//        MultipartBody.Part[] imageParts = new MultipartBody.Part[uris.size()];
+//
+//        for (int i = 0; i < uris.size(); i++) {
+//            Uri imageUri = uris.get(i);
+//
+//            // Dobijanje MIME tipa
+//            String mimeType = requireActivity().getContentResolver().getType(imageUri);
+//            String extension = null;
+//            if (mimeType != null) {
+//                // Dobijanje ekstenzije iz MIME tipa
+//                extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
+//            }
+//
+//            if (extension == null) {
+//                // Ako nije moguće dobiti ekstenziju, koristi se podrazumevana ekstenzija (npr. jpg)
+//                extension = "jpg";
+//            }
+//
+//            // Dobijanje puta do fajla i dodavanje ekstenzije
+//            String originalPath = getPathFromUri(imageUri);
+//            String correctedPath = originalPath + "." + extension;
+//            File file = new File(correctedPath);
+//
+//            // Kreiranje RequestBody i MultipartBody.Part objekata
+//            RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
+//            imageParts[i] = MultipartBody.Part.createFormData("photos", file.getName(), requestFile);
+//        }
+//
+//        return imageParts;
+//    }
+
+    private MultipartBody.Part[] prepareFileParts(List<Uri> uris) {
+        MultipartBody.Part[] imageParts = new MultipartBody.Part[uris.size()];
+
+        for (int i = 0; i < uris.size(); i++) {
+            Uri imageUri = uris.get(i);
+            File file = new File(getPathFromUri(imageUri));
+
+            // Proveri da li fajl već ima ekstenziju
+            String fileName = file.getName();
+            String mimeType = getMimeType(imageUri);
+            String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
+
+            if (!fileName.endsWith("." + extension)) {
+                fileName += "." + extension;
+            }
+
+            RequestBody requestFile = RequestBody.create(MediaType.parse(mimeType), file);
+            imageParts[i] = MultipartBody.Part.createFormData("photos", fileName, requestFile);
         }
-        return parts;
+
+        return imageParts;
     }
 
-    private String getFileName(Uri uri) {
-//        System.out.println(uri.getPath());
-        // Retrieve the file name from the Uri
-        return uri.getPath();
+    private String getMimeType(Uri uri) {
+        String mimeType;
+        if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
+            ContentResolver contentResolver = requireActivity().getContentResolver();
+            mimeType = contentResolver.getType(uri);
+        } else {
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
+        }
+        return mimeType;
+    }
+    private String getPathFromUri(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        ContentResolver contentResolver = requireActivity().getContentResolver();
+        Cursor cursor = contentResolver.query(uri, projection, null, null, null);
+        if (cursor != null) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String path = cursor.getString(column_index);
+            cursor.close();
+            return path;
+        }
+        return null;
     }
 
 }

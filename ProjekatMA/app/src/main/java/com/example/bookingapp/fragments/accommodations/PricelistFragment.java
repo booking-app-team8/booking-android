@@ -21,6 +21,7 @@ import com.example.bookingapp.R;
 import com.example.bookingapp.activities.accommodations.CreateAccommodationActivity;
 import com.example.bookingapp.adapters.IntervalAdapter;
 import com.example.bookingapp.models.accommodations.Pricelist;
+import com.example.bookingapp.models.accommodations.TimeSlot;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -113,17 +114,82 @@ public class PricelistFragment extends Fragment {
 
         }
 
+        if (isDateInPast(startDate)) {
+            Toast.makeText(getContext(), "Start date cannot be in the past!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (isEndDateBeforeStartDate(startDate, endDate)) {
+            Toast.makeText(getContext(), "End date cannot be before start date!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         double price = Double.parseDouble(priceString);
         if (price == 0) {
             Toast.makeText(getContext(), "Price can't be zero!", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        if (checkIfAlreadyExist(startDateString, endDateString)) {
+            Toast.makeText(getContext(), "Same time slot already exist!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (oneOfThemInExisted(startDate, endDate)){
+            Toast.makeText(getContext(), "Invalid time slot input!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
 
         Pricelist interval = new Pricelist(startDateString, endDateString, price);
         priceIntervalList.add(interval);
         intervalsAdapter.notifyDataSetChanged();
+    }
+
+    public boolean checkIfAlreadyExist(String start, String end) {
+        for (Pricelist pricelist: priceIntervalList) {
+            if (pricelist.startDate.equals(start) && pricelist.endDate.equals(end)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isDateInPast(LocalDate dateStr) {
+        return dateStr.isBefore(LocalDate.now());
+
+    }
+
+    private boolean isEndDateBeforeStartDate(LocalDate startDateStr, LocalDate endDateStr) {
+        return endDateStr.isBefore(startDateStr);
+
+    }
+
+    private boolean oneOfThemInExisted(LocalDate startDateConvert, LocalDate endDateConvert) {
+        for (Pricelist timeSlot: priceIntervalList) {
+            LocalDate start = LocalDate.parse(timeSlot.startDate, formatter);
+            LocalDate end = LocalDate.parse(timeSlot.endDate, formatter);
+            //[ s ]
+            if (startDateConvert.isAfter(start) && startDateConvert.isBefore(end)) {
+                return true;
+            }
+            //[ e ]
+            if (endDateConvert.isBefore(end) && endDateConvert.isAfter(start)) {
+                return true;
+            }
+            //[s e]
+            if (startDateConvert.isAfter(start) && endDateConvert.isBefore(end)) {
+                return true;
+            }
+            //pocetni pre postojeceg pocetnog ali je krajnji u postojecem intervalu s [ e ]
+            if ((startDateConvert.isBefore(start) || startDateConvert.isEqual(start)) && endDateConvert.isAfter(start) && (endDateConvert.isBefore(end)|| endDateConvert.isEqual(end))) {
+                return true;
+            }
+            //van intervala s [ ] e
+            if ((startDateConvert.isBefore(start) || startDateConvert.isEqual(start)) && (endDateConvert.isAfter(end) || endDateConvert.isEqual(end))) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

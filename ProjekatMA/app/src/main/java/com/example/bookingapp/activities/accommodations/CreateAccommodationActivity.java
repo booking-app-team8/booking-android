@@ -1,8 +1,12 @@
 package com.example.bookingapp.activities.accommodations;
 
+import static android.app.ProgressDialog.show;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -23,10 +27,20 @@ import com.example.bookingapp.models.accommodations.PriceUnit;
 import com.example.bookingapp.models.accommodations.Pricelist;
 import com.example.bookingapp.models.accommodations.TimeSlot;
 import com.example.bookingapp.models.accommodations.TypeOfAccommodation;
+import com.example.bookingapp.services.IAccommodationService;
 import com.example.bookingapp.utils.ApiUtils;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.OpenableColumns;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,6 +61,8 @@ public class CreateAccommodationActivity extends AppCompatActivity {
     public List<Pricelist> priceLists;
 
     public List<TimeSlot> timeSlots;
+
+    public MultipartBody.Part[] uris;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +92,9 @@ public class CreateAccommodationActivity extends AppCompatActivity {
         this.accessories = selectedAccessories;
     }
 
-    public void setPhotos(List<Photo> photos) {
+    public void setPhotos(List<Photo> photos, MultipartBody.Part[] uris) {
         this.images = photos;
+        this.uris = uris;
 
     }
 
@@ -176,26 +193,55 @@ public class CreateAccommodationActivity extends AppCompatActivity {
         String userEmail = sharedPreferences.getString("userEmail", null);
         accommodationPostDTO.setEmail(userEmail);
 
-        Call<Long> createResponseCall = ApiUtils.getAccommodationService().create(accommodationPostDTO);
-        createResponseCall.enqueue(new Callback<Long>() {
+//        Call<Long> createResponseCall = ApiUtils.getAccommodationService().create(accommodationPostDTO);
+//        createResponseCall.enqueue(new Callback<Long>() {
+//            @Override
+//            public void onResponse(Call<Long> call, Response<Long> response) {
+//                if (response.isSuccessful()) {
+//                    Long accommodationId = response.body();
+//                    Toast.makeText(getApplicationContext(), "Accommodation created with ID: " + accommodationId, Toast.LENGTH_LONG).show();
+//                    //OVDE SADA IDE UPLOAD SLIKA NA BACK
+//                    //-----------------------------------
+        IAccommodationService service = ApiUtils.getAccommodationService();
+//        MultipartBody.Part[] partsArray = new MultipartBody.Part[this.uris.size()];
+//        partsArray = this.uris.toArray(partsArray);
+        Call<Void> call = service.uploadImages(18L, this.uris);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Long> call, Response<Long> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Long accommodationId = response.body();
-                    Toast.makeText(getApplicationContext(), "Accommodation created with ID: " + accommodationId, Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreateAccommodationActivity.this, "Images uploaded successfully", Toast.LENGTH_SHORT).show();
+//                    ((CreateAccommodationActivity) getActivity()).loadTypeFragment();
                 } else {
-                    // Greška sa servera
-                    Toast.makeText(getApplicationContext(), "Failed to create accommodation", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreateAccommodationActivity.this, "Failed to upload images", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Long> call, Throwable t) {
-                // Greška u komunikaciji sa serverom
-                Toast.makeText(getApplicationContext(), "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println(t.getMessage());
+                Toast.makeText(CreateAccommodationActivity.this, "Upload error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+
+//
+//                } else {
+//                    // Greška sa servera
+//                    Toast.makeText(getApplicationContext(), "Failed to create accommodation", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Long> call, Throwable t) {
+//                // Greška u komunikaciji sa serverom
+//                Toast.makeText(getApplicationContext(), "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+//            }
+//        });
+
     }
+
+
+
 
 
 
