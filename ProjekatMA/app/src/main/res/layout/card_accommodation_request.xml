@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="@android:color/white"
+    android:layout_marginBottom="8dp">
+
+    <ImageView
+        android:id="@+id/imageViewPhoto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/accommodation" />
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imageViewPhoto"
+        android:layout_marginStart="8dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/segoe"
+        android:text="Accommodation name"/>
+
+
+    <TextView
+        android:id="@+id/textViewId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewName"
+        android:layout_toRightOf="@id/imageViewPhoto"
+        android:layout_marginStart="8dp"
+        android:textSize="12sp"
+        android:fontFamily="@font/segoe"
+        android:text="Request id"/>
+
+    <TextView
+        android:id="@+id/textViewAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewId"
+        android:layout_toRightOf="@id/imageViewPhoto"
+        android:layout_marginStart="8dp"
+        android:textSize="12sp"
+        android:fontFamily="@font/segoe"
+        android:text="Address"/>
+
+    <TextView
+        android:id="@+id/textViewOwner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewAddress"
+        android:layout_toRightOf="@id/imageViewPhoto"
+        android:layout_marginStart="8dp"
+        android:textSize="12sp"
+        android:fontFamily="@font/segoe"
+        android:text="Owner"/>
+
+    <Button
+        android:id="@+id/buttonAccept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="Accept"
+        android:fontFamily="@font/segoe"
+        android:backgroundTint="@color/login_button"/>
+
+    <Button
+        android:id="@+id/buttonCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/buttonAccept"
+        android:layout_marginTop="8dp"
+        android:text="Cancel"
+        android:fontFamily="@font/segoe"
+        android:backgroundTint="@color/colorRed"/>
+
+</RelativeLayout>
