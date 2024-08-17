@@ -168,6 +168,9 @@ public class PricelistFragment extends Fragment {
         for (Pricelist timeSlot: priceIntervalList) {
             LocalDate start = LocalDate.parse(timeSlot.startDate, formatter);
             LocalDate end = LocalDate.parse(timeSlot.endDate, formatter);
+            if (startDateConvert.isEqual(endDateConvert)) {
+                return false;
+            }
             //[ s ]
             if (startDateConvert.isAfter(start) && startDateConvert.isBefore(end)) {
                 return true;

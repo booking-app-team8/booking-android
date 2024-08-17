@@ -1,8 +1,10 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/background_color"
     android:padding="16dp">
 
     <!-- Polje za unos start datuma -->
@@ -10,7 +12,10 @@
         android:id="@+id/startDateEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Start Date"
+        android:textColorHighlight="@color/black"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
+        android:hint="Start date"
         android:inputType="date" />
 
     <!-- Polje za unos end datuma -->
@@ -18,7 +23,10 @@
         android:id="@+id/endDateEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="End Date"
+        android:textColorHighlight="@color/black"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
+        android:hint="End date"
         android:inputType="date" />
 
     <!-- Polje za unos cene -->
@@ -26,30 +34,52 @@
         android:id="@+id/priceEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColorHighlight="@color/black"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:hint="Price"
         android:inputType="numberDecimal" />
 
     <!-- Dugme za dodavanje intervala -->
     <Button
         android:id="@+id/addIntervalButton"
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Add Interval" />
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/login_button"
+        android:fontFamily="@font/segoe_bold"
+        android:text="Add interval" />
 
-    <!-- RecyclerView za prikaz unetih intervala -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/intervalsRecyclerView"
+    <!-- CardView za RecyclerView -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:scrollbars="vertical"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@android:color/white">
+
+        <!-- RecyclerView za prikaz unetih intervala -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/intervalsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:layout_margin="8dp" />
+
+    </androidx.cardview.widget.CardView>
 
     <!-- Dugme za čuvanje intervala -->
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/login_button"
+        android:fontFamily="@font/segoe_bold"
         android:text="Save"
         android:layout_marginTop="16dp"/>
 </LinearLayout>

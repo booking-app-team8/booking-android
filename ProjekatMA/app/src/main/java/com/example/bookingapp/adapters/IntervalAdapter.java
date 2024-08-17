@@ -39,6 +39,7 @@ public class IntervalAdapter extends RecyclerView.Adapter<IntervalAdapter.Interv
         holder.deleteButton.setOnClickListener(v -> {
             priceIntervalList.remove(position);
             notifyItemRemoved(position);
+            notifyItemRangeChanged(position, priceIntervalList.size());
         });
     }
 

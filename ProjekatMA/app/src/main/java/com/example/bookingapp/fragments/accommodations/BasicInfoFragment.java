@@ -17,7 +17,7 @@ import com.example.bookingapp.activities.accommodations.CreateAccommodationActiv
 
 public class BasicInfoFragment extends Fragment {
 
-    private EditText editTextLocation, editTextAddress;
+    private EditText editTextName, editTextDescription;
     private Button nextButton;
 
     @Nullable
@@ -25,8 +25,8 @@ public class BasicInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_basic_info, container, false);
 
-        editTextLocation = view.findViewById(R.id.editTextLocation);
-        editTextAddress = view.findViewById(R.id.editTextAddress);
+        editTextName = view.findViewById(R.id.editTextName);
+        editTextDescription = view.findViewById(R.id.editTextDescription);
         nextButton = view.findViewById(R.id.nextButton);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -35,8 +35,8 @@ public class BasicInfoFragment extends Fragment {
                 //VALIDACIJA DA HOTEL SA UNETIM IMENOM VEC POSTOJI
                 //VALIDACIJA NPR MINIMUM 3 SLOVA ZA NAZIV
                 //VALIDACIJA DA DESKRIPCIJA MORA DA IMA MINIMUM 20SLOVA
-                String name = editTextLocation.getText().toString();
-                String description = editTextAddress.getText().toString();
+                String name = editTextName.getText().toString();
+                String description = editTextDescription.getText().toString();
                 if (name.equals("") || name.length() < 3) {
                     Toast.makeText(getContext(), "Name must contain minimum 3 characters!", Toast.LENGTH_SHORT).show();
                     return;
@@ -46,8 +46,8 @@ public class BasicInfoFragment extends Fragment {
                     return;
                 }
                 ((CreateAccommodationActivity) getActivity()).setBasicData(
-                        editTextLocation.getText().toString(),
-                        editTextAddress.getText().toString()
+                        editTextName.getText().toString(),
+                        editTextDescription.getText().toString()
                 );
                 ((CreateAccommodationActivity) getActivity()).loadLocationFragment();
             }

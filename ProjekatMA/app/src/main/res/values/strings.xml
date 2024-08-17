@@ -49,6 +49,5 @@
     <string-array name="price_per_unit">
         <item>Per_accommodation_unit</item>
         <item>Per_guest</item>
-
     </string-array>
 </resources>

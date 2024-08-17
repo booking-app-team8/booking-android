@@ -178,6 +178,9 @@ public class TimeSlotsFragment extends Fragment {
         for (TimeSlot timeSlot: timeSlotList) {
             LocalDate start = LocalDate.parse(timeSlot.startDate, formatter);
             LocalDate end = LocalDate.parse(timeSlot.endDate, formatter);
+            if (startDateConvert.isEqual(endDateConvert)) {
+                return false;
+            }
             //[ s ]
             if (startDateConvert.isAfter(start) && startDateConvert.isBefore(end)) {
                 return true;
