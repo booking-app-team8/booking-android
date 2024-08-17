@@ -62,15 +62,6 @@ public class GuestMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_main);
-        Button btnCreateAppointment = findViewById(R.id.btnCreateAppointment);
-
-        btnCreateAppointment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GuestMainActivity.this, CreateAccommodationActivity.class);
-                startActivity(intent);
-            }
-        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

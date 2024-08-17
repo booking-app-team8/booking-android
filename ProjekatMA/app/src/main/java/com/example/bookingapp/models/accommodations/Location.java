@@ -21,11 +21,12 @@ public class Location {
     }
   
       public Location(String _address, String _city, String _country, double _longitude, double _latitude) {
-        this.address = _address;
-        this.city = _city;
-        this.country = _country;
-        this.longitude = _longitude;
-        this.latitude = _latitude;
+          this.address = _address;
+          this.city = _city;
+          this.country = _country;
+          this.longitude = _longitude;
+          this.latitude = _latitude;
+      }
 
     public Long getId() {
         return id;

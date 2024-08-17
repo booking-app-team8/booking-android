@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.bookingapp.R;
 import com.example.bookingapp.activities.ApprovalAccommodationRequestActivity;
 import com.example.bookingapp.activities.home.guest.GuestMainActivity;
+import com.example.bookingapp.activities.home.host.HostMainActivity;
 import com.example.bookingapp.activities.user.User_Account;
 import com.example.bookingapp.dtos.LoginGETDTO;
 import com.example.bookingapp.dtos.LoginPOSTDTO;
@@ -106,7 +107,7 @@ public class LogInActivity extends AppCompatActivity {
                         }
                         case "OWNER": {
                                 Toast.makeText(LogInActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(LogInActivity.this, User_Account.class);
+                                Intent intent = new Intent(LogInActivity.this, HostMainActivity.class);
                                 startActivity(intent);
                             break;
                         }

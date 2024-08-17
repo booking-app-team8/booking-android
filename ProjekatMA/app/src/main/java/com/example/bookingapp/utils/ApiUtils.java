@@ -37,7 +37,7 @@ public class ApiUtils {
         return ApiClient.getClient(BASE_URL).create(IAccessoriesService.class);
     }
 
-    public static IAccommodationService getAccommodationService() {
+    public static IAccommodationService getIAccommodationService() {
         return ApiClient.getClient(BASE_URL).create(IAccommodationService.class);
     }
 

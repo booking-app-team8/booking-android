@@ -297,7 +297,7 @@ public class CreateAccommodationActivity extends AppCompatActivity {
         String userEmail = sharedPreferences.getString("userEmail", null);
         accommodationPostDTO.setEmail(userEmail);
 
-        Call<Long> createResponseCall = ApiUtils.getAccommodationService().create(accommodationPostDTO);
+        Call<Long> createResponseCall = ApiUtils.getIAccommodationService().create(accommodationPostDTO);
         createResponseCall.enqueue(new Callback<Long>() {
             @Override
             public void onResponse(Call<Long> call, Response<Long> response) {
@@ -321,7 +321,7 @@ public class CreateAccommodationActivity extends AppCompatActivity {
     }
 
         public void uploadImages(Long accommodationId) {
-            IAccommodationService service = ApiUtils.getAccommodationService();
+            IAccommodationService service = ApiUtils.getIAccommodationService();
 //        MultipartBody.Part[] partsArray = new MultipartBody.Part[this.uris.size()];
 //        partsArray = this.uris.toArray(partsArray);
             Call<Void> call = service.uploadImages(accommodationId, this.uris);

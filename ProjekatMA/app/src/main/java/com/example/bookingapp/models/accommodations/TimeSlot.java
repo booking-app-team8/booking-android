@@ -5,8 +5,8 @@ import java.time.LocalDate;
 public class TimeSlot {
 
     private Long id;
-    private String startDate;
-    private String endDate;
+    public String startDate;
+    public String endDate;
     private boolean deleted;
 
     public TimeSlot() {
