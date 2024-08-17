@@ -40,6 +40,16 @@
     <string name="save_changes_button">Save changes</string>
     <string name="delete_account_button">Delete your account</string>
     <string name="show_more_button">Show more</string>
+
+    <string-array name="accommodation_types">
+        <item>Room</item>
+        <item>Studio</item>
+        <item>Apartment</item>
+    </string-array>
+    <string-array name="price_per_unit">
+        <item>Per_accommodation_unit</item>
+        <item>Per_guest</item>
+    </string-array>
     <string name="firstNameHint"> First Name </string>
     <string name="lastNameHint"> First Name </string>
     <string name="usernameHint"> Username </string>
@@ -50,4 +60,5 @@
     <string name="saveChanges"> SAVE </string>
     <string name="wannadeleteAccount"> Delete account? </string>
     <string name="deleteAccount"> DELETE </string>
+
 </resources>

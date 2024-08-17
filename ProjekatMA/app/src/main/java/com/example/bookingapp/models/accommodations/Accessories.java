@@ -1,9 +1,16 @@
 package com.example.bookingapp.models.accommodations;
 
 public class Accessories {
-    private Long id;
-    private String accessories;
+    public Long id;
+    public String accessories;
+    public boolean isSelected;
 
+    public Accessories(Long id, String name) {
+        this.id = id;
+        this.accessories = name;
+        this.isSelected = false;
+    }
+  
     public Accessories() {
     }
 
@@ -15,6 +22,17 @@ public class Accessories {
     public Long getId() {
         return id;
     }
+
+    public String getName() {
+        return accessories;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
 
     public void setId(Long id) {
         this.id = id;

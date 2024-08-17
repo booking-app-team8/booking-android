@@ -3,6 +3,7 @@ package com.example.bookingapp.models.accommodations;
 import java.time.LocalDate;
 
 public class TimeSlot {
+
     private Long id;
     private String startDate;
     private String endDate;
@@ -16,6 +17,11 @@ public class TimeSlot {
         this.startDate = startDate;
         this.endDate = endDate;
         this.deleted = deleted;
+    }
+  
+    public TimeSlot(String startDate, String endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public Long getId() {
@@ -49,4 +55,5 @@ public class TimeSlot {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
+
 }

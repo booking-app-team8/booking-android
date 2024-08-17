@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -92,6 +93,7 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginGETDTO> call, Response<LoginGETDTO> response) {
                 if (response.isSuccessful()) {
+                    saveToken(response.body().getToken(), emailEditText.getText().toString());
                     AuthService.setAccessToken(response.body().getToken());
                     new AuthService().getMyInfo(request.getEmail());  // load current user
                     Role r = AuthService.getCurrentUser().getRole();
@@ -135,7 +137,7 @@ public class LogInActivity extends AppCompatActivity {
 
 
 
-    private void saveToken(String token) {
+    private void saveToken(String token, String email) {
         // Sačuvaj token (npr. u SharedPreferences)
         //DODATI OVO OBAVEZNO
         //kao localStorage
@@ -143,6 +145,11 @@ public class LogInActivity extends AppCompatActivity {
                 .edit()
                 .putString("jwt_token", token)
                 .apply();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("userEmail", email);
+        editor.apply();
     }
 
 

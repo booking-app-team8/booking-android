@@ -4,6 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -29,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookingapp.AccommodationSearchAdapter;
 import com.example.bookingapp.R;
+import com.example.bookingapp.activities.accommodations.CreateAccommodationActivity;
 import com.example.bookingapp.activities.adapters.AccommodationAdapter;
 import com.example.bookingapp.models.accommodations.AccommodationSearchRequestDTO;
 import com.example.bookingapp.services.IAccommodationService;
@@ -57,6 +62,15 @@ public class GuestMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_main);
+        Button btnCreateAppointment = findViewById(R.id.btnCreateAppointment);
+
+        btnCreateAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GuestMainActivity.this, CreateAccommodationActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

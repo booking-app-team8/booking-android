@@ -1,6 +1,7 @@
 package com.example.bookingapp.models.accommodations;
 
 public class Photo {
+      
     private Long id;
     private String path;
     private boolean deleted;
@@ -14,6 +15,10 @@ public class Photo {
         this.deleted = deleted;
     }
 
+    public Photo(String path) {
+        this.path = path;
+    }
+  
     public Long getId() {
         return id;
     }
