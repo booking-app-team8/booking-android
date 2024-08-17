@@ -98,7 +98,7 @@ public class LogInActivity extends AppCompatActivity {
                     switch (r.toString()) {
                         case "GUEST": {
                                 Toast.makeText(LogInActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(LogInActivity.this, User_Account.class);
+                                Intent intent = new Intent(LogInActivity.this, GuestMainActivity.class);
                                 startActivity(intent);
                             break;
                         }
