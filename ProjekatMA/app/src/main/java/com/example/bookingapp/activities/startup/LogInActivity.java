@@ -14,7 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookingapp.R;
+import com.example.bookingapp.activities.ApprovalAccommodationRequestActivity;
 import com.example.bookingapp.activities.home.guest.GuestMainActivity;
+import com.example.bookingapp.activities.user.User_Account;
 import com.example.bookingapp.dtos.LoginGETDTO;
 import com.example.bookingapp.dtos.LoginPOSTDTO;
 import com.example.bookingapp.models.enums.Role;
@@ -96,21 +98,22 @@ public class LogInActivity extends AppCompatActivity {
                     switch (r.toString()) {
                         case "GUEST": {
                                 Toast.makeText(LogInActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(LogInActivity.this, GuestMainActivity.class);
+                                Intent intent = new Intent(LogInActivity.this, User_Account.class);
                                 startActivity(intent);
                             break;
                         }
                         case "OWNER": {
-//                                Toast.makeText(UserLoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
-//                                Intent intent = new Intent(LogInActivity.this, .class);
-//                                startActivity(intent);
+                                Toast.makeText(LogInActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(LogInActivity.this, User_Account.class);
+                                startActivity(intent);
                             break;
                         }
                         case "ADMIN":
                             System.out.println("usao");
-//                                AuthService.logout();
-//                                Toast.makeText(LogInActivity.this, "Admin cannot log in", Toast.LENGTH_LONG).show();
-                            return;
+                                Toast.makeText(LogInActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(LogInActivity.this, ApprovalAccommodationRequestActivity.class);
+                                startActivity(intent);
+                            break;
                     }
 
 

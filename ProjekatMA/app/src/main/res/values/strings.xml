@@ -40,4 +40,14 @@
     <string name="save_changes_button">Save changes</string>
     <string name="delete_account_button">Delete your account</string>
     <string name="show_more_button">Show more</string>
+    <string name="firstNameHint"> First Name </string>
+    <string name="lastNameHint"> First Name </string>
+    <string name="usernameHint"> Username </string>
+    <string name="passwordHint"> Password </string>
+    <string name="passwordConfirmationHint"> Confirm password </string>
+    <string name="phoneNumberHint"> Phone number </string>
+    <string name="addressHint"> Address </string>
+    <string name="saveChanges"> SAVE </string>
+    <string name="wannadeleteAccount"> Delete account? </string>
+    <string name="deleteAccount"> DELETE </string>
 </resources>
