@@ -102,9 +102,9 @@ public class LogInActivity extends AppCompatActivity {
                             break;
                         }
                         case "OWNER": {
-//                                Toast.makeText(UserLoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
-//                                Intent intent = new Intent(LogInActivity.this, .class);
-//                                startActivity(intent);
+                                Toast.makeText(LogInActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(LogInActivity.this, User_Account.class);
+                                startActivity(intent);
                             break;
                         }
                         case "ADMIN":

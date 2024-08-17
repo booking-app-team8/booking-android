@@ -9,6 +9,7 @@ import com.example.bookingapp.models.users.User;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -34,5 +35,9 @@ public interface IUserService {
     @Headers("Content-Type: application/json")
     @GET("user/by-email/{email}")
     Call<UserDto> getUserByEmailAddress(@Path("email") String email);
+
+    @DELETE("user/delete-account/{id}")
+    Call<Void> deleteUserAccount(@Path("id") Long id);
+
 
 }
