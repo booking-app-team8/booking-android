@@ -140,6 +140,11 @@ public class PricelistFragment extends Fragment {
         }
 
 
+        if (startDate.isEqual(endDate)) {
+            Toast.makeText(getContext(), "Invalid time slot input!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Pricelist interval = new Pricelist(startDateString, endDateString, price);
         priceIntervalList.add(interval);
         intervalsAdapter.notifyDataSetChanged();

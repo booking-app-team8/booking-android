@@ -31,11 +31,13 @@
 
     <Button
         android:id="@+id/btnDelete"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="@color/login_button"
         android:textColor="@color/white"
+        android:layout_gravity="right"
         android:fontFamily="@font/segoe_bold"
-        android:layout_height="wrap_content"
-        android:text="Delete" />
+        android:text="X" />
+
 
 </LinearLayout>

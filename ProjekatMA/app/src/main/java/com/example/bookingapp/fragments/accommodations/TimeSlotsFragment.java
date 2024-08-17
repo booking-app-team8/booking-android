@@ -169,6 +169,11 @@ public class TimeSlotsFragment extends Fragment {
             return;
         }
 
+        if (startDateConvert.isEqual(endDateConvert)) {
+            Toast.makeText(getContext(), "Invalid time slot input!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         TimeSlot timeSlot = new TimeSlot(startDate, endDate);
         timeSlotList.add(timeSlot);
         timeSlotAdapter.notifyDataSetChanged();

@@ -64,6 +64,110 @@ public class CreateAccommodationActivity extends AppCompatActivity {
 
     public MultipartBody.Part[] uris;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public int getMinGuests() {
+        return minGuests;
+    }
+
+    public void setMinGuests(int minGuests) {
+        this.minGuests = minGuests;
+    }
+
+    public int getMaxGuests() {
+        return maxGuests;
+    }
+
+    public void setMaxGuests(int maxGuests) {
+        this.maxGuests = maxGuests;
+    }
+
+    public int getCancellationDaysInAdvance() {
+        return cancellationDaysInAdvance;
+    }
+
+    public void setCancellationDaysInAdvance(int cancellationDaysInAdvance) {
+        this.cancellationDaysInAdvance = cancellationDaysInAdvance;
+    }
+
+    public double getDefaultedPrice() {
+        return defaultedPrice;
+    }
+
+    public void setDefaultedPrice(double defaultedPrice) {
+        this.defaultedPrice = defaultedPrice;
+    }
+
+    public PriceUnit getPriceUnit() {
+        return priceUnit;
+    }
+
+    public void setPriceUnit(PriceUnit priceUnit) {
+        this.priceUnit = priceUnit;
+    }
+
+    public TypeOfAccommodation getTypeOfAccommodation() {
+        return typeOfAccommodation;
+    }
+
+    public void setTypeOfAccommodation(TypeOfAccommodation typeOfAccommodation) {
+        this.typeOfAccommodation = typeOfAccommodation;
+    }
+
+    public List<Accessories> getAccessories() {
+        return accessories;
+    }
+
+    public List<Photo> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Photo> images) {
+        this.images = images;
+    }
+
+    public List<Pricelist> getPriceLists() {
+        return priceLists;
+    }
+
+    public void setPriceLists(List<Pricelist> priceLists) {
+        this.priceLists = priceLists;
+    }
+
+    public List<TimeSlot> getTimeSlots() {
+        return timeSlots;
+    }
+
+    public MultipartBody.Part[] getUris() {
+        return uris;
+    }
+
+    public void setUris(MultipartBody.Part[] uris) {
+        this.uris = uris;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,50 +297,53 @@ public class CreateAccommodationActivity extends AppCompatActivity {
         String userEmail = sharedPreferences.getString("userEmail", null);
         accommodationPostDTO.setEmail(userEmail);
 
-//        Call<Long> createResponseCall = ApiUtils.getAccommodationService().create(accommodationPostDTO);
-//        createResponseCall.enqueue(new Callback<Long>() {
-//            @Override
-//            public void onResponse(Call<Long> call, Response<Long> response) {
-//                if (response.isSuccessful()) {
-//                    Long accommodationId = response.body();
-//                    Toast.makeText(getApplicationContext(), "Accommodation created with ID: " + accommodationId, Toast.LENGTH_LONG).show();
-//                    //OVDE SADA IDE UPLOAD SLIKA NA BACK
-//                    //-----------------------------------
-        IAccommodationService service = ApiUtils.getAccommodationService();
-//        MultipartBody.Part[] partsArray = new MultipartBody.Part[this.uris.size()];
-//        partsArray = this.uris.toArray(partsArray);
-        Call<Void> call = service.uploadImages(18L, this.uris);
-        call.enqueue(new Callback<Void>() {
+        Call<Long> createResponseCall = ApiUtils.getAccommodationService().create(accommodationPostDTO);
+        createResponseCall.enqueue(new Callback<Long>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<Long> call, Response<Long> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(CreateAccommodationActivity.this, "Images uploaded successfully", Toast.LENGTH_SHORT).show();
-//                    ((CreateAccommodationActivity) getActivity()).loadTypeFragment();
+                    Long accommodationId = response.body();
+                    Toast.makeText(getApplicationContext(), "Accommodation created with ID: " + accommodationId, Toast.LENGTH_LONG).show();
+//                  //OVDE SADA IDE UPLOAD SLIKA NA BACK
+                    uploadImages(accommodationId);
+
                 } else {
-                    Toast.makeText(CreateAccommodationActivity.this, "Failed to upload images", Toast.LENGTH_SHORT).show();
+                    // Greška sa servera
+                    Toast.makeText(getApplicationContext(), "Failed to create accommodation", Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                System.out.println(t.getMessage());
-                Toast.makeText(CreateAccommodationActivity.this, "Upload error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onFailure(Call<Long> call, Throwable t) {
+                // Greška u komunikaciji sa serverom
+                Toast.makeText(getApplicationContext(), "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
 
-//
-//                } else {
-//                    // Greška sa servera
-//                    Toast.makeText(getApplicationContext(), "Failed to create accommodation", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Long> call, Throwable t) {
-//                // Greška u komunikaciji sa serverom
-//                Toast.makeText(getApplicationContext(), "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
-//            }
-//        });
+        public void uploadImages(Long accommodationId) {
+            IAccommodationService service = ApiUtils.getAccommodationService();
+//        MultipartBody.Part[] partsArray = new MultipartBody.Part[this.uris.size()];
+//        partsArray = this.uris.toArray(partsArray);
+            Call<Void> call = service.uploadImages(accommodationId, this.uris);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(CreateAccommodationActivity.this, "Images uploaded successfully", Toast.LENGTH_SHORT).show();
+//                    ((CreateAccommodationActivity) getActivity()).loadTypeFragment();
+                    } else {
+                        Toast.makeText(CreateAccommodationActivity.this, "Failed to upload images", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    System.out.println(t.getMessage());
+                    Toast.makeText(CreateAccommodationActivity.this, "Upload error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+
+        }
 
     }
 
@@ -245,4 +352,3 @@ public class CreateAccommodationActivity extends AppCompatActivity {
 
 
 
-}
