@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookingapp.R;
+import com.example.bookingapp.activities.ApprovalAccommodationRequestActivity;
 import com.example.bookingapp.activities.home.guest.GuestMainActivity;
 import com.example.bookingapp.activities.user.User_Account;
 import com.example.bookingapp.dtos.LoginGETDTO;
@@ -109,9 +110,10 @@ public class LogInActivity extends AppCompatActivity {
                         }
                         case "ADMIN":
                             System.out.println("usao");
-//                                AuthService.logout();
-//                                Toast.makeText(LogInActivity.this, "Admin cannot log in", Toast.LENGTH_LONG).show();
-                            return;
+                                Toast.makeText(LogInActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(LogInActivity.this, ApprovalAccommodationRequestActivity.class);
+                                startActivity(intent);
+                            break;
                     }
 
 
