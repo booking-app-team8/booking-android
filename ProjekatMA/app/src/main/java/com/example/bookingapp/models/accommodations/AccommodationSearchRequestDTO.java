@@ -4,7 +4,7 @@ import com.example.bookingapp.models.enums.TypeOfAccommodation;
 
 import java.util.List;
 
-public class Accommodation {
+public class AccommodationSearchRequestDTO {
     private Long id;
     private String name;
     private Location location;
@@ -19,10 +19,10 @@ public class Accommodation {
     private double averageGrade;
     private TypeOfAccommodation typeOfAccommodation;
 
-    public Accommodation() {
+    public AccommodationSearchRequestDTO() {
     }
 
-    public Accommodation(Long id, String name, Location location, List<Accessories> accessories, int minGuests, int maxGuests, Photo photo, String accommodationImageUrl, List<TimeSlot> timeSlots, double pricePerUnit, double totalPrice, double averageGrade, TypeOfAccommodation typeOfAccommodation) {
+    public AccommodationSearchRequestDTO(Long id, String name, Location location, List<Accessories> accessories, int minGuests, int maxGuests, Photo photo, String accommodationImageUrl, List<TimeSlot> timeSlots, double pricePerUnit, double totalPrice, double averageGrade, TypeOfAccommodation typeOfAccommodation) {
         this.id = id;
         this.name = name;
         this.location = location;

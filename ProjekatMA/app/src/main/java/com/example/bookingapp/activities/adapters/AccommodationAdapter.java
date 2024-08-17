@@ -11,15 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookingapp.R;
-import com.example.bookingapp.models.accommodations.Accommodation;
+import com.example.bookingapp.models.accommodations.AccommodationSearchRequestDTO;
 
 import java.util.List;
 
 public class AccommodationAdapter extends RecyclerView.Adapter<AccommodationAdapter.AccommodationViewHolder> {
 
-    private List<Accommodation> accommodations; // Ovo je lista smeštaja koja će se prikazati
+    private List<AccommodationSearchRequestDTO> accommodations; // Ovo je lista smeštaja koja će se prikazati
 
-    public AccommodationAdapter(List<Accommodation> accommodations) {
+    public AccommodationAdapter(List<AccommodationSearchRequestDTO> accommodations) {
         this.accommodations = accommodations;
     }
 
@@ -32,7 +32,7 @@ public class AccommodationAdapter extends RecyclerView.Adapter<AccommodationAdap
 
     @Override
     public void onBindViewHolder(@NonNull AccommodationViewHolder holder, int position) {
-        Accommodation accommodation = accommodations.get(position);
+        AccommodationSearchRequestDTO accommodation = accommodations.get(position);
         // Postavi podatke u karticu
         holder.tvApartmentName.setText(accommodation.getName());
         holder.tvApartmentAddress.setText(accommodation.getLocation().getAddress()+" , "+

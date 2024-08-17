@@ -7,38 +7,51 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bookingapp.AccommodationSearchAdapter;
 import com.example.bookingapp.R;
 import com.example.bookingapp.activities.adapters.AccommodationAdapter;
-import com.example.bookingapp.activities.startup.LogInActivity;
-import com.example.bookingapp.models.accommodations.Accommodation;
+import com.example.bookingapp.models.accommodations.AccommodationSearchRequestDTO;
+import com.example.bookingapp.services.IAccommodationService;
+import com.example.bookingapp.utils.ApiUtils;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class GuestMainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
-    private EditText etStartDate, etEndDate;
+    private EditText etStartDate, etEndDate, etLocation, etGuests;
     private Calendar calendar;
+    public Button btnSearch;
+    private ListView listView;
+    private AccommodationSearchAdapter adapter;
+    private List<AccommodationSearchRequestDTO> accommodationSearchRequestDTOS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +63,13 @@ public class GuestMainActivity extends AppCompatActivity {
 
         etStartDate = findViewById(R.id.et_start_date);
         etEndDate = findViewById(R.id.et_end_date);
+        btnSearch = findViewById(R.id.btn_search);
+        etLocation = findViewById(R.id.et_location);
+        etGuests = findViewById(R.id.et_guests);
+        listView = findViewById(R.id.listviewAccommodationSearch);
+        accommodationSearchRequestDTOS = new ArrayList<>();
+        adapter = new AccommodationSearchAdapter(this, accommodationSearchRequestDTOS);
+        listView.setAdapter(adapter);
 
         calendar = Calendar.getInstance();
 
@@ -105,13 +125,16 @@ public class GuestMainActivity extends AppCompatActivity {
             }
         });
 
-        RecyclerView recyclerView = findViewById(R.id.rv_search_results);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        btnSearch.setOnClickListener(v -> {
+            String location = etLocation.getText().toString();
+            String guestsStr = etGuests.getText().toString();
+            Integer guests = guestsStr.isEmpty() ? null : Integer.parseInt(guestsStr);
+            String startDate = etStartDate.getText().toString();
+            String endDate = etEndDate.getText().toString();
 
-        List<Accommodation> accommodations = getSearchResults(); // Nabavi rezultate pretrage
-        AccommodationAdapter adapter = new AccommodationAdapter(accommodations);
-        recyclerView.setAdapter(adapter);
-
+            // Pozivanje API-ja
+            searchAccommodations(location, guests, startDate, endDate);
+        });
 
     }
 
@@ -119,12 +142,6 @@ public class GuestMainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.guest_main_menu, menu);
         return true;
-    }
-
-    private List<Accommodation> getSearchResults(){
-        List<Accommodation> accommodations = new ArrayList<Accommodation>();
-
-        return accommodations;
     }
 
     // Funkcija za otvaranje DatePickerDialog-a
@@ -139,7 +156,13 @@ public class GuestMainActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         // Formatiranje i prikaz odabranog datuma u EditText
-                        String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+                        String selectedDate;
+                        if((monthOfYear + 1) < 10){
+                            selectedDate = year + "-0" + (monthOfYear + 1) + "-" + dayOfMonth;
+                        } else{
+                            selectedDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                        }
+
                         editText.setText(selectedDate);
                     }
                 },
@@ -194,5 +217,34 @@ public class GuestMainActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private void searchAccommodations(String location, Integer guests, String startDate, String endDate) {
+        IAccommodationService api = ApiUtils.getAccommodationService();
+        Call<List<AccommodationSearchRequestDTO>> call = api.searchAccommodations(guests, location, startDate, endDate);
+
+        call.enqueue(new Callback<List<AccommodationSearchRequestDTO>>() {
+            @Override
+            public void onResponse(Call<List<AccommodationSearchRequestDTO>> call, Response<List<AccommodationSearchRequestDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<AccommodationSearchRequestDTO> accommodations = response.body();
+                    // Rukovanje rezultatima pretrage
+                    accommodationSearchRequestDTOS.clear();
+                    accommodationSearchRequestDTOS.addAll(accommodations);
+                    adapter.notifyDataSetChanged();
+                } else {
+                    // Rukovanje greškama
+                    Toast.makeText(GuestMainActivity.this, "No accommodations found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AccommodationSearchRequestDTO>> call, Throwable t) {
+                // Rukovanje greškama
+                Toast.makeText(GuestMainActivity.this, "Failed to fetch accommodations", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 
 }

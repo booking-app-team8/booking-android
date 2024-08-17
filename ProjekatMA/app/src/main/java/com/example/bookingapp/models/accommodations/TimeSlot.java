@@ -4,14 +4,14 @@ import java.time.LocalDate;
 
 public class TimeSlot {
     private Long id;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
     private boolean deleted;
 
     public TimeSlot() {
     }
 
-    public TimeSlot(Long id, LocalDate startDate, LocalDate endDate, boolean deleted) {
+    public TimeSlot(Long id, String startDate, String endDate, boolean deleted) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -26,19 +26,19 @@ public class TimeSlot {
         this.id = id;
     }
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
