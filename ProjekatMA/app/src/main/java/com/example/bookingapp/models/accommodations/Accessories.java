@@ -10,8 +10,15 @@ public class Accessories {
         this.accessories = name;
         this.isSelected = false;
     }
+  
+    public Accessories() {
+    }
 
-    // Getteri i setteri
+    public Accessories(Long id, String accessories) {
+        this.id = id;
+        this.accessories = accessories;
+    }
+
     public Long getId() {
         return id;
     }
@@ -26,5 +33,16 @@ public class Accessories {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getAccessories() {
+        return accessories;
+    }
+
+    public void setAccessories(String accessories) {
+        this.accessories = accessories;
     }
 }

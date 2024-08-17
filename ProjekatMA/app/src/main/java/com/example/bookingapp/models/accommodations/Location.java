@@ -1,18 +1,38 @@
 package com.example.bookingapp.models.accommodations;
 
 public class Location {
-    public String address;
-    public String city;
-    public String country;
-    public double longitude;
-    public double latitude;
+    private Long id;
+    private String address;
+    private String city;
+    private String country;
+    private double longitude;
+    private double latitude;
 
-    public Location(String _address, String _city, String _country, double _longitude, double _latitude) {
+    public Location() {
+    }
+
+    public Location(Long id, String address, String city, String country, double longitude, double latitude) {
+        this.id = id;
+        this.address = address;
+        this.city = city;
+        this.country = country;
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
+  
+      public Location(String _address, String _city, String _country, double _longitude, double _latitude) {
         this.address = _address;
         this.city = _city;
         this.country = _country;
         this.longitude = _longitude;
         this.latitude = _latitude;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAddress() {
