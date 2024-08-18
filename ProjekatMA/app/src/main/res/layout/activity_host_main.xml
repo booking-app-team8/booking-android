@@ -1,19 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout_host"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.home.host.HostMainActivity">
+    tools:context=".activities.home.guest.GuestMainActivity">
 
-    <Button
-        android:id="@+id/btnCreateAppointment"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_host"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/background_color"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Naslov - Pretraži smeštaje -->
+        <TextView
+            android:id="@+id/tv_search_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Serach accommodations"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_host"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Polje za unos lokacije -->
+        <EditText
+            android:id="@+id/et_location_host"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Choose location"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_search_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.9" />
+
+        <!-- Polje za unos broja gostiju -->
+        <EditText
+            android:id="@+id/et_guests_host"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Number of guests"
+            android:inputType="number"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/et_location_host"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.9" />
+
+        <!-- Polja za unos datuma -->
+        <EditText
+            android:id="@+id/et_start_date_host"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Start date"
+            android:focusable="false"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/et_guests_host"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_end_date_host"
+            app:layout_constraintWidth_percent="0.45" />
+
+        <EditText
+            android:id="@+id/et_end_date_host"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="End date"
+            android:focusable="false"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/et_guests_host"
+            app:layout_constraintStart_toEndOf="@id/et_start_date_host"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.45" />
+
+        <!-- Button Pretrazi i ikonica za filtriranje -->
+        <LinearLayout
+            android:id="@+id/ll_search_filter_host"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/et_start_date_host"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/btn_search_host"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search"
+                android:backgroundTint="@color/login_button"
+                android:layout_marginEnd="8dp" />
+
+            <ImageView
+                android:id="@+id/iv_filter_host"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_filter"
+                android:contentDescription="Filter"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center_vertical"
+                android:minHeight="?attr/actionBarSize"
+                android:layout_marginStart="28dp"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listviewAccommodationSearchHost"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10.0sp"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_search_filter_host"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="21dp"
+            tools:listitem="@layout/card_accommodation" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- NavigationView -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create Appointment"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/host_main_menu" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
