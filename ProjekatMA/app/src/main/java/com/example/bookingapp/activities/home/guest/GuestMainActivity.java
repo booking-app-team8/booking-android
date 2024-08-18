@@ -35,6 +35,9 @@ import com.example.bookingapp.AccommodationSearchAdapter;
 import com.example.bookingapp.R;
 import com.example.bookingapp.activities.accommodations.CreateAccommodationActivity;
 import com.example.bookingapp.activities.adapters.AccommodationAdapter;
+import com.example.bookingapp.activities.startup.LogInActivity;
+import com.example.bookingapp.activities.user.User_Account;
+import com.example.bookingapp.models.accommodations.Accessories;
 import com.example.bookingapp.models.accommodations.AccommodationSearchRequestDTO;
 import com.example.bookingapp.services.IAccommodationService;
 import com.example.bookingapp.utils.ApiUtils;
@@ -42,6 +45,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -107,9 +111,11 @@ public class GuestMainActivity extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.nav_home) {
-                    // Otvori Početna
+                    Intent intent = new Intent(GuestMainActivity.this, GuestMainActivity.class);
+                    startActivity(intent);
                 } else if (id == R.id.nav_account) {
-                    // Otvori Nalog
+                    Intent intent = new Intent(GuestMainActivity.this, User_Account.class);
+                    startActivity(intent);
                 } else if (id == R.id.nav_reservations) {
                     // Otvori Rezervacije
                 } else if (id == R.id.nav_notifications) {
@@ -188,6 +194,9 @@ public class GuestMainActivity extends AppCompatActivity {
         // Pronalazak UI komponenti iz layout-a
         EditText etAmenities = dialogView.findViewById(R.id.et_amenities);
         RadioGroup rgAccommodationType = dialogView.findViewById(R.id.rg_accommodation_type);
+        RadioButton rgRoom = dialogView.findViewById(R.id.rb_room);
+        RadioButton rgApartment = dialogView.findViewById(R.id.rb_apartment);
+        RadioButton rgStudio = dialogView.findViewById(R.id.rb_studio);
         EditText etMinPrice = dialogView.findViewById(R.id.et_min_price);
         EditText etMaxPrice = dialogView.findViewById(R.id.et_max_price);
 
@@ -195,19 +204,167 @@ public class GuestMainActivity extends AppCompatActivity {
         builder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Ovdje možeš obraditi unos korisnika i filtriranje
+
+                // Flegovi koji ce nam govoriti po kojim parametrima cemo raditi filtriranje
+                boolean amenitiesFleg = false;
+                boolean typeOfAccommodationFleg = false;
+                boolean minPriceFleg = false;
+                boolean maxPriceFleg = false;
+
+                // Pogodnosti po kojima korisnik zeli da filtrira
                 String amenities = etAmenities.getText().toString();
-                int selectedId = rgAccommodationType.getCheckedRadioButtonId();
-                RadioButton rbSelected = findViewById(selectedId);
-                String accommodationType = rbSelected != null ? rbSelected.getText().toString() : null;
+                Log.d("Filter", "Amenities: " + amenities);
+                List<String> amenitiesList = new ArrayList<>();
+                if (amenities.length() > 0){
+                    String[] amenitiesArray = amenities.split(",");
+
+                    for (String amenity : amenitiesArray) {
+                        amenitiesList.add(amenity.trim().toUpperCase());
+                        Log.d("Filter", amenity.trim());
+                    }
+
+                    if(amenitiesList.size() > 0){
+                        amenitiesFleg = true;
+                    }
+                }
+
+                // Tip smestaja po kom korisnik zeli da filtrira
+
+                String accommodationType = "";
+
+                if (rgRoom.isChecked()) {
+                    Log.d("Filter", "Accommodation Type: Room");
+                    accommodationType = "ROOM";
+                    typeOfAccommodationFleg = true;
+                } else if (rgApartment.isChecked()) {
+                    Log.d("Filter", "Accommodation Type: Apartment");
+                    accommodationType = "APARTMENT";
+                    typeOfAccommodationFleg = true;
+                } else if (rgStudio.isChecked()) {
+                    Log.d("Filter", "Accommodation Type: Studio");
+                    accommodationType = "STUDIO";
+                    typeOfAccommodationFleg = true;
+                }
+
+                // Minimalna i maksimalna cena po kojoj korisnik zeli da filtrira
                 String minPrice = etMinPrice.getText().toString();
                 String maxPrice = etMaxPrice.getText().toString();
 
-                // Primjeri obrade unosa (samo ispis u logu, možeš dodati stvarno filtriranje)
-                // Log.d("Filter", "Amenities: " + amenities);
-                // Log.d("Filter", "Accommodation Type: " + accommodationType);
-                // Log.d("Filter", "Min Price: " + minPrice);
-                // Log.d("Filter", "Max Price: " + maxPrice);
+                double minPriceDouble = 0;
+                double maxPriceDouble = 0;
+
+                if(minPrice.length()>0){
+                    minPriceDouble = Double.parseDouble(minPrice);
+                    minPriceFleg = true;
+                    Log.d("Filter", "Min price: " + minPrice);
+                }
+
+                if(maxPrice.length()>0){
+                    maxPriceDouble = Double.parseDouble(maxPrice);
+                    maxPriceFleg = true;
+                    Log.d("Filter", "Max price: " + maxPrice);
+                }
+
+                // Vrsimo filtriranje
+
+                if (amenitiesFleg){
+                    // Filtriranje po pogodnostima
+
+                    Iterator<AccommodationSearchRequestDTO> iterator = accommodationSearchRequestDTOS.iterator();
+                    while (iterator.hasNext()) {
+                        AccommodationSearchRequestDTO accommodationSearchRequestDTO = iterator.next();
+                        boolean isOk = true;
+
+                        List<String> accommodationAmmenities = new ArrayList<>();
+
+                        for (Accessories accessories : accommodationSearchRequestDTO.getAccessories()) {
+                            accommodationAmmenities.add(accessories.getAccessories().toUpperCase());
+                        }
+
+                        for (String amenity : amenitiesList) {
+                            if (!accommodationAmmenities.contains(amenity)) {
+                                isOk = false;
+                                break; // Prekida se iteracija čim se nađe prvi nedostajući amenitet
+                            }
+                        }
+
+                        if (!isOk) {
+                            iterator.remove(); // Sigurno uklanjanje elementa pomoću iteratora
+                        }
+                    }
+
+                    /*
+                    for (AccommodationSearchRequestDTO accommodationSearchRequestDTO : accommodationSearchRequestDTOS){
+                        boolean isOk = true;
+
+                        List<String> accommodationAmmenities = new ArrayList<>();
+
+                        for (Accessories accessories : accommodationSearchRequestDTO.getAccessories()){
+                            accommodationAmmenities.add(accessories.getAccessories().toUpperCase());
+                        }
+
+                        for (String amenity : amenitiesList){
+                            if (!accommodationAmmenities.contains(amenity)){
+                                isOk = false;
+                            }
+                        }
+
+                        if (!isOk){
+                            accommodationSearchRequestDTOS.remove(accommodationSearchRequestDTO);
+                        }
+                    }
+                     */
+                }
+
+                if (typeOfAccommodationFleg){
+                    // Filtriranje po tipu smestaja
+
+                    Iterator<AccommodationSearchRequestDTO> iterator = accommodationSearchRequestDTOS.iterator();
+                    while (iterator.hasNext()) {
+                        AccommodationSearchRequestDTO dto = iterator.next();
+                        String typeOfAccommodation = dto.getTypeOfAccommodation().toString();
+                        if (!typeOfAccommodation.equals(accommodationType)) {
+                            iterator.remove();
+                        }
+                    }
+
+                }
+
+                if (minPriceFleg && maxPriceFleg) {
+                    // Filtriranje i po minimalnoj i po maksimalnoj ceni
+
+                    Iterator<AccommodationSearchRequestDTO> iterator = accommodationSearchRequestDTOS.iterator();
+                    while (iterator.hasNext()) {
+                        AccommodationSearchRequestDTO dto = iterator.next();
+                        if ((dto.getTotalPrice() < minPriceDouble) ||
+                                (dto.getTotalPrice() > maxPriceDouble)) {
+                            iterator.remove();
+                        }
+                    }
+                } else if (minPriceFleg){
+                    // Filtriranje po minimalnoj ceni
+
+                    Iterator<AccommodationSearchRequestDTO> iterator = accommodationSearchRequestDTOS.iterator();
+                    while (iterator.hasNext()) {
+                        AccommodationSearchRequestDTO dto = iterator.next();
+                        if (dto.getTotalPrice() < minPriceDouble) {
+                            iterator.remove();
+                        }
+                    }
+                } else if (maxPriceFleg){
+                    // Filtriranje po maksimalnoj ceni
+
+                    Iterator<AccommodationSearchRequestDTO> iterator = accommodationSearchRequestDTOS.iterator();
+                    while (iterator.hasNext()) {
+                        AccommodationSearchRequestDTO dto = iterator.next();
+                        if (dto.getTotalPrice() > maxPriceDouble) {
+                            iterator.remove();
+                        }
+                    }
+
+                }
+
+                adapter.notifyDataSetChanged();
             }
         });
 

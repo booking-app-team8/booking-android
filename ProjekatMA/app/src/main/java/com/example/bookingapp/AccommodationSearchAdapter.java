@@ -1,6 +1,7 @@
 package com.example.bookingapp;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.bookingapp.models.accommodations.AccommodationSearchRequestDTO;
 
 import java.util.List;
@@ -41,6 +43,7 @@ public class AccommodationSearchAdapter extends ArrayAdapter<AccommodationSearch
         TextView tvPrice = convertView.findViewById(R.id.tv_price_per_unit);
         TextView tvTotalPrice = convertView.findViewById(R.id.tv_total_price);
         TextView tvRating = convertView.findViewById(R.id.tv_average_rating);
+        TextView tvAmenities = convertView.findViewById(R.id.tv_amenities);
         ImageView ivImage = convertView.findViewById(R.id.iv_apartment_image);
         Button btnShowMore = convertView.findViewById(R.id.btn_show_more);
 
@@ -48,12 +51,18 @@ public class AccommodationSearchAdapter extends ArrayAdapter<AccommodationSearch
         tvName.setText(accommodation.getName());
         tvAddress.setText(accommodation.getLocation().getAddress() + ", " + accommodation.getLocation().getCity());
         tvGuests.setText(String.valueOf(accommodation.getMaxGuests()));
-        tvPrice.setText(String.format("$%s per night", accommodation.getPricePerUnit()));
+        tvPrice.setText(String.format(String.valueOf(accommodation.getPricePerUnit())));
         tvTotalPrice.setText(String.format("$%s", accommodation.getTotalPrice()));
         tvRating.setText(String.valueOf(accommodation.getAverageGrade()));
+        tvAmenities.setText(accommodation.getAccessories().get(0).getAccessories() + ", " + accommodation.getAccessories().get(1).getAccessories());
 
         // Učitavanje slike pomoću Picasso biblioteke
         //Picasso.get().load(accommodation.getImageUrl()).into(ivImage);
+        String imageUrl = "http://172.20.10.5:8081/";
+        Glide.with(context)
+                .load(imageUrl + accommodation.getPhoto().getPath())
+                .into(ivImage);
+        Log.d("URL image", imageUrl + accommodation.getPhoto().getPath());
 
         // Implementacija za dugme "Show more"
         btnShowMore.setOnClickListener(v -> {
