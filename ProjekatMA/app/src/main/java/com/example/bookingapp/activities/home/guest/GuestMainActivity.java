@@ -117,7 +117,8 @@ public class GuestMainActivity extends AppCompatActivity {
                     Intent intent = new Intent(GuestMainActivity.this, User_Account.class);
                     startActivity(intent);
                 } else if (id == R.id.nav_reservations) {
-                    // Otvori Rezervacije
+                    Intent intent = new Intent(GuestMainActivity.this, GuestReservationsScreen.class);
+                    startActivity(intent);
                 } else if (id == R.id.nav_notifications) {
                     // Otvori Notifikacije
                 }
