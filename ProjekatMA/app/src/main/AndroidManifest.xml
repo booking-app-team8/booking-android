@@ -33,6 +33,9 @@
             android:name=".activities.home.guest.GuestReservationsScreen"
             android:exported="false" />
         <activity
+            android:name=".activities.accommodations.AccommodationsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.home.host.HostMainActivity"
             android:exported="false" />
         <activity

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/nav_host_home"
+        android:title="Home"
+        android:icon="@drawable/ic_home" />
+    <item
+        android:id="@+id/nav_host_account"
+        android:title="Account"
+        android:icon="@drawable/ic_account" />
+    <item
+        android:id="@+id/nav_host_accommodations"
+        android:title="My accommodations"
+        android:icon="@drawable/ic_accommodations" />
+    <item
+        android:id="@+id/nav_host_reservations"
+        android:title="My reservations"
+        android:icon="@drawable/ic_reservations" />
+    <item
+        android:id="@+id/nav_host_notifications"
+        android:title="Notifications"
+        android:icon="@drawable/ic_notifications" />
+
+</menu>
