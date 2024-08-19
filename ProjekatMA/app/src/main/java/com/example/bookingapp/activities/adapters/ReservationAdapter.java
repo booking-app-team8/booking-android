@@ -5,14 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.example.bookingapp.R;
+import com.example.bookingapp.dtos.ReservationGetDTO;
 import com.example.bookingapp.models.reservations.ReservationGetFrontDTO;
+import com.example.bookingapp.utils.ApiUtils;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO> {
 
@@ -41,6 +49,7 @@ public class ReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO> {
         TextView tvEndDate = convertView.findViewById(R.id.tv_reservation_end_date);
         TextView tvTotalPrice = convertView.findViewById(R.id.tv_reservation_total_price);
         TextView tvReservationStatus = convertView.findViewById(R.id.tv_reservation_status);
+        Button btnCancelReservation = convertView.findViewById(R.id.btn_reservation_cancel);
 
         tvReservationId.setText("Reservation ID: " + reservation.getId());
         tvAccommodationName.setText("Accommodation: " + reservation.getAccommodation().getName());
@@ -50,6 +59,32 @@ public class ReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO> {
         tvTotalPrice.setText("Total price: " + reservation.getTotalPrice());
         tvReservationStatus.setText("Status: " + reservation.getReservationStatus().toString());
 
+        btnCancelReservation.setOnClickListener(v -> {
+            cancelReservation(reservation.getId());
+        });
+
         return convertView;
+    }
+
+    private void cancelReservation(Long reservationId) {
+        // Pozivanje Retrofit API poziva za otkazivanje rezervacije
+        ApiUtils.getReservationService().cancelReservation(reservationId).enqueue(new Callback<ReservationGetDTO>() {
+            @Override
+            public void onResponse(Call<ReservationGetDTO> call, Response<ReservationGetDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Otkazivanje rezervacije je uspešno
+                    Toast.makeText(context, "Reservation canceled!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Otkazivanje nije uspelo
+                    Toast.makeText(context, "Failed to cancel reservation.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReservationGetDTO> call, Throwable t) {
+                // Greška prilikom poziva
+                Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
