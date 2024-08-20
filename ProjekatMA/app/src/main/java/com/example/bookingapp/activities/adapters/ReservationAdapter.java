@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 
 import com.example.bookingapp.R;
 import com.example.bookingapp.dtos.ReservationGetDTO;
+import com.example.bookingapp.models.enums.ReservationStatus;
 import com.example.bookingapp.models.reservations.ReservationGetFrontDTO;
 import com.example.bookingapp.utils.ApiUtils;
 
@@ -26,6 +27,7 @@ public class ReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO> {
 
     private Context context;
     private List<ReservationGetFrontDTO> reservations;
+
 
     public ReservationAdapter(Context context, List<ReservationGetFrontDTO> reservations){
         super(context, 0, reservations);
@@ -50,6 +52,7 @@ public class ReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO> {
         TextView tvTotalPrice = convertView.findViewById(R.id.tv_reservation_total_price);
         TextView tvReservationStatus = convertView.findViewById(R.id.tv_reservation_status);
         Button btnCancelReservation = convertView.findViewById(R.id.btn_reservation_cancel);
+        Button btnRateOwner = convertView.findViewById(R.id.btn_reservation_rate_owner);
 
         tvReservationId.setText("Reservation ID: " + reservation.getId());
         tvAccommodationName.setText("Accommodation: " + reservation.getAccommodation().getName());
@@ -63,7 +66,31 @@ public class ReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO> {
             cancelReservation(reservation.getId());
         });
 
+        btnRateOwner.setOnClickListener(v -> {
+            rateOwner(reservation.getAccommodation().getId());
+        });
+
+
+
         return convertView;
+    }
+
+    private void rateOwner(Long id) {
+        Toast.makeText(context, "id"+id, Toast.LENGTH_SHORT).show();
+        //PREKO ACCOMMODATION ID nadjem ko je vlasnik a preko vlasnika nadjem sve njegove accommodatione
+        //ONDA KAD IMAM SVE SMESTAJE OD VLASNIKA IZABRANOG SMESTAJA GLEDAM DA LI U REZERVACIJAMA
+        //IMA NEKI SMESTAJ SA TIM ID-JEM I ONDA AKO IMA GLEDAM DA LI JE FINISHED SAMO TOG VLASNIKA MOGU DA OCENIM
+        
+        for (ReservationGetFrontDTO reservation: this.reservations) {
+
+//            if (reservation.ge)
+            if (reservation.getReservationStatus().equals(ReservationStatus.FINISHED)) {
+                //moze da se oceni onda cim naleti na makar jednu zavrsenu
+                break;
+            }
+        }
+
+
     }
 
     private void cancelReservation(Long reservationId) {
