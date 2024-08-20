@@ -10,6 +10,7 @@ import com.example.bookingapp.services.AccommodationRequestService;
 
 
 import com.example.bookingapp.services.IReservationService;
+import com.example.bookingapp.services.IUserReportsService;
 import com.example.bookingapp.services.IUserService;
 
 public class ApiUtils {
@@ -54,6 +55,10 @@ public class ApiUtils {
 
     public static IReservationService getReservationService(){
         return ApiClient.getClient(BASE_URL).create(IReservationService.class);
+    }
+
+    public static IUserReportsService getUserReportsService(){
+        return ApiClient.getClient(BASE_URL).create(IUserReportsService.class);
     }
 
 }

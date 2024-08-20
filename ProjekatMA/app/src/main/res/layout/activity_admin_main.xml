@@ -51,7 +51,7 @@
             android:id="@+id/btn_reported_rates"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="Reported users"
+            android:text="Review comments and rates"
             android:backgroundTint="@color/login_button"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="10dp"
