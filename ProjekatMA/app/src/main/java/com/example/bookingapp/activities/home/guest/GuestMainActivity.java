@@ -35,6 +35,7 @@ import com.example.bookingapp.AccommodationSearchAdapter;
 import com.example.bookingapp.R;
 import com.example.bookingapp.activities.accommodations.CreateAccommodationActivity;
 import com.example.bookingapp.activities.adapters.AccommodationAdapter;
+import com.example.bookingapp.activities.commentsAndGrades.AccommodationDetailsGradesActivity;
 import com.example.bookingapp.activities.reservations.GuestReservationsActivity;
 import com.example.bookingapp.activities.startup.LogInActivity;
 import com.example.bookingapp.activities.user.User_Account;
@@ -53,7 +54,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GuestMainActivity extends AppCompatActivity {
+public class GuestMainActivity extends AppCompatActivity implements AccommodationSearchAdapter.OnShowMoreClickListener
+
+{
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private EditText etStartDate, etEndDate, etLocation, etGuests;
@@ -78,7 +81,7 @@ public class GuestMainActivity extends AppCompatActivity {
         etGuests = findViewById(R.id.et_guests);
         listView = findViewById(R.id.listviewAccommodationSearch);
         accommodationSearchRequestDTOS = new ArrayList<>();
-        adapter = new AccommodationSearchAdapter(this, accommodationSearchRequestDTOS);
+        adapter = new AccommodationSearchAdapter(this, accommodationSearchRequestDTOS, this);
         listView.setAdapter(adapter);
 
         calendar = Calendar.getInstance();
@@ -410,5 +413,12 @@ public class GuestMainActivity extends AppCompatActivity {
     }
 
 
-
+    @Override
+    public void onShowMoreClick(AccommodationSearchRequestDTO accommodation) {
+//        Toast.makeText(this, "accommodationName:" + accommodation.getName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, AccommodationDetailsGradesActivity.class);
+//        Toast.makeText(this, "accommodationID:" + accommodation.getName(), Toast.LENGTH_SHORT).show();
+        intent.putExtra("accommodation_data", accommodation.getId()); // Pass any needed data
+        startActivity(intent);
+    }
 }

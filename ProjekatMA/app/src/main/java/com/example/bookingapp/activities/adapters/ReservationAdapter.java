@@ -1,6 +1,9 @@
 package com.example.bookingapp.activities.adapters;
 
+
+
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,27 +15,57 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.bookingapp.R;
+import com.example.bookingapp.activities.ApprovalAccommodationRequestActivity;
+import com.example.bookingapp.activities.startup.LogInActivity;
 import com.example.bookingapp.dtos.ReservationGetDTO;
+import com.example.bookingapp.models.accommodations.AccommodationSearchRequestDTO;
 import com.example.bookingapp.models.enums.ReservationStatus;
 import com.example.bookingapp.models.reservations.ReservationGetFrontDTO;
 import com.example.bookingapp.utils.ApiUtils;
 
+
 import java.util.List;
 
+import kotlin.jvm.internal.Ref;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO> {
 
+
+    private final OnButtonClickListener buttonClickListener;
     private Context context;
     private List<ReservationGetFrontDTO> reservations;
 
 
-    public ReservationAdapter(Context context, List<ReservationGetFrontDTO> reservations){
+
+    public interface OnButtonClickListener {
+        void onRateOwnerClick(Long id, Long guestId);
+        void onRateAccommodationClick(Long guestId, Long accommodationId);
+//        void onCancelClick(Reservation reservation);
+//        void onReportClick(Reservation reservation);
+    }
+
+    private List<AccommodationSearchRequestDTO> accommodationSearchRequestDTOS;
+
+    private Long ownerId;
+
+    public interface OwnerIdCallback {
+        void onOwnerIdReceived(Long ownerId);
+        void onError(Throwable t);
+    }
+
+    public interface AccommodationsCallback {
+        void onAccommodationsReceived(List<AccommodationSearchRequestDTO> accommodations);
+        void onError(Throwable t);
+    }
+
+    public ReservationAdapter(Context context, List<ReservationGetFrontDTO> reservations, OnButtonClickListener listener){
         super(context, 0, reservations);
         this.context = context;
         this.reservations = reservations;
+        this.buttonClickListener = listener;
     }
 
     @NonNull
@@ -53,6 +86,7 @@ public class ReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO> {
         TextView tvReservationStatus = convertView.findViewById(R.id.tv_reservation_status);
         Button btnCancelReservation = convertView.findViewById(R.id.btn_reservation_cancel);
         Button btnRateOwner = convertView.findViewById(R.id.btn_reservation_rate_owner);
+        Button btnRateAcc = convertView.findViewById(R.id.btn_reservation_rate_accommodation);
 
         tvReservationId.setText("Reservation ID: " + reservation.getId());
         tvAccommodationName.setText("Accommodation: " + reservation.getAccommodation().getName());
@@ -67,7 +101,15 @@ public class ReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO> {
         });
 
         btnRateOwner.setOnClickListener(v -> {
-            rateOwner(reservation.getAccommodation().getId());
+            if (buttonClickListener != null) {
+                buttonClickListener.onRateOwnerClick(reservation.getAccommodation().getId(), reservation.getGuest().getId());
+            }
+        });
+
+        btnRateAcc.setOnClickListener(v -> {
+            if (buttonClickListener != null) {
+                buttonClickListener.onRateAccommodationClick(reservation.getGuest().getId(), reservation.getAccommodation().getId());
+            }
         });
 
 
@@ -75,23 +117,8 @@ public class ReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO> {
         return convertView;
     }
 
-    private void rateOwner(Long id) {
-        Toast.makeText(context, "id"+id, Toast.LENGTH_SHORT).show();
-        //PREKO ACCOMMODATION ID nadjem ko je vlasnik a preko vlasnika nadjem sve njegove accommodatione
-        //ONDA KAD IMAM SVE SMESTAJE OD VLASNIKA IZABRANOG SMESTAJA GLEDAM DA LI U REZERVACIJAMA
-        //IMA NEKI SMESTAJ SA TIM ID-JEM I ONDA AKO IMA GLEDAM DA LI JE FINISHED SAMO TOG VLASNIKA MOGU DA OCENIM
-        
-        for (ReservationGetFrontDTO reservation: this.reservations) {
-
-//            if (reservation.ge)
-            if (reservation.getReservationStatus().equals(ReservationStatus.FINISHED)) {
-                //moze da se oceni onda cim naleti na makar jednu zavrsenu
-                break;
-            }
-        }
 
 
-    }
 
     private void cancelReservation(Long reservationId) {
         // Pozivanje Retrofit API poziva za otkazivanje rezervacije

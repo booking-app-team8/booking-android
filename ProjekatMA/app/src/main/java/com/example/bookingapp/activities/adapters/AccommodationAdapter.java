@@ -17,10 +17,17 @@ import java.util.List;
 
 public class AccommodationAdapter extends RecyclerView.Adapter<AccommodationAdapter.AccommodationViewHolder> {
 
+    public interface OnShowMoreClickListener {
+        void onShowMoreClick(AccommodationSearchRequestDTO accommodation);
+    }
+
     private List<AccommodationSearchRequestDTO> accommodations; // Ovo je lista smeštaja koja će se prikazati
 
-    public AccommodationAdapter(List<AccommodationSearchRequestDTO> accommodations) {
+    private OnShowMoreClickListener listener;
+
+    public AccommodationAdapter(List<AccommodationSearchRequestDTO> accommodations, OnShowMoreClickListener listener) {
         this.accommodations = accommodations;
+        this.listener = listener;
     }
 
     @NonNull
@@ -44,6 +51,12 @@ public class AccommodationAdapter extends RecyclerView.Adapter<AccommodationAdap
         holder.tvTotalPrice.setText("Total: $" + accommodation.getTotalPrice());
         holder.tvAverageRating.setText("Rating: " + accommodation.getAverageGrade() + "/5");
         // Setuj sliku i "Show more" dugme po potrebi
+
+        holder.btnShowMore.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onShowMoreClick(accommodation);
+            }
+        });
     }
 
     @Override
