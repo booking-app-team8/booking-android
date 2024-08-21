@@ -3,12 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.grades.AccommodationGradesFragment">
+    android:orientation="vertical"
+    tools:context=".fragments.reservations.ReservationsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- ListView za prikaz rezervacija -->
+    <ListView
+        android:id="@+id/lv_grades"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
 
 </FrameLayout>

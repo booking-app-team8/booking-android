@@ -4,11 +4,26 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.bookingapp.R;
+import com.example.bookingapp.activities.adapters.AccommodationGradesAdapter;
+import com.example.bookingapp.activities.adapters.GradesAdapter;
+import com.example.bookingapp.dtos.grades.AccommodationCommentDTO;
+import com.example.bookingapp.models.grades.OwnerGrade;
+import com.example.bookingapp.services.IGradesService;
+import com.example.bookingapp.utils.ApiUtils;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +40,10 @@ public class AccommodationGradesFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ListView listView;
+
+    private IGradesService gradesService;
 
     public AccommodationGradesFragment() {
         // Required empty public constructor
@@ -61,6 +80,39 @@ public class AccommodationGradesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_accommodations, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_accommodation_grades, container, false);
+
+        listView = view.findViewById(R.id.lv_grades);
+        gradesService = ApiUtils.getGradesService();
+
+        loadAccommodationGrades();
+
+        return view;
+    }
+
+    private void loadAccommodationGrades(){
+        gradesService.getAllAccommodationGrades().enqueue(new Callback<List<AccommodationCommentDTO>>() {
+            @Override
+            public void onResponse(Call<List<AccommodationCommentDTO>> call, Response<List<AccommodationCommentDTO>> response) {
+                if (response.isSuccessful()) {
+                    List<AccommodationCommentDTO> grades = response.body();
+                    if (grades != null) {
+                        Log.d("AccommodationGradesFragment", "Grades loaded successfully, number of grades: " + grades.size());
+                        listView.setAdapter(new AccommodationGradesAdapter(getContext(), grades));
+                    } else {
+                        Log.d("AccommodationGradesFragment", "Grades list is null");
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Failed to load reservations", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AccommodationCommentDTO>> call, Throwable t) {
+                Log.d("AccommodationGradesFragment", "Error: " + t.getMessage());
+                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

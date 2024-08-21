@@ -37,10 +37,10 @@
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/tv_owner"
+                    android:id="@+id/tv_accommodation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Owner: Jane Smith"
+                    android:text="Accommodation: Hotel Sunce"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
@@ -49,13 +49,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Time: 2024-08-15 15:25:30"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/tv_report_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Report status: Not reported"
                     android:textSize="14sp"/>
 
                 <TextView
@@ -71,18 +64,27 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical"> <!-- Promeni orijentaciju na vertikalnu -->
+
+                <Button
+                    android:id="@+id/btn_accept_grade"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Accept"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="@color/login_button"
+                    android:layout_marginTop="20dp"/>
 
 <!--                <Button-->
-<!--                    android:id="@+id/btn_block_user"-->
+<!--                    android:id="@+id/btn_reject_grade"-->
 <!--                    android:layout_width="100dp"-->
 <!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="Accept"-->
+<!--                    android:text="Reject"-->
 <!--                    android:textColor="@android:color/white"-->
-<!--                    android:backgroundTint="@color/login_button"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:layout_marginLeft="10dp"/>-->
+<!--                    android:backgroundTint="@color/colorRed" />-->
             </LinearLayout>
+
         </LinearLayout>
 
         <!-- Bottom Part: Reason -->
