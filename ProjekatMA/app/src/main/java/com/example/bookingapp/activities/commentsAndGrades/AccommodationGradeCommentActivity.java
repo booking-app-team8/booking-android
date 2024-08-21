@@ -10,9 +10,17 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.bookingapp.R;
+import com.example.bookingapp.models.AccommodationGrade;
+import com.example.bookingapp.models.OwnerGrade;
+import com.example.bookingapp.utils.ApiUtils;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AccommodationGradeCommentActivity extends AppCompatActivity {
 
@@ -56,13 +64,33 @@ public class AccommodationGradeCommentActivity extends AppCompatActivity {
             return;
         }
 
-        Long ownerId = getIntent().getLongExtra("ownerId", 0);
+        Long accommodationId = getIntent().getLongExtra("accommodationId", 0);
         Long guestId = getIntent().getLongExtra("guestId", 0);
-        if (ownerId == 0 || guestId == 0) {
+        if (accommodationId == 0 || guestId == 0) {
             Toast.makeText(this, "Nesto nije uredu!", Toast.LENGTH_SHORT).show();
             return;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        AccommodationGrade ownerGrade = new AccommodationGrade(guestId,accommodationId, Integer.parseInt(spinnerGrade.getSelectedItem().toString()),editTextComment.getText().toString(), LocalDateTime.now().format(formatter));
+//        Call<OwnerGrade> call = ApiUtils.getOwnerGradeService().addNew(a);
+//        call.enqueue(new Callback<OwnerGrade>() {
+//            @Override
+//            public void onResponse(Call<OwnerGrade> call, Response<OwnerGrade> response) {
+//                if (response.isSuccessful()) {
+//                    Toast.makeText(OwnerGradeCommentActivity.this, "Grade submitted successfully", Toast.LENGTH_SHORT).show();
+//                    finish();
+//                } else {
+//                     Handle error response
+//                    Toast.makeText(OwnerGradeCommentActivity.this, "Failed to submit grade", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<OwnerGrade> call, Throwable t) {
+//                 Handle failure
+//                Toast.makeText(OwnerGradeCommentActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 
 
