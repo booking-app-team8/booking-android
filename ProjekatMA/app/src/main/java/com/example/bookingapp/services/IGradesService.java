@@ -8,6 +8,6 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface IGradesService {
-    @GET("ownerGrades/getAllOwnerGrades")
+    @GET("ownerGrades/getAllOwnersGrades")
     Call<List<OwnerGrade>> getAllOwnerGrades();
 }
