@@ -10,7 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookingapp.R;
+import com.example.bookingapp.adapters.AccommodationGradeAdapter;
 import com.example.bookingapp.dtos.UserGetDTO;
+import com.example.bookingapp.models.AccommodationGrade;
 import com.example.bookingapp.models.OwnerGrade;
 import com.example.bookingapp.models.accommodations.AccommodationDTO;
 import com.example.bookingapp.utils.ApiUtils;
@@ -25,6 +27,9 @@ import retrofit2.Response;
 // AccommodationDetailsGradesActivity.java
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,18 +58,31 @@ public class AccommodationDetailsGradesActivity extends AppCompatActivity {
     private Long accommodationId;
     private List<OwnerGrade> ownerGrades = new ArrayList<>();
     private double averageGrade = 0;
+    private RecyclerView recyclerViewGrades;
+    private AccommodationGradeAdapter gradeAdapter;
+    
+    public List<AccommodationGrade> accommodationGrades = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accommodation_details_grades);
 
+
         accommodationId = getIntent().getLongExtra("accommodation_data", -1);
+
+        recyclerViewGrades = findViewById(R.id.recyclerViewGrades);
+        recyclerViewGrades.setLayoutManager(new LinearLayoutManager(this));
+
+        // Initialize the adapter with the list of grades (ownerGrades)
+        gradeAdapter = new AccommodationGradeAdapter(this, accommodationGrades);
+        recyclerViewGrades.setAdapter(gradeAdapter);
 
         if (accommodationId != -1) {
             fetchAccommodationData(accommodationId);
         }
 
+        fetAccommodationGrades(accommodationId);
         Button seeAllButton = findViewById(R.id.seeAllButton);
         seeAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +90,26 @@ public class AccommodationDetailsGradesActivity extends AppCompatActivity {
                 Intent intent = new Intent(AccommodationDetailsGradesActivity.this, OwnerGradesComments.class);
                 intent.putExtra("owner_id", ownerId);
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void fetAccommodationGrades(Long accommodationId) {
+        Call<List<AccommodationGrade>> call = ApiUtils.getIAccommodationGradeService().getGradesByAccId(accommodationId);
+        call.enqueue(new Callback<List<AccommodationGrade>>() {
+            @Override
+            public void onResponse(Call<List<AccommodationGrade>> call, Response<List<AccommodationGrade>> response) {
+                if (response.isSuccessful()) {
+                    accommodationGrades = response.body();
+                    Toast.makeText(AccommodationDetailsGradesActivity.this, "usao ovde:" + accommodationGrades.size(), Toast.LENGTH_SHORT).show();
+                    gradeAdapter.setGrades(accommodationGrades); // Update the adapter's data
+                    gradeAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AccommodationGrade>> call, Throwable t) {
+                Toast.makeText(AccommodationDetailsGradesActivity.this, "Fail:" + t, Toast.LENGTH_SHORT).show();
             }
         });
     }

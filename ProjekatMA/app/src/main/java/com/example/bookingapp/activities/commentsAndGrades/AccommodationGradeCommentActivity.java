@@ -32,7 +32,7 @@ public class AccommodationGradeCommentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accommodation_grade_comment);
-        Spinner spinnerGrade = findViewById(R.id.spinner_grade);
+        spinnerGrade = findViewById(R.id.spinner_grade);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.accommodation_grades, R.layout.spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -71,28 +71,25 @@ public class AccommodationGradeCommentActivity extends AppCompatActivity {
             return;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        AccommodationGrade ownerGrade = new AccommodationGrade(guestId,accommodationId, Integer.parseInt(spinnerGrade.getSelectedItem().toString()),editTextComment.getText().toString(), LocalDateTime.now().format(formatter));
-//        Call<OwnerGrade> call = ApiUtils.getOwnerGradeService().addNew(a);
-//        call.enqueue(new Callback<OwnerGrade>() {
-//            @Override
-//            public void onResponse(Call<OwnerGrade> call, Response<OwnerGrade> response) {
-//                if (response.isSuccessful()) {
-//                    Toast.makeText(OwnerGradeCommentActivity.this, "Grade submitted successfully", Toast.LENGTH_SHORT).show();
-//                    finish();
-//                } else {
+        AccommodationGrade accommodationGrade = new AccommodationGrade(guestId,accommodationId, Integer.parseInt(spinnerGrade.getSelectedItem().toString()),editTextComment.getText().toString(), LocalDateTime.now().format(formatter));
+        Call<AccommodationGrade> call = ApiUtils.getIAccommodationGradeService().addNew(accommodationGrade);
+        call.enqueue(new Callback<AccommodationGrade>() {
+            @Override
+            public void onResponse(Call<AccommodationGrade> call, Response<AccommodationGrade> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(AccommodationGradeCommentActivity.this, "Grade submitted successfully", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
 //                     Handle error response
-//                    Toast.makeText(OwnerGradeCommentActivity.this, "Failed to submit grade", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<OwnerGrade> call, Throwable t) {
+                    Toast.makeText(AccommodationGradeCommentActivity.this, "Failed to submit grade", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AccommodationGrade> call, Throwable t) {
 //                 Handle failure
-//                Toast.makeText(OwnerGradeCommentActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-
-
+                Toast.makeText(AccommodationGradeCommentActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
