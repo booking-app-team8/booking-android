@@ -9,6 +9,9 @@ import com.example.bookingapp.services.IAccommodationService;
 import com.example.bookingapp.services.AccommodationRequestService;
 
 
+import com.example.bookingapp.services.IGradesService;
+import com.example.bookingapp.services.IGuestService;
+import com.example.bookingapp.services.IOwnerService;
 import com.example.bookingapp.services.IReservationService;
 import com.example.bookingapp.services.IUserReportsService;
 import com.example.bookingapp.services.IUserService;
@@ -61,4 +64,15 @@ public class ApiUtils {
         return ApiClient.getClient(BASE_URL).create(IUserReportsService.class);
     }
 
+    public static IGradesService getGradesService(){
+        return ApiClient.getClient(BASE_URL).create(IGradesService.class);
+    }
+
+    public static IOwnerService getOwnerService(){
+        return ApiClient.getClient(BASE_URL).create(IOwnerService.class);
+    }
+
+    public static IGuestService getGuestService(){
+        return ApiClient.getClient(BASE_URL).create(IGuestService.class);
+    }
 }

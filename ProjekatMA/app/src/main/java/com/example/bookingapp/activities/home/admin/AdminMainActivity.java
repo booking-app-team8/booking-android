@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.example.bookingapp.R;
 import com.example.bookingapp.activities.ApprovalAccommodationRequestActivity;
+import com.example.bookingapp.activities.grades.ReporetdCommentsActivity;
 import com.example.bookingapp.activities.user.ReportedUsersActivity;
 import com.example.bookingapp.activities.user.User_Account;
 
@@ -34,15 +35,13 @@ public class AdminMainActivity extends AppCompatActivity {
             }
         });
 
-        /*
         btnReportedComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdministratorMainActivity.this, ReportedCommentsActivity.class);
+                Intent intent = new Intent(AdminMainActivity.this, ReporetdCommentsActivity.class);
                 startActivity(intent);
             }
         });
-         */
 
         btnAccommodationsApproval.setOnClickListener(new View.OnClickListener() {
             @Override
