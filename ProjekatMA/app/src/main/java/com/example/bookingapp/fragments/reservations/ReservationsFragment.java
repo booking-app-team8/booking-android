@@ -190,8 +190,9 @@ public class ReservationsFragment extends Fragment implements ReservationAdapter
 
     @Override
     public void onRateAccommodationClick(Long guestId, Long accommodationId) {
-        Toast.makeText(getContext(), "accId:" + accommodationId, Toast.LENGTH_SHORT).show();
-        Toast.makeText(getContext(), "guestId:" + guestId, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "accId:" + accommodationId, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "guestId:" + guestId, Toast.LENGTH_SHORT).show();
+        boolean canComment = false;
         for (ReservationGetFrontDTO res: reservations) {
             if (res.getAccommodation().getId().equals(accommodationId) && res.getReservationStatus().equals(ReservationStatus.FINISHED)) {
                 {
@@ -211,14 +212,22 @@ public class ReservationsFragment extends Fragment implements ReservationAdapter
                         Toast.makeText(getContext(), "More than 7 days have passed. You cannot rate this accommodation." + daysBetween, Toast.LENGTH_SHORT).show();
                     } else {
                         // Proceed to rate the accommodation
-                        Toast.makeText(getContext(), "You can rate this accommodation." + daysBetween, Toast.LENGTH_SHORT).show();
-                        // Add your rating logic here
-                        Intent intent = new Intent(getContext(), AccommodationGradeCommentActivity.class);
-                        startActivity(intent);
+                        canComment = true;
+                        break;
                     }
 
                 }
             }
+        }
+        if (canComment) {
+            Toast.makeText(getContext(), "You can rate this accommodation.", Toast.LENGTH_SHORT).show();
+            // Add your rating logic here
+            Intent intent = new Intent(getContext(), AccommodationGradeCommentActivity.class);
+            intent.putExtra("accommodationId", accommodationId);
+            intent.putExtra("guestId", guestId);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getContext(), "You can't rate this accommodation.", Toast.LENGTH_SHORT).show();
         }
 
 
