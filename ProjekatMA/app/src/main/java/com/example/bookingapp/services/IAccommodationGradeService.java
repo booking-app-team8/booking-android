@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -21,4 +22,8 @@ public interface IAccommodationGradeService {
     @Headers("Content-Type: application/json")
     @GET("getGradesByAccId/{id}")
     Call<List<AccommodationGrade>> getGradesByAccId(@Path("id") Long id);
+
+
+    @DELETE("delete/{id}")
+    Call<Boolean> deleteOwnerGrade(@Path("id") Long id);
 }

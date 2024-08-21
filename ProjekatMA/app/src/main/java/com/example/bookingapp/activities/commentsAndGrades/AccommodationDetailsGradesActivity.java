@@ -2,6 +2,7 @@ package com.example.bookingapp.activities.commentsAndGrades;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,7 +53,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AccommodationDetailsGradesActivity extends AppCompatActivity {
+public class AccommodationDetailsGradesActivity extends AppCompatActivity implements AccommodationGradeAdapter.OnButtonClickListener {
 
     private Long ownerId = 0L;
     private Long accommodationId;
@@ -75,7 +76,7 @@ public class AccommodationDetailsGradesActivity extends AppCompatActivity {
         recyclerViewGrades.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize the adapter with the list of grades (ownerGrades)
-        gradeAdapter = new AccommodationGradeAdapter(this, accommodationGrades);
+        gradeAdapter = new AccommodationGradeAdapter(this, accommodationGrades, this);
         recyclerViewGrades.setAdapter(gradeAdapter);
 
         if (accommodationId != -1) {
@@ -197,5 +198,53 @@ public class AccommodationDetailsGradesActivity extends AppCompatActivity {
         super.onResume();
         Toast.makeText(this, "Nastavljamo", Toast.LENGTH_SHORT).show();
         fetchAccommodationData(accommodationId);
+    }
+
+    @Override
+    public void deleteGrade(AccommodationGrade accommodationGrade) {
+        Toast.makeText(this, "Brisanje:" + accommodationGrade.getGrade(), Toast.LENGTH_SHORT).show();
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        String userEmail = sharedPreferences.getString("userEmail", null);
+        Call<UserGetDTO> currUserResponseCall = ApiUtils.getUserService().getUsers(accommodationGrade.getGuestId());
+        currUserResponseCall.enqueue(new Callback<UserGetDTO>() {
+            @Override
+            public void onResponse(Call<UserGetDTO> call, Response<UserGetDTO> response) {
+                if (response.isSuccessful()) {
+                    UserGetDTO guest = response.body();
+                    String email = guest.getEmail();
+
+                    if (userEmail.equals(email)) {
+                        accommodationGrades.remove(accommodationGrade);
+                        gradeAdapter.setGrades(accommodationGrades);
+                        gradeAdapter.notifyDataSetChanged();
+                        Call<Boolean> call2 = ApiUtils.getIAccommodationGradeService().deleteOwnerGrade(accommodationGrade.getId());
+                        call2.enqueue(new Callback<Boolean>() {
+                            @Override
+                            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                                Toast.makeText(AccommodationDetailsGradesActivity.this, "Deleted successfullyBack", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Boolean> call, Throwable t) {
+
+                            }
+                        });
+//                        Toast.makeText(OwnerGradesComments.this, "Deleted successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(AccommodationDetailsGradesActivity.this, "You can't delete comment which is not yours!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // Handle the case where the response is not successful
+                    Toast.makeText(AccommodationDetailsGradesActivity.this, "Failed to fetch user", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserGetDTO> call, Throwable t) {
+
+            }
+        });
+
+
     }
 }
