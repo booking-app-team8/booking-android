@@ -10,8 +10,12 @@ import com.example.bookingapp.services.IAccommodationService;
 import com.example.bookingapp.services.AccommodationRequestService;
 
 
+import com.example.bookingapp.services.IGradesService;
+import com.example.bookingapp.services.IGuestService;
+import com.example.bookingapp.services.IOwnerService;
 import com.example.bookingapp.services.IOwnerGradeService;
 import com.example.bookingapp.services.IReservationService;
+import com.example.bookingapp.services.IUserReportsService;
 import com.example.bookingapp.services.IUserService;
 
 public class ApiUtils {
@@ -62,7 +66,21 @@ public static final String BASE_URL = "http://172.20.10.5:8081/api/";
         return ApiClient.getClient(BASE_URL).create(IReservationService.class);
     }
 
-//    "/api/ownerGrades")
+    public static IUserReportsService getUserReportsService(){
+        return ApiClient.getClient(BASE_URL).create(IUserReportsService.class);
+    }
+
+    public static IGradesService getGradesService(){
+        return ApiClient.getClient(BASE_URL).create(IGradesService.class);
+    }
+
+    public static IOwnerService getOwnerService(){
+        return ApiClient.getClient(BASE_URL).create(IOwnerService.class);
+    }
+
+    public static IGuestService getGuestService(){
+        return ApiClient.getClient(BASE_URL).create(IGuestService.class);
+    }
 
     public static IOwnerGradeService getOwnerGradeService(){
         return ApiClient.getClient(BASE_URL_OWNER_GRADES).create(IOwnerGradeService.class);
