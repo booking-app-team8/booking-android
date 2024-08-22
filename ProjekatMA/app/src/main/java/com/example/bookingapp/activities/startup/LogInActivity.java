@@ -94,10 +94,12 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginGETDTO> call, Response<LoginGETDTO> response) {
                 if (response.isSuccessful()) {
-                    saveToken(response.body().getToken(), emailEditText.getText().toString());
-                    AuthService.setAccessToken(response.body().getToken());
                     new AuthService().getMyInfo(request.getEmail());  // load current user
-                    Role r = AuthService.getCurrentUser().getRole();
+                    AuthService.setAccessToken(response.body().getToken());
+                    Role r = AuthService.getCurrentUser().getRole(); new AuthService().getMyInfo(request.getEmail());  // load current user
+                    saveToken(response.body().getToken(), emailEditText.getText().toString(), String.valueOf(r));
+
+
                     switch (r.toString()) {
                         case "GUEST": {
                                 Toast.makeText(LogInActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
@@ -138,7 +140,7 @@ public class LogInActivity extends AppCompatActivity {
 
 
 
-    private void saveToken(String token, String email) {
+    private void saveToken(String token, String email,String role) {
         // Sačuvaj token (npr. u SharedPreferences)
         //DODATI OVO OBAVEZNO
         //kao localStorage
@@ -150,6 +152,7 @@ public class LogInActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("userEmail", email);
+        editor.putString("role", role);
         editor.apply();
     }
 

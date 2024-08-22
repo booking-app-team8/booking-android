@@ -16,6 +16,7 @@ import com.example.bookingapp.dtos.UserGetDTO;
 import com.example.bookingapp.models.AccommodationGrade;
 import com.example.bookingapp.models.OwnerGrade;
 import com.example.bookingapp.models.accommodations.AccommodationDTO;
+import com.example.bookingapp.models.enums.ReportStatus;
 import com.example.bookingapp.utils.ApiUtils;
 
 import java.text.DecimalFormat;
@@ -69,25 +70,26 @@ public class AccommodationDetailsGradesActivity extends AppCompatActivity implem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accommodation_details_grades);
 
-
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        String role = sharedPreferences.getString("role", null);
         accommodationId = getIntent().getLongExtra("accommodation_data", -1);
+
+//        Toast.makeText(this, "role:"+ role, Toast.LENGTH_SHORT).show();
 
         recyclerViewGrades = findViewById(R.id.recyclerViewGrades);
         recyclerViewGrades.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize the adapter with the list of grades (ownerGrades)
-        gradeAdapter = new AccommodationGradeAdapter(this, accommodationGrades, this);
+        gradeAdapter = new AccommodationGradeAdapter(this, accommodationGrades, this, role);
         recyclerViewGrades.setAdapter(gradeAdapter);
 
-        if (accommodationId != -1) {
-            fetchAccommodationData(accommodationId);
-        }
 
         fetAccommodationGrades(accommodationId);
         Button seeAllButton = findViewById(R.id.seeAllButton);
         seeAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Toast.makeText(AccommodationDetailsGradesActivity.this, "OwnerID" + ownerId, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(AccommodationDetailsGradesActivity.this, OwnerGradesComments.class);
                 intent.putExtra("owner_id", ownerId);
                 startActivity(intent);
@@ -102,7 +104,7 @@ public class AccommodationDetailsGradesActivity extends AppCompatActivity implem
             public void onResponse(Call<List<AccommodationGrade>> call, Response<List<AccommodationGrade>> response) {
                 if (response.isSuccessful()) {
                     accommodationGrades = response.body();
-                    Toast.makeText(AccommodationDetailsGradesActivity.this, "usao ovde:" + accommodationGrades.size(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(AccommodationDetailsGradesActivity.this, "usao ovde:" + accommodationGrades.size(), Toast.LENGTH_SHORT).show();
                     gradeAdapter.setGrades(accommodationGrades); // Update the adapter's data
                     gradeAdapter.notifyDataSetChanged();
                 }
@@ -123,7 +125,7 @@ public class AccommodationDetailsGradesActivity extends AppCompatActivity implem
                 if (response.isSuccessful()) {
                     AccommodationDTO accommodations = response.body();
                     ownerId = accommodations.getOwnerId();
-                    Toast.makeText(AccommodationDetailsGradesActivity.this, "ownerId:" + ownerId, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(AccommodationDetailsGradesActivity.this, "ownerId:" + ownerId, Toast.LENGTH_SHORT).show();
                     fetchOwnerGrades(ownerId);
                     fetchOwnerField(ownerId);
                 } else {
@@ -189,20 +191,20 @@ public class AccommodationDetailsGradesActivity extends AppCompatActivity implem
         TextView averageGradeValue = findViewById(R.id.averageGradeValue);
         averageGradeValue.setText(formattedGrade);
 
-        Toast.makeText(AccommodationDetailsGradesActivity.this, "size: " + ownerGrades.size(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(AccommodationDetailsGradesActivity.this, "size: " + ownerGrades.size(), Toast.LENGTH_SHORT).show();
         Log.d("OwnerGradesComments", "Number of grades received: " + ownerGrades.size());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(this, "Nastavljamo", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Nastavljamo", Toast.LENGTH_SHORT).show();
         fetchAccommodationData(accommodationId);
     }
 
     @Override
     public void deleteGrade(AccommodationGrade accommodationGrade) {
-        Toast.makeText(this, "Brisanje:" + accommodationGrade.getGrade(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Brisanje:" + accommodationGrade.getGrade(), Toast.LENGTH_SHORT).show();
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         String userEmail = sharedPreferences.getString("userEmail", null);
         Call<UserGetDTO> currUserResponseCall = ApiUtils.getUserService().getUsers(accommodationGrade.getGuestId());
@@ -245,6 +247,30 @@ public class AccommodationDetailsGradesActivity extends AppCompatActivity implem
             }
         });
 
+
+    }
+
+    @Override
+    public void reportAccommodationGrade(AccommodationGrade accommodationGrade) {
+        if (accommodationGrade.getReportStatus().equals(ReportStatus.REPORTED)) {
+            Toast.makeText(this, "This one is already reported!", Toast.LENGTH_SHORT).show();
+        } else {
+            Call<Boolean> report = ApiUtils.getIAccommodationGradeService().reportOwnerGrade(accommodationGrade.getId());
+            report.enqueue(new Callback<Boolean>() {
+                @Override
+                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(AccommodationDetailsGradesActivity.this, "Successfully reported", Toast.LENGTH_SHORT).show();
+                        fetAccommodationGrades(accommodationGrade.getAccommodationId());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Boolean> call, Throwable t) {
+
+                }
+            });
+        }
 
     }
 }

@@ -36,15 +36,19 @@ public class OwnerGradeAdapter extends RecyclerView.Adapter<OwnerGradeAdapter.Vi
 
     private final OnButtonClickListener buttonClickListener;
 
+    private String role;
+
     private String userEmail;
 
     public interface OnButtonClickListener {
         void deleteGrade(OwnerGrade ownerGrade);
+        void reportGrade(OwnerGrade ownerGrade);
     }
 
-    public OwnerGradeAdapter(List<OwnerGrade> ownerGradeList, OnButtonClickListener listener) {
+    public OwnerGradeAdapter(List<OwnerGrade> ownerGradeList, OnButtonClickListener listener, String role) {
         this.ownerGradeList = ownerGradeList;
         this.buttonClickListener = listener;
+        this.role = role;
     }
 
     public interface UserCallback {
@@ -108,6 +112,16 @@ public class OwnerGradeAdapter extends RecyclerView.Adapter<OwnerGradeAdapter.Vi
         });
 
 
+        holder.btnReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (buttonClickListener != null) {
+                    buttonClickListener.reportGrade(ownerGrade);
+                }
+            }
+        });
+
+
 
 
     }
@@ -143,7 +157,8 @@ public class OwnerGradeAdapter extends RecyclerView.Adapter<OwnerGradeAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvGrade, tvComment, tvTime, tvUserName;
-        Button btnDelete; // Dodaj dugme
+        Button btnDelete;
+        Button btnReport;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -153,6 +168,16 @@ public class OwnerGradeAdapter extends RecyclerView.Adapter<OwnerGradeAdapter.Vi
             tvTime = itemView.findViewById(R.id.tv_time);
             tvUserName = itemView.findViewById(R.id.tv_user_name);
             btnDelete = itemView.findViewById(R.id.btn_delete);
+            btnReport = itemView.findViewById(R.id.btn_report);
+            if ("GUEST".equals(role)) {
+//
+                btnDelete.setVisibility(View.VISIBLE);
+                btnReport.setVisibility(View.GONE);
+            } else {
+
+                btnDelete.setVisibility(View.GONE);
+                btnReport.setVisibility(View.VISIBLE);
+            }
 
         }
     }

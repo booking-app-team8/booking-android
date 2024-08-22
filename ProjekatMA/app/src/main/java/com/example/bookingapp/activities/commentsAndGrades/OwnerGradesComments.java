@@ -13,6 +13,7 @@ import com.example.bookingapp.R;
 import com.example.bookingapp.adapters.OwnerGradeAdapter;
 import com.example.bookingapp.dtos.UserGetDTO;
 import com.example.bookingapp.models.OwnerGrade;
+import com.example.bookingapp.models.enums.ReportStatus;
 import com.example.bookingapp.models.users.User;
 import com.example.bookingapp.utils.ApiUtils;
 import com.example.bookingapp.utils.AuthService;
@@ -35,19 +36,22 @@ public class OwnerGradesComments extends AppCompatActivity implements OwnerGrade
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_grades_comments);
         // Retrieve the ownerId from the Intent
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        String role = sharedPreferences.getString("role", null);
+
         ownerId = getIntent().getLongExtra("owner_id", -1); // Default value if not found is -1
 
         // You can now use the ownerId in your activity
         Log.d("OwnerGradesComments", "Received ownerId: " + ownerId);
-        Toast.makeText(this, "ownerId:" + ownerId, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "ownerId:" + ownerId, Toast.LENGTH_SHORT).show();
         recyclerView = findViewById(R.id.rv_owner_grades);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ownerGradeAdapter = new OwnerGradeAdapter(ownerGrades, this);
+        ownerGradeAdapter = new OwnerGradeAdapter(ownerGrades, this, role);
         recyclerView.setAdapter(ownerGradeAdapter);
 
 
         getGradesByOwnerId(ownerId);
-        Toast.makeText(this, "SSS", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "SSS", Toast.LENGTH_SHORT).show();
 
 
     }
@@ -66,7 +70,7 @@ public class OwnerGradesComments extends AppCompatActivity implements OwnerGrade
                         ownerGradeAdapter.setOwnerGrades(ownerGrades); // Update the adapter's data
                         ownerGradeAdapter.notifyDataSetChanged();
 
-                        Toast.makeText(OwnerGradesComments.this, "size: " + ownerGrades.size(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(OwnerGradesComments.this, "size: " + ownerGrades.size(), Toast.LENGTH_SHORT).show();
 
 
                         // Handle the list of grades here
@@ -146,5 +150,30 @@ public class OwnerGradesComments extends AppCompatActivity implements OwnerGrade
 //        }else {
 //            Toast.makeText(this, "Moze", Toast.LENGTH_SHORT).show();
 //        }
+    }
+
+    @Override
+    public void reportGrade(OwnerGrade ownerGrade) {
+//        Toast.makeText(this, "report:" + ownerGrade.getGrade(), Toast.LENGTH_SHORT).show();
+        if (ownerGrade.getReportStatus().equals(ReportStatus.REPORTED)) {
+            Toast.makeText(this, "This one is already reported!", Toast.LENGTH_SHORT).show();
+        } else {
+            Call<Boolean> report = ApiUtils.getOwnerGradeService().reportOwnerGrade(ownerGrade.getId());
+            report.enqueue(new Callback<Boolean>() {
+                @Override
+                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(OwnerGradesComments.this, "Successfully reported", Toast.LENGTH_SHORT).show();
+                        getGradesByOwnerId(ownerId);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Boolean> call, Throwable t) {
+
+                }
+            });
+        }
+
     }
 }

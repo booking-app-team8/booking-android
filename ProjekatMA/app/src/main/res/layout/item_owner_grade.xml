@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:padding="16dp">
 
-    <!-- Horizontal layout for Grade and Delete button -->
+    <!-- Horizontal layout for Grade and buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +30,18 @@
             android:layout_height="wrap_content"
             android:text="Delete"
             android:backgroundTint="@color/login_button"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/btn_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Report"
+            android:backgroundTint="@color/login_button"
+            android:textColor="@android:color/white"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
     <TextView
