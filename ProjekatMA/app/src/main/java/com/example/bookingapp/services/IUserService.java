@@ -3,6 +3,7 @@ package com.example.bookingapp.services;
 import com.example.bookingapp.dtos.LoginGETDTO;
 import com.example.bookingapp.dtos.LoginPOSTDTO;
 import com.example.bookingapp.dtos.UserDto;
+import com.example.bookingapp.dtos.UserGetDTO;
 import com.example.bookingapp.dtos.UserPOSTDTO;
 import com.example.bookingapp.dtos.UserPutDTO;
 import com.example.bookingapp.models.users.User;
@@ -40,4 +41,8 @@ public interface IUserService {
     Call<Void> deleteUserAccount(@Path("id") Long id);
 
 
+//    user/{id}
+    @Headers("Content-Type: application/json")
+    @GET("findUser/{id}")
+    Call<UserGetDTO> getUsers(@Path("id") Long id);
 }

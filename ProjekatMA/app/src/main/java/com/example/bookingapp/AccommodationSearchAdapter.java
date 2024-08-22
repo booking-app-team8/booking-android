@@ -9,21 +9,31 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.bookingapp.activities.adapters.AccommodationAdapter;
 import com.example.bookingapp.models.accommodations.AccommodationSearchRequestDTO;
 
 import java.util.List;
 
 public class AccommodationSearchAdapter extends ArrayAdapter<AccommodationSearchRequestDTO> {
 
+    public interface OnShowMoreClickListener {
+        void onShowMoreClick(AccommodationSearchRequestDTO accommodation);
+    }
+
     private Context context;
     private List<AccommodationSearchRequestDTO> accommodationList;
+    private OnShowMoreClickListener listener;
 
-    public AccommodationSearchAdapter(Context context, List<AccommodationSearchRequestDTO> accommodationList) {
+
+
+    public AccommodationSearchAdapter(Context context, List<AccommodationSearchRequestDTO> accommodationList, OnShowMoreClickListener listener) {
         super(context, 0, accommodationList);
         this.context = context;
         this.accommodationList = accommodationList;
+        this.listener = listener;
     }
 
     @Override
@@ -35,6 +45,8 @@ public class AccommodationSearchAdapter extends ArrayAdapter<AccommodationSearch
 
         // Dohvatanje podataka za trenutni smeštaj
         AccommodationSearchRequestDTO accommodation = accommodationList.get(position);
+//        Toast.makeText(context, "accId:"+accommodation.getName(), Toast.LENGTH_SHORT).show();
+
 
         // Pronalaženje elemenata u prikazu
         TextView tvName = convertView.findViewById(R.id.tv_apartment_name);
@@ -66,7 +78,10 @@ public class AccommodationSearchAdapter extends ArrayAdapter<AccommodationSearch
 
         // Implementacija za dugme "Show more"
         btnShowMore.setOnClickListener(v -> {
-            // Implementacija za prikaz detalja o smeštaju
+            Toast.makeText(context, "stisnuo", Toast.LENGTH_SHORT).show();
+            if (listener != null) {
+                listener.onShowMoreClick(accommodation);
+            }
         });
 
         return convertView;

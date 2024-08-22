@@ -28,6 +28,8 @@ import android.widget.Toast;
 import com.example.bookingapp.AccommodationSearchAdapter;
 import com.example.bookingapp.R;
 import com.example.bookingapp.activities.accommodations.CreateAccommodationActivity;
+import com.example.bookingapp.activities.adapters.AccommodationAdapter;
+import com.example.bookingapp.activities.commentsAndGrades.AccommodationDetailsGradesActivity;
 import com.example.bookingapp.activities.home.guest.GuestMainActivity;
 import com.example.bookingapp.activities.reservations.HostReservationsActivity;
 import com.example.bookingapp.activities.user.User_Account;
@@ -46,7 +48,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HostMainActivity extends AppCompatActivity {
+public class HostMainActivity extends AppCompatActivity implements AccommodationSearchAdapter.OnShowMoreClickListener {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
@@ -72,7 +74,7 @@ public class HostMainActivity extends AppCompatActivity {
         etGuests = findViewById(R.id.et_guests_host);
         listView = findViewById(R.id.listviewAccommodationSearchHost);
         accommodationSearchRequestDTOS = new ArrayList<>();
-        adapter = new AccommodationSearchAdapter(this, accommodationSearchRequestDTOS);
+        adapter = new AccommodationSearchAdapter(this, accommodationSearchRequestDTOS, this);
         listView.setAdapter(adapter);
 
         calendar = Calendar.getInstance();
@@ -116,6 +118,9 @@ public class HostMainActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else if (id == R.id.nav_host_notifications) {
                     // Otvori Notifikacije
+                } else if (id == R.id.nav_create_accommodation) {
+                    Intent intent = new Intent(HostMainActivity.this, CreateAccommodationActivity.class);
+                    startActivity(intent);
                 }
 
                 drawerLayout.closeDrawers();
@@ -143,6 +148,16 @@ public class HostMainActivity extends AppCompatActivity {
             searchAccommodations(location, guests, startDate, endDate);
         });
 
+    }
+
+    @Override
+    public void onShowMoreClick(AccommodationSearchRequestDTO accommodation) {
+        // Navigate to the desired activity
+        Toast.makeText(this, "Show more clicked for: " + accommodation.getName(), Toast.LENGTH_SHORT).show();
+//        Intent intent = new Intent(this, AccommodationDetailsGradesActivity.class);
+//        Toast.makeText(this, "accommodationID:" + accommodation.getName(), Toast.LENGTH_SHORT).show();
+//        intent.putExtra("accommodation_data", accommodation); // Pass any needed data
+//        startActivity(intent);
     }
 
     @Override

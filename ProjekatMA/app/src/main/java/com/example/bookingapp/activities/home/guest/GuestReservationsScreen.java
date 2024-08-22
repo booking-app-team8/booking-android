@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.bookingapp.R;
+import com.example.bookingapp.activities.commentsAndGrades.AccommodationGradeCommentActivity;
 import com.example.bookingapp.activities.user.User_Account;
 import com.google.android.material.navigation.NavigationView;
 
@@ -44,7 +45,7 @@ public class GuestReservationsScreen extends AppCompatActivity {
                     Intent intent = new Intent(GuestReservationsScreen.this, GuestMainActivity.class);
                     startActivity(intent);
                 } else if (id == R.id.nav_requests) {
-                    Intent intent = new Intent(GuestReservationsScreen.this, GuestReservationsScreen.class);
+                    Intent intent = new Intent(GuestReservationsScreen.this, AccommodationGradeCommentActivity.class);
                     startActivity(intent);
                 } else if (id == R.id.nav_reservations) {
                     Intent intent = new Intent(GuestReservationsScreen.this, GuestReservationsScreen.class);
