@@ -154,10 +154,10 @@ public class HostMainActivity extends AppCompatActivity implements Accommodation
     public void onShowMoreClick(AccommodationSearchRequestDTO accommodation) {
         // Navigate to the desired activity
         Toast.makeText(this, "Show more clicked for: " + accommodation.getName(), Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent(this, AccommodationDetailsGradesActivity.class);
+        Intent intent = new Intent(this, AccommodationDetailsGradesActivity.class);
 //        Toast.makeText(this, "accommodationID:" + accommodation.getName(), Toast.LENGTH_SHORT).show();
-//        intent.putExtra("accommodation_data", accommodation); // Pass any needed data
-//        startActivity(intent);
+        intent.putExtra("accommodation_data", accommodation.getId()); // Pass any needed data
+        startActivity(intent);
     }
 
     @Override

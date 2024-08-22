@@ -61,7 +61,7 @@
             android:id="@+id/averageGradeValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="0.0"
             android:textSize="16sp"
             android:textColor="@android:color/black"
             app:layout_constraintStart_toEndOf="@id/averageGradeLabel"

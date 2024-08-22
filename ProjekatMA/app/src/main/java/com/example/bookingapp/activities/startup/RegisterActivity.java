@@ -23,6 +23,8 @@ import com.example.bookingapp.utils.ApiUtils;
 
 import org.json.JSONException;
 
+import java.io.IOException;
+
 import kotlin.jvm.internal.Ref;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -122,6 +124,15 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Register request created! Check your email!", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(RegisterActivity.this, LogInActivity.class);
                     startActivity(intent);
+                    finish();
+                } else {
+                    try {
+                        String message = response.errorBody().string();
+                        Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
                 }
             }
 

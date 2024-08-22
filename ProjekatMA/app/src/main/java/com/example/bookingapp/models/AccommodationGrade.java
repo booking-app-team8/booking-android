@@ -1,5 +1,7 @@
 package com.example.bookingapp.models;
 
+import com.example.bookingapp.models.enums.ReportStatus;
+
 import java.time.LocalDateTime;
 
 public class AccommodationGrade {
@@ -10,6 +12,7 @@ public class AccommodationGrade {
 
     private String comment;
     private String time;
+    private ReportStatus reportStatus;
 
     public AccommodationGrade(Long guestId, Long accommodationId, int grade, String comment, String time) {
         this.guestId = guestId;
@@ -19,6 +22,15 @@ public class AccommodationGrade {
         this.time = time;
     }
 
+    public AccommodationGrade(Long guestId, Long accommodationId, int grade, String comment, String time, ReportStatus reportStatus) {
+        this.guestId = guestId;
+        this.accommodationId = accommodationId;
+        this.grade = grade;
+        this.comment = comment;
+        this.time = time;
+        this.reportStatus = reportStatus;
+    }
+
     public AccommodationGrade(Long id, Long guestId, Long accommodationId, int grade, String comment, String time) {
         this.id = id;
         this.guestId = guestId;
@@ -26,6 +38,14 @@ public class AccommodationGrade {
         this.grade = grade;
         this.comment = comment;
         this.time = time;
+    }
+
+    public ReportStatus getReportStatus() {
+        return reportStatus;
+    }
+
+    public void setReportStatus(ReportStatus reportStatus) {
+        this.reportStatus = reportStatus;
     }
 
     public Long getId() {

@@ -36,15 +36,20 @@ public class AccommodationGradeAdapter extends RecyclerView.Adapter<Accommodatio
 
     private String userEmail;
 
+    private String role;
+
     public interface OnButtonClickListener {
         void deleteGrade(AccommodationGrade accommodationGrade);
+        void reportAccommodationGrade(AccommodationGrade accommodationGrade);
+
     }
 
 
-    public AccommodationGradeAdapter(Context context, List<AccommodationGrade> ownerGrades, OnButtonClickListener listener) {
+    public AccommodationGradeAdapter(Context context, List<AccommodationGrade> ownerGrades, OnButtonClickListener listener, String role) {
         this.context = context;
         this.ownerGrades = ownerGrades;
         this.buttonClickListener = listener;
+        this.role = role;
     }
 
     @NonNull
@@ -107,6 +112,15 @@ public class AccommodationGradeAdapter extends RecyclerView.Adapter<Accommodatio
                 }
             }
         });
+
+        holder.btnReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (buttonClickListener != null) {
+                    buttonClickListener.reportAccommodationGrade(accommodationGrade);
+                }
+            }
+        });
     }
 
     private void fetchUserById(Long guestId, OwnerGradeAdapter.UserCallback callback) {
@@ -143,6 +157,7 @@ public class AccommodationGradeAdapter extends RecyclerView.Adapter<Accommodatio
         TextView tvTime;
         TextView tvUserName;
         Button btnDelete;
+        Button btnReport;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -151,6 +166,17 @@ public class AccommodationGradeAdapter extends RecyclerView.Adapter<Accommodatio
             tvTime = itemView.findViewById(R.id.tv_time);
             tvUserName = itemView.findViewById(R.id.tv_user_name);
             btnDelete = itemView.findViewById(R.id.btn_delete);
+            btnReport = itemView.findViewById(R.id.btn_report);
+
+            if ("GUEST".equals(role)) {
+//
+                btnDelete.setVisibility(View.VISIBLE);
+                btnReport.setVisibility(View.GONE);
+            } else {
+
+                btnDelete.setVisibility(View.GONE);
+                btnReport.setVisibility(View.VISIBLE);
+            }
         }
     }
 }
