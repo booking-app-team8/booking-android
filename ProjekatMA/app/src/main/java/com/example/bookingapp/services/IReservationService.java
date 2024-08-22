@@ -17,4 +17,6 @@ public interface IReservationService {
     @PUT("cancelReservation/{id}")
     Call<ReservationGetDTO> cancelReservation(@Path("id") Long id);
 
+    @GET("ownerReservations/{email}")
+    Call<List<ReservationGetFrontDTO>> getOwnerReservations(@Path("email") String email);
 }
