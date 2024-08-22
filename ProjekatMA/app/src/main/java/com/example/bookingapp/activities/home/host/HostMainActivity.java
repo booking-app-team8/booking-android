@@ -31,6 +31,7 @@ import com.example.bookingapp.activities.accommodations.CreateAccommodationActiv
 import com.example.bookingapp.activities.adapters.AccommodationAdapter;
 import com.example.bookingapp.activities.commentsAndGrades.AccommodationDetailsGradesActivity;
 import com.example.bookingapp.activities.home.guest.GuestMainActivity;
+import com.example.bookingapp.activities.reservations.HostReservationsActivity;
 import com.example.bookingapp.activities.user.User_Account;
 import com.example.bookingapp.models.accommodations.Accessories;
 import com.example.bookingapp.models.accommodations.AccommodationSearchRequestDTO;
@@ -113,7 +114,8 @@ public class HostMainActivity extends AppCompatActivity implements Accommodation
                 } else if (id == R.id.nav_host_accommodations) {
                     // Otvori Rezervacije
                 } else if (id == R.id.nav_host_reservations) {
-                    // Otvori Rezervacije
+                    Intent intent = new Intent(HostMainActivity.this, HostReservationsActivity.class);
+                    startActivity(intent);
                 } else if (id == R.id.nav_host_notifications) {
                     // Otvori Notifikacije
                 } else if (id == R.id.nav_create_accommodation) {

@@ -36,6 +36,9 @@
             android:name=".activities.commentsAndGrades.AccommodationDetailsGradesActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.reservations.HostReservationsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.reservations.GuestReservationsActivity"
             android:exported="false" />
         <activity
