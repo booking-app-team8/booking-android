@@ -45,6 +45,10 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ViewHo
         return timeSlotList.size();
     }
 
+    public void setList(List<TimeSlot> timeSlots) {
+        this.timeSlotList = timeSlots;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvStartDate, tvEndDate;
         Button btnDelete;

@@ -44,12 +44,11 @@ public class AccessoriesFragment extends Fragment {
 
         recyclerViewAccessories = view.findViewById(R.id.recyclerViewAccessories);
         buttonSave = view.findViewById(R.id.buttonSave);
-//
+
         recyclerViewAccessories.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new AccessoryAdapter(accessoryList);
         recyclerViewAccessories.setAdapter(adapter);
 
-        // Učitajte dodatke iz baze
         loadAccessoriesFromDatabase();
 
         buttonSave.setOnClickListener(v -> saveSelectedAccessories());
@@ -65,21 +64,30 @@ public class AccessoriesFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Accessories>> call, Response<List<Accessories>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // Očistite trenutnu listu i dodajte nove podatke
-                    accessoryList.clear();
-                    accessoryList.addAll(response.body());
-
-                    // Obavestite adapter da su se podaci promenili
+                    accessoryList = response.body();
+                    adapter.setAccessoryList(accessoryList);
                     adapter.notifyDataSetChanged();
+
+                    // Get the selected accessories from the activity and update their selected state
+                    CreateAccommodationActivity activity = (CreateAccommodationActivity) getActivity();
+                    if (activity != null) {
+                        List<Accessories> selectedAccessories = activity.getAccessories();
+                        if (!selectedAccessories.isEmpty()) {
+                            for (Accessories accessory : accessoryList) {
+                                if (selectedAccessories.contains(accessory)) {
+                                    accessory.setSelected(true);
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
                 } else {
-                    // Rukovanje greškom ako odgovor nije uspešan
                     Toast.makeText(getContext(), "Failed to load accessories: " + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Accessories>> call, Throwable t) {
-                // Rukovanje greškom (npr. problem sa mrežom)
                 Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -93,11 +101,10 @@ public class AccessoriesFragment extends Fragment {
             }
         }
         if (selectedAccessories.isEmpty()) {
-            Toast.makeText(getContext(), "You must select minimum one accessory!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "You must select at least one accessory!", Toast.LENGTH_SHORT).show();
             return;
         }
         ((CreateAccommodationActivity) getActivity()).setAccessories(selectedAccessories);
         ((CreateAccommodationActivity) getActivity()).loadPhotosFragment();
-
     }
 }

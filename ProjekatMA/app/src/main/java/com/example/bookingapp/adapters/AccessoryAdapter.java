@@ -32,14 +32,27 @@ public class AccessoryAdapter extends RecyclerView.Adapter<AccessoryAdapter.Acce
     public void onBindViewHolder(@NonNull AccessoryViewHolder holder, int position) {
         Accessories accessory = accessoryList.get(position);
         holder.textViewName.setText(accessory.getName());
+//        holder.checkBox.setChecked(accessory.isSelected());
+//
+//        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> accessory.setSelected(isChecked));
+        holder.checkBox.setOnCheckedChangeListener(null);
+
+        // Set the checkbox state based on the accessory's selected state
         holder.checkBox.setChecked(accessory.isSelected());
 
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> accessory.setSelected(isChecked));
+        // Reattach the listener after setting the checked state
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            accessory.setSelected(isChecked);
+        });
     }
 
     @Override
     public int getItemCount() {
         return accessoryList.size();
+    }
+
+    public void setAccessoryList(List<Accessories> body) {
+        this.accessoryList = body;
     }
 
     public static class AccessoryViewHolder extends RecyclerView.ViewHolder {

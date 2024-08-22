@@ -60,6 +60,16 @@ public class PricelistFragment extends Fragment {
         intervalsAdapter = new IntervalAdapter(priceIntervalList);
         intervalsRecyclerView.setAdapter(intervalsAdapter);
 
+        CreateAccommodationActivity activity = (CreateAccommodationActivity) getActivity();
+        if (activity != null) {
+            priceIntervalList = activity.getPriceLists();
+            if (!priceIntervalList.isEmpty()) {
+                intervalsAdapter.setList(priceIntervalList);
+                intervalsAdapter.notifyDataSetChanged();
+                ;
+            }
+        }
+
         startDateEditText.setOnClickListener(v -> showDatePickerDialog(startDateEditText));
         endDateEditText.setOnClickListener(v -> showDatePickerDialog(endDateEditText));
 
@@ -147,6 +157,7 @@ public class PricelistFragment extends Fragment {
 
         Pricelist interval = new Pricelist(startDateString, endDateString, price);
         priceIntervalList.add(interval);
+        intervalsAdapter.setList(priceIntervalList);
         intervalsAdapter.notifyDataSetChanged();
     }
 

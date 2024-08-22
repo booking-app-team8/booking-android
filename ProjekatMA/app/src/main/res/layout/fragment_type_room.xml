@@ -69,10 +69,15 @@
                     <Spinner
                         android:id="@+id/spinnerAccommodationType"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
                         android:padding="8dp"
+                        android:textColor="@color/black"
+                        style="@style/CustomSpinnerStyle"
+                        android:textColorHighlight="@color/black"
+                        android:textColorHint="@color/black"
+                        app:hintTextColor="@color/black"
                     />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -106,10 +111,15 @@
                     <Spinner
                         android:id="@+id/spinnerPricePerUnit"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
                         android:padding="8dp"
+                        android:textColor="@color/black"
+                        style="@style/CustomSpinnerStyle"
+                        android:textColorHighlight="@color/black"
+                        android:textColorHint="@color/white"
+                        app:hintTextColor="@color/white"
                     />
 
                     <Button

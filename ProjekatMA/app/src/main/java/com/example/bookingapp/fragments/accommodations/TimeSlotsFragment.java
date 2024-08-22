@@ -60,6 +60,15 @@ public class TimeSlotsFragment extends Fragment {
 
         Button btnAddTimeSlot = view.findViewById(R.id.btnAddTimeSlot);
         btnAddTimeSlot.setOnClickListener(v -> showStartDatePicker());
+        CreateAccommodationActivity activity = (CreateAccommodationActivity) getActivity();
+        if (activity != null) {
+            timeSlotList = activity.getTimeSlots();
+            if (!timeSlotList.isEmpty()) {
+                timeSlotAdapter.setList(timeSlotList);
+                timeSlotAdapter.notifyDataSetChanged();
+                ;
+            }
+        }
 
         Button nextButton = view.findViewById(R.id.btnNext);
         nextButton.setOnClickListener(v -> {
@@ -176,6 +185,7 @@ public class TimeSlotsFragment extends Fragment {
 
         TimeSlot timeSlot = new TimeSlot(startDate, endDate);
         timeSlotList.add(timeSlot);
+        timeSlotAdapter.setList(timeSlotList);
         timeSlotAdapter.notifyDataSetChanged();
     }
 
