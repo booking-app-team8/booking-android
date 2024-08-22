@@ -36,16 +36,28 @@
             android:name=".activities.user.ReportedUsersActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.commentsAndGrades.OwnerGradesComments"
+            android:exported="false" />
+        <activity
+            android:name=".activities.commentsAndGrades.AccommodationDetailsGradesActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.home.admin.AdminMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.reservations.HostReservationsActivity"
             android:exported="false" />
         <activity
             android:name=".activities.reservations.GuestReservationsActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.home.guest.GuestReservationsScreen"
+            android:name=".activities.commentsAndGrades.OwnerGradeCommentActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.accommodations.AccommodationsActivity"
+            android:name=".activities.commentsAndGrades.AccommodationGradeCommentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.home.guest.GuestReservationsScreen"
             android:exported="false" />
         <activity
             android:name=".activities.home.host.HostMainActivity"

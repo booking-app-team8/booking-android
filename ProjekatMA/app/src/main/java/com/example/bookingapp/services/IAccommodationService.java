@@ -13,7 +13,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
+import com.example.bookingapp.models.accommodations.AccommodationDTO;
 import com.example.bookingapp.models.accommodations.AccommodationSearchRequestDTO;
+import com.example.bookingapp.models.users.User;
 
 import java.util.List;
 
@@ -38,5 +40,20 @@ public interface IAccommodationService {
     @Headers("Content-Type: application/json")
     @POST("accommodations")
     Call<Long> create(@Body AccommodationPostDTO accommodationPostDTO);
+
+    @Headers("Content-Type: application/json")
+    @GET("accommodations/forGradeOwner/{id}")
+    Call<Long> forGradeOwner(@Path("id") Long id);
+
+//    /ownerAccommodations/{id}
+    @Headers("Content-Type: application/json")
+    @GET("accommodations/ownerAccommodations/{id}")
+    Call<List<AccommodationSearchRequestDTO>> getOwnerAccommodations(@Path("id") Long ownerId);
+
+    @Headers("Content-Type: application/json")
+    @GET("accommodations/getFullAccommodation/{id}")
+    Call<AccommodationDTO> getFullAccommodation(@Path("id") Long ownerId);
+
+
 
 }

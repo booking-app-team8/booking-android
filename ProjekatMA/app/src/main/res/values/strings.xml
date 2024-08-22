@@ -50,6 +50,14 @@
         <item>Per_accommodation_unit</item>
         <item>Per_guest</item>
     </string-array>
+
+    <string-array name="accommodation_grades">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
     <string name="firstNameHint"> First Name </string>
     <string name="lastNameHint"> First Name </string>
     <string name="usernameHint"> Username </string>

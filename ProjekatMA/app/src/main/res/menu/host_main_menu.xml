@@ -21,5 +21,9 @@
         android:id="@+id/nav_host_notifications"
         android:title="Notifications"
         android:icon="@drawable/ic_notifications" />
+    <item
+        android:id="@+id/nav_create_accommodation"
+        android:title="Create accommodation"
+        android:icon="@drawable/ic_notifications" />
 
 </menu>
