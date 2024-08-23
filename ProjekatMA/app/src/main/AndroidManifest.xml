@@ -30,19 +30,16 @@
         android:theme="@style/Theme.BookingApp"
         tools:targetApi="31">
         <activity
-            android:name=".activities.grades.ReporetdCommentsActivity"
+            android:name=".activities.reports.OwnerReportActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.user.ReportedUsersActivity"
+            android:name=".activities.reports.GuestReportActivity"
             android:exported="false" />
         <activity
             android:name=".activities.commentsAndGrades.OwnerGradesComments"
             android:exported="false" />
         <activity
             android:name=".activities.commentsAndGrades.AccommodationDetailsGradesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.home.admin.AdminMainActivity"
             android:exported="false" />
         <activity
             android:name=".activities.reservations.HostReservationsActivity"
@@ -62,6 +59,10 @@
         <activity
             android:name=".activities.home.host.HostMainActivity"
             android:exported="false" />
+        <activity
+            android:name=".activities.home.admin.AdminMainActivity"
+            android:exported="false" />
+
         <activity
             android:name=".activities.accommodations.CreateAccommodationActivity"
             android:exported="false" />

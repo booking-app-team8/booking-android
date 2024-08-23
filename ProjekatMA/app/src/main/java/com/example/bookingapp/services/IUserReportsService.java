@@ -1,5 +1,6 @@
 package com.example.bookingapp.services;
 
+import com.example.bookingapp.dtos.ReportUserPostDTO;
 import com.example.bookingapp.dtos.usersDTOs.BlockDTO;
 import com.example.bookingapp.dtos.usersDTOs.ReportUserGetDTO;
 
@@ -9,6 +10,8 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
@@ -21,5 +24,7 @@ public interface IUserReportsService {
             @Path("email") String email,
             @Body BlockDTO blockDTO
     );
+
+
 
 }
