@@ -23,4 +23,8 @@ public interface IReservationRequestService {
     @POST("reservationRequest/reject/{id}")
     @Headers("Content-Type: application/json")
     Call<Void> rejectReservationRequest(@Path("id") Long id);
+
+    @Headers("Content-Type: application/json")
+    @GET("reservationRequest/pending-requests/{email}")
+    Call<List<ReservationRequestsGetDTO>> getAllPendingRequests(@Path("email") String email);
 }

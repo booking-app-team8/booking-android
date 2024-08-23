@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -42,6 +45,23 @@ public class User_Account extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_back);
+
+        int width = 28; // širina u pixelima
+        int height = 28; // visina u pixelima
+        drawable.setBounds(0, 0, width, height);
+
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        Drawable scaledDrawable = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, width, height, true));
+
+        toolbar.setNavigationIcon(scaledDrawable);
+
+        toolbar.setNavigationOnClickListener(v -> {
+            onBackPressed(); // Ili finish(), zavisno od potreba
+        });
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         emailField = findViewById(R.id.email);
         passwordField = findViewById(R.id.password);
@@ -164,11 +184,13 @@ public class User_Account extends AppCompatActivity {
         });
     }
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
     }
+     */
 
     private void showDeleteAccountConfirmationDialog(Long userId) {
         new AlertDialog.Builder(User_Account.this)
@@ -193,7 +215,7 @@ public class User_Account extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(User_Account.this, "Account deletion failed!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(User_Account.this, "You have active reservations!", Toast.LENGTH_SHORT).show();
                 }
             }
 

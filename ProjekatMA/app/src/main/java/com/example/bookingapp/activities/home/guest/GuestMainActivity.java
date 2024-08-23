@@ -74,6 +74,8 @@ public class GuestMainActivity extends AppCompatActivity implements Accommodatio
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         etStartDate = findViewById(R.id.et_start_date);
         etEndDate = findViewById(R.id.et_end_date);
         btnSearch = findViewById(R.id.btn_search);
@@ -148,17 +150,22 @@ public class GuestMainActivity extends AppCompatActivity implements Accommodatio
             String startDate = etStartDate.getText().toString();
             String endDate = etEndDate.getText().toString();
 
-            // Pozivanje API-ja
-            searchAccommodations(location, guests, startDate, endDate);
+            if (location.isEmpty() || guestsStr.isEmpty() || startDate.isEmpty() || endDate.isEmpty()) {
+                Toast.makeText(this, "Please fill in all fields before searching.", Toast.LENGTH_SHORT).show();
+            } else {
+                searchAccommodations(location, guests, startDate, endDate);
+            }
         });
 
     }
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.guest_main_menu, menu);
         return true;
     }
+     */
 
     // Funkcija za otvaranje DatePickerDialog-a
     private void openDatePickerDialog(final EditText editText) {

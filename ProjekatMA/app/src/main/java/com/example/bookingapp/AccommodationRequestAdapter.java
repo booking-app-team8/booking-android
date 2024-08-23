@@ -1,5 +1,6 @@
 package com.example.bookingapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,7 +52,7 @@ public class AccommodationRequestAdapter extends ArrayAdapter<AccommodationReque
         Button buttonCancel = convertView.findViewById(R.id.buttonCancel);
 
         textViewName.setText(request.getName());
-        textViewId.setText(request.getId().toString());
+        textViewId.setText("Request id: " + request.getId().toString());
         textViewAddress.setText(request.getAddress() + ", " + request.getCity() + ", " + request.getCountry());
         textViewOwner.setText("Owner: " + request.getOwner());
 
@@ -61,6 +62,7 @@ public class AccommodationRequestAdapter extends ArrayAdapter<AccommodationReque
                 .into(imageViewPhoto);
         Log.d("URL image", imageUrl + request.getPhotoUrl());
 
+        /*
         buttonAccept.setOnClickListener(v -> {
             ApiUtils.getAccommodationRequestService().acceptAccommodationStatus(request.getId()).enqueue(new Callback<Void>() {
                 @Override
@@ -96,7 +98,58 @@ public class AccommodationRequestAdapter extends ArrayAdapter<AccommodationReque
                 }
             });
         });
+        */
 
+        buttonAccept.setOnClickListener(v -> {
+            new AlertDialog.Builder(context)
+                    .setTitle("Approve Accommodation")
+                    .setMessage("Are you sure you want to approve this accommodation?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        ApiUtils.getAccommodationRequestService().acceptAccommodationStatus(request.getId()).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(context, "Accommodation approved", Toast.LENGTH_SHORT).show();
+                                    requests.remove(position);
+                                    notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(context, "Failed to approve accommodation", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        });
+
+        // Cancel button click with confirmation dialog
+        buttonCancel.setOnClickListener(v -> {
+            new AlertDialog.Builder(context)
+                    .setTitle("Reject Accommodation")
+                    .setMessage("Are you sure you want to reject this accommodation?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        ApiUtils.getAccommodationRequestService().rejectAccommodationStatus(request.getId()).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(context, "Accommodation rejected", Toast.LENGTH_SHORT).show();
+                                    requests.remove(position);
+                                    notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(context, "Failed to reject accommodation", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        });
 
         return convertView;
     }

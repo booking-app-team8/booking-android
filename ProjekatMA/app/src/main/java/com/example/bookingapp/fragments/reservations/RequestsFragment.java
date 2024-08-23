@@ -98,6 +98,13 @@ public class RequestsFragment extends Fragment {
             }
         });
 
+        btnPending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadPendingRequests();
+            }
+        });
+
         return view;
     }
 
@@ -129,6 +136,29 @@ public class RequestsFragment extends Fragment {
     }
 
     private void loadPendingRequests(){
+        String email = AuthService.getCurrentUser().getEmail();
 
+        requestService.getAllPendingRequests(email).enqueue(new Callback<List<ReservationRequestsGetDTO>>() {
+            @Override
+            public void onResponse(Call<List<ReservationRequestsGetDTO>> call, Response<List<ReservationRequestsGetDTO>> response) {
+                if (response.isSuccessful()) {
+                    List<ReservationRequestsGetDTO> requests = response.body();
+                    if (requests != null) {
+                        Log.d("RequestsFragment", "Requests loaded successfully, number of requests: " + requests.size());
+                        listView.setAdapter(new ReservationRequestsAdapter(getContext(), requests));
+                    } else {
+                        Log.d("RequestsFragment", "Requests list is null");
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Failed to load reservations", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ReservationRequestsGetDTO>> call, Throwable t) {
+                Log.d("RequestsFragment", "Error: " + t.getMessage());
+                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

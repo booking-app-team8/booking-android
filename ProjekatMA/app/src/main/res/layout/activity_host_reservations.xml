@@ -13,6 +13,7 @@
         android:background="@color/background_color"
         android:title="Reservations"
         android:titleTextColor="@android:color/white"
+        app:navigationIcon="@drawable/ic_back"
         app:titleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
 
     <!-- TabLayout -->

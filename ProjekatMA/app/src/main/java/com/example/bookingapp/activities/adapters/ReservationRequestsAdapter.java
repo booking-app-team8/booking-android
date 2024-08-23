@@ -1,6 +1,8 @@
 package com.example.bookingapp.activities.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import com.example.bookingapp.dtos.grades.AccommodationCommentDTO;
 import com.example.bookingapp.dtos.reservations.ReservationRequestsGetDTO;
 import com.example.bookingapp.models.reservations.Reservation;
 import com.example.bookingapp.utils.ApiUtils;
+import com.example.bookingapp.utils.AuthService;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -82,48 +85,114 @@ public class ReservationRequestsAdapter extends ArrayAdapter<ReservationRequests
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApiUtils.getReservationRequestService().acceptReservationRequest(id).enqueue(new Callback<Reservation>() {
-                    @Override
-                    public void onResponse(Call<Reservation> call, Response<Reservation> response) {
-                        if (response.isSuccessful()) {
-                            Toast.makeText(context, "Reservation created.", Toast.LENGTH_SHORT).show();
-                            notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(context, "Failed to accept request.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                // Kreiranje AlertDialog-a za potvrdu
+                new AlertDialog.Builder(context)
+                        .setTitle("Confirmation")
+                        .setMessage("Are you sure you want to accept this request?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Ako korisnik potvrdi akciju
+                                ApiUtils.getReservationRequestService().acceptReservationRequest(id).enqueue(new Callback<Reservation>() {
+                                    @Override
+                                    public void onResponse(Call<Reservation> call, Response<Reservation> response) {
+                                        if (response.isSuccessful()) {
+                                            Toast.makeText(context, "Reservation created.", Toast.LENGTH_SHORT).show();
+                                            notifyDataSetChanged();
+                                            refreshReservationRequests();
+                                        } else {
+                                            Toast.makeText(context, "Failed to accept request.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
 
-                    @Override
-                    public void onFailure(Call<Reservation> call, Throwable t) {
-                        Toast.makeText(context, "Error occurred.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                                    @Override
+                                    public void onFailure(Call<Reservation> call, Throwable t) {
+                                        Toast.makeText(context, "Error occurred.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton("No", null)  // Ako korisnik odbije akciju, samo zatvara dijalog
+                        .show();
             }
         });
 
-        // Todo: reject
         btnReject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApiUtils.getReservationRequestService().rejectReservationRequest(id).enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.isSuccessful()) {
-                            Toast.makeText(context, "Request rejected.", Toast.LENGTH_SHORT).show();
-                            notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(context, "Failed to reject request.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                // Kreiranje AlertDialog-a za potvrdu
+                new AlertDialog.Builder(context)
+                        .setTitle("Confirmation")
+                        .setMessage("Are you sure you want to reject this request?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Ako korisnik potvrdi akciju
+                                ApiUtils.getReservationRequestService().rejectReservationRequest(id).enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        if (response.isSuccessful()) {
+                                            Toast.makeText(context, "Request rejected.", Toast.LENGTH_SHORT).show();
+                                            notifyDataSetChanged();
+                                            refreshPendingReservationRequests();
+                                        } else {
+                                            Toast.makeText(context, "Failed to reject request.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
 
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        Toast.makeText(context, "Error occurred.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
+                                        Toast.makeText(context, "Error occurred.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton("No", null)  // Ako korisnik odbije akciju, samo zatvara dijalog
+                        .show();
             }
         });
 
+
         return convertView;
+    }
+
+    private void refreshReservationRequests() {
+        ApiUtils.getReservationRequestService().getAllRequests(AuthService.getCurrentUser().getEmail()).enqueue(new Callback<List<ReservationRequestsGetDTO>>() {
+            @Override
+            public void onResponse(Call<List<ReservationRequestsGetDTO>> call, Response<List<ReservationRequestsGetDTO>> response) {
+                if (response.isSuccessful()) {
+                    // Ažuriranje liste sa novim podacima
+                    reservationRequestsGetDTOS.clear();
+                    reservationRequestsGetDTOS.addAll(response.body());
+                    notifyDataSetChanged();
+                } else {
+                    Toast.makeText(context, "Failed to load requests.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ReservationRequestsGetDTO>> call, Throwable t) {
+                Toast.makeText(context, "Error occurred while refreshing requests.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void refreshPendingReservationRequests() {
+        ApiUtils.getReservationRequestService().getAllPendingRequests(AuthService.getCurrentUser().getEmail()).enqueue(new Callback<List<ReservationRequestsGetDTO>>() {
+            @Override
+            public void onResponse(Call<List<ReservationRequestsGetDTO>> call, Response<List<ReservationRequestsGetDTO>> response) {
+                if (response.isSuccessful()) {
+                    // Ažuriranje liste sa novim podacima
+                    reservationRequestsGetDTOS.clear();
+                    reservationRequestsGetDTOS.addAll(response.body());
+                    notifyDataSetChanged();
+                } else {
+                    Toast.makeText(context, "Failed to load requests.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ReservationRequestsGetDTO>> call, Throwable t) {
+                Toast.makeText(context, "Error occurred while refreshing requests.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

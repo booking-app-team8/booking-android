@@ -71,7 +71,7 @@
             app:layout_constraintTop_toBottomOf="@id/et_guests"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/et_end_date"
-            app:layout_constraintWidth_percent="0.45" />
+            app:layout_constraintWidth_percent="0.425" />
 
         <EditText
             android:id="@+id/et_end_date"
@@ -83,7 +83,7 @@
             app:layout_constraintTop_toBottomOf="@id/et_guests"
             app:layout_constraintStart_toEndOf="@id/et_start_date"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintWidth_percent="0.45" />
+            app:layout_constraintWidth_percent="0.425" />
 
         <!-- Button Pretrazi i ikonica za filtriranje -->
         <LinearLayout
