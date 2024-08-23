@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imageViewPhoto"
         android:layout_marginStart="8dp"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:fontFamily="@font/segoe"
         android:text="Accommodation name"/>
@@ -32,6 +32,7 @@
         android:layout_below="@id/textViewName"
         android:layout_toRightOf="@id/imageViewPhoto"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="6dp"
         android:textSize="12sp"
         android:fontFamily="@font/segoe"
         android:text="Request id"/>
@@ -43,7 +44,8 @@
         android:layout_below="@id/textViewId"
         android:layout_toRightOf="@id/imageViewPhoto"
         android:layout_marginStart="8dp"
-        android:textSize="12sp"
+        android:layout_marginTop="6dp"
+        android:textSize="14sp"
         android:fontFamily="@font/segoe"
         android:text="Address"/>
 
@@ -54,7 +56,8 @@
         android:layout_below="@id/textViewAddress"
         android:layout_toRightOf="@id/imageViewPhoto"
         android:layout_marginStart="8dp"
-        android:textSize="12sp"
+        android:layout_marginTop="6dp"
+        android:textSize="14sp"
         android:fontFamily="@font/segoe"
         android:text="Owner"/>
 

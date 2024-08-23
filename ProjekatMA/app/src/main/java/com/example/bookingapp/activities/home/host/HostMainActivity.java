@@ -67,6 +67,8 @@ public class HostMainActivity extends AppCompatActivity implements Accommodation
         Toolbar toolbar = findViewById(R.id.toolbar_host);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         etStartDate = findViewById(R.id.et_start_date_host);
         etEndDate = findViewById(R.id.et_end_date_host);
         btnSearch = findViewById(R.id.btn_search_host);
@@ -160,11 +162,13 @@ public class HostMainActivity extends AppCompatActivity implements Accommodation
         startActivity(intent);
     }
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.host_main_menu, menu);
         return true;
     }
+     */
 
     private void openDatePickerDialog(final EditText editText) {
         int year = calendar.get(Calendar.YEAR);

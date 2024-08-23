@@ -62,16 +62,16 @@ public class AccommodationSearchAdapter extends ArrayAdapter<AccommodationSearch
         // Popunjavanje elemenata
         tvName.setText(accommodation.getName());
         tvAddress.setText(accommodation.getLocation().getAddress() + ", " + accommodation.getLocation().getCity());
-        tvGuests.setText(String.valueOf(accommodation.getMaxGuests()));
-        tvPrice.setText(String.format(String.valueOf(accommodation.getPricePerUnit())));
+        tvGuests.setText("Max guests: " + String.valueOf(accommodation.getMaxGuests()));
+        tvPrice.setText("Price per unit: " + String.format(String.valueOf(accommodation.getPricePerUnit())));
         tvTotalPrice.setText(String.format("$%s", accommodation.getTotalPrice()));
         tvRating.setText(String.valueOf(accommodation.getAverageGrade()));
-        tvAmenities.setText(accommodation.getAccessories().get(0).getAccessories() + ", " + accommodation.getAccessories().get(1).getAccessories());
+        tvAmenities.setText(accommodation.getAccessories().get(0).getAccessories() + ", " + accommodation.getAccessories().get(1).getAccessories() + "...");
 
         // Učitavanje slike pomoću Picasso biblioteke
         //Picasso.get().load(accommodation.getImageUrl()).into(ivImage);
-//        String imageUrl = "http://172.20.10.5:8081/"; BOKI
-        String imageUrl = "http://192.168.0.15:8081/";
+        String imageUrl = "http://172.20.10.5:8081/";
+        //String imageUrl = "http://192.168.0.15:8081/";
         String newPath = accommodation.getPhoto().getPath();
         if (!accommodation.getPhoto().getPath().contains(".jpg") && !(accommodation.getPhoto().getPath().contains(".png"))) {
             newPath = newPath + ".jpg";
