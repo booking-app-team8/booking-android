@@ -20,6 +20,7 @@ import com.example.bookingapp.activities.startup.LogInActivity;
 import com.example.bookingapp.dtos.ReservationGetDTO;
 import com.example.bookingapp.models.accommodations.AccommodationSearchRequestDTO;
 import com.example.bookingapp.models.enums.ReservationStatus;
+import com.example.bookingapp.models.reservations.Reservation;
 import com.example.bookingapp.models.reservations.ReservationGetFrontDTO;
 import com.example.bookingapp.utils.ApiUtils;
 
@@ -44,7 +45,7 @@ public class ReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO> {
         void onRateOwnerClick(Long id, Long guestId);
         void onRateAccommodationClick(Long guestId, Long accommodationId);
 //        void onCancelClick(Reservation reservation);
-//        void onReportClick(Reservation reservation);
+        void onReportClick(ReservationGetFrontDTO reservation);
     }
 
     private List<AccommodationSearchRequestDTO> accommodationSearchRequestDTOS;
@@ -87,6 +88,7 @@ public class ReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO> {
         Button btnCancelReservation = convertView.findViewById(R.id.btn_reservation_cancel);
         Button btnRateOwner = convertView.findViewById(R.id.btn_reservation_rate_owner);
         Button btnRateAcc = convertView.findViewById(R.id.btn_reservation_rate_accommodation);
+        Button btnReport = convertView.findViewById(R.id.btn_reservation_report);
 
         tvReservationId.setText("Reservation ID: " + reservation.getId());
         tvAccommodationName.setText("Accommodation: " + reservation.getAccommodation().getName());
@@ -109,6 +111,12 @@ public class ReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO> {
         btnRateAcc.setOnClickListener(v -> {
             if (buttonClickListener != null) {
                 buttonClickListener.onRateAccommodationClick(reservation.getGuest().getId(), reservation.getAccommodation().getId());
+            }
+        });
+
+        btnReport.setOnClickListener(v -> {
+            if (buttonClickListener != null) {
+                buttonClickListener.onReportClick(reservation);
             }
         });
 

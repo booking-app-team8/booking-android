@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,11 +18,17 @@ import java.util.List;
 public class OwnerReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO> {
     private Context context;
     private List<ReservationGetFrontDTO> reservations;
+    private OnButtonClickListener listener;
 
-    public OwnerReservationAdapter(Context context, List<ReservationGetFrontDTO> reservations){
+    public interface OnButtonClickListener {
+        void reportUser(ReservationGetFrontDTO reservationGetFrontDTO);
+    }
+
+    public OwnerReservationAdapter(Context context, List<ReservationGetFrontDTO> reservations, OnButtonClickListener listener){
         super(context, 0, reservations);
         this.context = context;
         this.reservations = reservations;
+        this.listener = listener;
     }
 
     @NonNull
@@ -40,6 +47,7 @@ public class OwnerReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO
         TextView tvEndDate = convertView.findViewById(R.id.tv_reservation_end_date);
         TextView tvTotalPrice = convertView.findViewById(R.id.tv_reservation_total_price);
         TextView tvReservationStatus = convertView.findViewById(R.id.tv_reservation_status);
+        Button reportButton = convertView.findViewById(R.id.btn_reservation_report);
 
         tvReservationId.setText("Reservation ID: " + reservation.getId());
         tvAccommodationName.setText("Accommodation: " + reservation.getAccommodation().getName());
@@ -48,6 +56,13 @@ public class OwnerReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO
         tvEndDate.setText("End date: " + reservation.getTimeSlot().getEndDate());
         tvTotalPrice.setText("Total price: " + reservation.getTotalPrice());
         tvReservationStatus.setText("Status: " + reservation.getReservationStatus().toString());
+
+
+        reportButton.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.reportUser(reservation);
+            }
+        });
 
         return convertView;
     }

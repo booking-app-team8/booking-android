@@ -2,6 +2,7 @@ package com.example.bookingapp.services;
 
 import com.example.bookingapp.dtos.LoginGETDTO;
 import com.example.bookingapp.dtos.LoginPOSTDTO;
+import com.example.bookingapp.dtos.ReportUserPostDTO;
 import com.example.bookingapp.dtos.UserDto;
 import com.example.bookingapp.dtos.UserGetDTO;
 import com.example.bookingapp.dtos.UserPOSTDTO;
@@ -45,4 +46,8 @@ public interface IUserService {
     @Headers("Content-Type: application/json")
     @GET("findUser/{id}")
     Call<UserGetDTO> getUsers(@Path("id") Long id);
+
+//    @Headers("Content-Type: application/json")
+    @POST("reportUser")
+    Call<Void> reportUser(@Body ReportUserPostDTO reportPostDTO);
 }

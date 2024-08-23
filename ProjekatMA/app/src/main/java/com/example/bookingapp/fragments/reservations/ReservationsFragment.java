@@ -20,6 +20,10 @@ import com.example.bookingapp.R;
 import com.example.bookingapp.activities.adapters.ReservationAdapter;
 import com.example.bookingapp.activities.commentsAndGrades.AccommodationGradeCommentActivity;
 import com.example.bookingapp.activities.commentsAndGrades.OwnerGradeCommentActivity;
+import com.example.bookingapp.activities.reports.GuestReportActivity;
+import com.example.bookingapp.activities.reports.OwnerReportActivity;
+import com.example.bookingapp.dtos.UserGetDTO;
+import com.example.bookingapp.dtos.usersDTOs.ReportUserGetDTO;
 import com.example.bookingapp.models.accommodations.Accessories;
 import com.example.bookingapp.models.accommodations.AccommodationSearchRequestDTO;
 import com.example.bookingapp.models.accommodations.TimeSlot;
@@ -34,6 +38,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,6 +68,8 @@ public class ReservationsFragment extends Fragment implements ReservationAdapter
     private ReservationAdapter adapter;
 
     private IReservationService reservationService;
+
+    private List<ReportUserGetDTO> reportedUsers = new ArrayList<>();
 
     public ReservationsFragment() {
         // Required empty public constructor
@@ -108,6 +116,7 @@ public class ReservationsFragment extends Fragment implements ReservationAdapter
         listView.setAdapter(adapter);
 
         loadReservations();
+        loadReportedUsers();
 
 
 
@@ -232,6 +241,76 @@ public class ReservationsFragment extends Fragment implements ReservationAdapter
 
 
     }
+    @Override
+    public void onReportClick(ReservationGetFrontDTO reservation) {
+
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("UserSession", MODE_PRIVATE);
+        String email = sharedPreferences.getString("userEmail", null);
+        Call<List<AccommodationSearchRequestDTO>> call = ApiUtils.getIAccommodationService().allOwnerAccommodations(reservation.getAccommodation().getId());
+        call.enqueue(new Callback<List<AccommodationSearchRequestDTO>>() {
+            @Override
+            public void onResponse(Call<List<AccommodationSearchRequestDTO>> call, Response<List<AccommodationSearchRequestDTO>> response) {
+                if (response.isSuccessful()) {
+                    List<Long> ids = new ArrayList<>();
+                    for (AccommodationSearchRequestDTO dto: response.body()) {
+                        ids.add(dto.getId());
+                    }
+                    boolean canReport = false;
+//                    Toast.makeText(getContext(), "cao:" + response.body().size(), Toast.LENGTH_SHORT).show();
+                    for (ReservationGetFrontDTO res: reservations) {
+                        if (res.getReservationStatus().equals(ReservationStatus.FINISHED) && ids.contains(res.getAccommodation().getId())) {
+                            canReport = true;
+                            break;
+                        }
+                    }
+                    if (canReport) {
+                        handleReportOutcome(reservation.getAccommodation().getId(),email);
+//                        Toast.makeText(getContext(), "MOZEE", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "Can't report this user!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AccommodationSearchRequestDTO>> call, Throwable t) {
+                Toast.makeText(getContext(), "" + t, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+    private void handleReportOutcome(Long accommodationId, String guestEmail) {
+        Call<UserGetDTO> user = ApiUtils.getIAccommodationService().getOwnerByAccId(accommodationId);
+        user.enqueue(new Callback<UserGetDTO>() {
+            @Override
+            public void onResponse(Call<UserGetDTO> call, Response<UserGetDTO> response) {
+                if (response.isSuccessful()) {
+                    for (ReportUserGetDTO r: reportedUsers) {
+                        if (r.getFrom().getEmail().equals(guestEmail) && r.getTo().getEmail().equals(response.body().getEmail())) {
+                            Toast.makeText(getContext(), "You already reported this user!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                    Intent activity = new Intent(getContext(), GuestReportActivity.class);
+                    activity.putExtra("guest_email", guestEmail);
+                    activity.putExtra("owner_email", response.body().getEmail());
+                    activity.putExtra("accommodation_id", accommodationId);
+                    startActivity(activity);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserGetDTO> call, Throwable t) {
+                Toast.makeText(getContext(), "Failed:" + t, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+
 
     private void getOwnerId(Long id, ReservationAdapter.OwnerIdCallback callback) {
         ApiUtils.getIAccommodationService().forGradeOwner(id).enqueue(new Callback<Long>() {
@@ -267,5 +346,35 @@ public class ReservationsFragment extends Fragment implements ReservationAdapter
                 callback.onError(t);
             }
         });
+    }
+
+
+
+
+
+    private void loadReportedUsers() {
+        Call<List<ReportUserGetDTO>> call = ApiUtils.getUserReportsService().getReportRequests();
+        call.enqueue(new Callback<List<ReportUserGetDTO>>() {
+            @Override
+            public void onResponse(Call<List<ReportUserGetDTO>> call, Response<List<ReportUserGetDTO>> response) {
+                if (response.isSuccessful()){
+                    reportedUsers = response.body();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ReportUserGetDTO>> call, Throwable t) {
+                Toast.makeText(getContext(), "FAIL", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadReportedUsers();
+//        loadReservations();
     }
 }

@@ -13,6 +13,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
+import com.example.bookingapp.dtos.UserGetDTO;
 import com.example.bookingapp.models.accommodations.AccommodationDTO;
 import com.example.bookingapp.models.accommodations.AccommodationSearchRequestDTO;
 import com.example.bookingapp.models.users.User;
@@ -54,6 +55,11 @@ public interface IAccommodationService {
     @GET("accommodations/getFullAccommodation/{id}")
     Call<AccommodationDTO> getFullAccommodation(@Path("id") Long ownerId);
 
+    @GET("accommodations/allOwnerAccommodationsByAccId/{id}")
+    Call<List<AccommodationSearchRequestDTO>> allOwnerAccommodations(@Path("id") Long id);
+
+    @GET("accommodations/getOwnerByAccId/{id}")
+    Call<UserGetDTO> getOwnerByAccId(@Path("id") Long id);
 
 
 }
