@@ -35,15 +35,19 @@ public class OwnerReservationAdapter extends ArrayAdapter<ReservationGetFrontDTO
 
         TextView tvReservationId = convertView.findViewById(R.id.tv_reservation_id);
         TextView tvAccommodationName = convertView.findViewById(R.id.tv_reservation_accommodation_name);
+        TextView tvAccommodationAddress = convertView.findViewById(R.id.tv_reservation_address);
         TextView tvGuestName = convertView.findViewById(R.id.tv_reservation_guest_name);
         TextView tvStartDate = convertView.findViewById(R.id.tv_reservation_start_date);
+        TextView tvGuests = convertView.findViewById(R.id.tv_reservation_guests);
         TextView tvEndDate = convertView.findViewById(R.id.tv_reservation_end_date);
         TextView tvTotalPrice = convertView.findViewById(R.id.tv_reservation_total_price);
         TextView tvReservationStatus = convertView.findViewById(R.id.tv_reservation_status);
 
         tvReservationId.setText("Reservation ID: " + reservation.getId());
         tvAccommodationName.setText("Accommodation: " + reservation.getAccommodation().getName());
+        tvAccommodationAddress.setText("Address: " + reservation.getAccommodation().getLocation().getAddress() + ", " + reservation.getAccommodation().getLocation().getCity());
         tvGuestName.setText("Guest: " + reservation.getGuest().getName() + " " + reservation.getGuest().getSurname());
+        tvGuests.setText("Number of guests: " + String.valueOf(reservation.getNumberOfGuests()));
         tvStartDate.setText("Start date: " + reservation.getTimeSlot().getStartDate());
         tvEndDate.setText("End date: " + reservation.getTimeSlot().getEndDate());
         tvTotalPrice.setText("Total price: " + reservation.getTotalPrice());
