@@ -4,11 +4,28 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.bookingapp.R;
+import com.example.bookingapp.activities.adapters.ReportedOwnerGradesAdapter;
+import com.example.bookingapp.activities.adapters.ReservationRequestsAdapter;
+import com.example.bookingapp.dtos.grades.OwnerCommentDTO;
+import com.example.bookingapp.dtos.reservations.ReservationRequestsGetDTO;
+import com.example.bookingapp.services.IReservationRequestService;
+import com.example.bookingapp.utils.ApiUtils;
+import com.example.bookingapp.utils.AuthService;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +42,11 @@ public class RequestsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ListView listView;
+    private Button btnAll;
+    private Button btnPending;
+    private IReservationRequestService requestService;
 
     public RequestsFragment() {
         // Required empty public constructor
@@ -61,6 +83,52 @@ public class RequestsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_requests, container, false);
+        View view = inflater.inflate(R.layout.fragment_requests, container, false);
+
+        listView = view.findViewById(R.id.lv_reservation_requests);
+        btnAll = view.findViewById(R.id.btn_all);
+        btnPending = view.findViewById(R.id.btn_created);
+
+        requestService = ApiUtils.getReservationRequestService();
+
+        btnAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadAllRequests();
+            }
+        });
+
+        return view;
+    }
+
+    private void loadAllRequests(){
+        String email = AuthService.getCurrentUser().getEmail();
+
+        requestService.getAllRequests(email).enqueue(new Callback<List<ReservationRequestsGetDTO>>() {
+            @Override
+            public void onResponse(Call<List<ReservationRequestsGetDTO>> call, Response<List<ReservationRequestsGetDTO>> response) {
+                if (response.isSuccessful()) {
+                    List<ReservationRequestsGetDTO> requests = response.body();
+                    if (requests != null) {
+                        Log.d("RequestsFragment", "Requests loaded successfully, number of requests: " + requests.size());
+                        listView.setAdapter(new ReservationRequestsAdapter(getContext(), requests));
+                    } else {
+                        Log.d("RequestsFragment", "Requests list is null");
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Failed to load reservations", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ReservationRequestsGetDTO>> call, Throwable t) {
+                Log.d("RequestsFragment", "Error: " + t.getMessage());
+                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadPendingRequests(){
+
     }
 }

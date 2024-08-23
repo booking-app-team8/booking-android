@@ -14,6 +14,7 @@ import com.example.bookingapp.services.IGradesService;
 import com.example.bookingapp.services.IGuestService;
 import com.example.bookingapp.services.IOwnerService;
 import com.example.bookingapp.services.IOwnerGradeService;
+import com.example.bookingapp.services.IReservationRequestService;
 import com.example.bookingapp.services.IReservationService;
 import com.example.bookingapp.services.IUserReportsService;
 import com.example.bookingapp.services.IUserService;
@@ -90,5 +91,9 @@ public static final String BASE_URL = "http://172.20.10.5:8081/api/";
 
     public static IAccommodationGradeService getIAccommodationGradeService() {
         return ApiClient.getClient(BASE_URL_ACCOMMODATION_GRADES).create(IAccommodationGradeService.class);
+    }
+
+    public static IReservationRequestService getReservationRequestService(){
+        return ApiClient.getClient(BASE_URL).create(IReservationRequestService.class);
     }
 }

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.bookingapp.fragments.reservations.FavoriteFragment;
+import com.example.bookingapp.fragments.reservations.HostReservationsFragment;
 import com.example.bookingapp.fragments.reservations.RequestsFragment;
 import com.example.bookingapp.fragments.reservations.ReservationsFragment;
 import com.example.bookingapp.utils.AuthService;
@@ -39,7 +40,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
                 case 0:
                     return new RequestsFragment();
                 case 1:
-                    return new ReservationsFragment();
+                    return new HostReservationsFragment();
                 default:
                     return new RequestsFragment();
             }
