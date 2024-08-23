@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.bookingapp.R;
 import com.example.bookingapp.activities.accommodations.CreateAccommodationActivity;
 import com.example.bookingapp.adapters.PhotoAdapter;
+import com.example.bookingapp.models.accommodations.Accessories;
 import com.example.bookingapp.models.accommodations.Photo;
 import com.example.bookingapp.services.IAccommodationService;
 import com.example.bookingapp.utils.ApiUtils;
@@ -68,6 +69,19 @@ public class PhotosFragment extends Fragment {
         recyclerViewPhotos.setLayoutManager(new LinearLayoutManager(getContext()));
         photoAdapter = new PhotoAdapter(photoUris, this::removePhoto);
         recyclerViewPhotos.setAdapter(photoAdapter);
+
+        CreateAccommodationActivity activity = (CreateAccommodationActivity) getActivity();
+        if (activity != null) {
+            List<Uri> selectedPhoto = activity.getPhotoUris();
+            if (!selectedPhoto.isEmpty()) {
+                photoUris = selectedPhoto;
+                photoAdapter.setPhotoUris(photoUris);
+                photoAdapter.notifyDataSetChanged();
+
+                }
+
+            }
+
 
         buttonSelectPhotos.setOnClickListener(v -> selectPhotos());
 
@@ -119,6 +133,7 @@ public class PhotosFragment extends Fragment {
                 MultipartBody.Part[] lista = prepareFileParts(photoUris);
 
                 ((CreateAccommodationActivity) getActivity()).setPhotos(images, lista);
+                ((CreateAccommodationActivity) getActivity()).setPhotoUris(photoUris);
                 ((CreateAccommodationActivity) getActivity()).loadTypeFragment();
             }});
 

@@ -1,5 +1,7 @@
 package com.example.bookingapp.models.accommodations;
 
+import java.util.Objects;
+
 public class Accessories {
     public Long id;
     public String accessories;
@@ -48,4 +50,35 @@ public class Accessories {
     public void setAccessories(String accessories) {
         this.accessories = accessories;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Accessories that = (Accessories) o;
+        return id.equals(that.id);  // Assuming 'id' is a unique identifier for Accessories
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);  // Again, using 'id' for hashCode generation
+    }
+
+    // Override equals and hashCode to compare by relevant fields, like name or id
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//
+//        Accessories that = (Accessories) o;
+//
+//        return Objects.equals(accessories, that.accessories);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return accessories != null ? accessories.hashCode() : 0;
+//    }
+
+
 }

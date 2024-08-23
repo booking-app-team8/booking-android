@@ -36,22 +36,22 @@ public class LocationFragment extends Fragment {
         countryEditText = view.findViewById(R.id.editTextCountry);
         nextButton = view.findViewById(R.id.nextButton);
 //
-//        CreateAccommodationActivity activity = (CreateAccommodationActivity) getActivity();
-//        if (activity != null) {
-//            String savedAddress = activity.getLocation().getAddress();
-//            String savedCity = activity.getLocation().getCity();
-//            String savedCountry = activity.getLocation().getCountry();
-//
-//            if (savedAddress != null) {
-//                addressEditText.setText(savedAddress);
-//            }
-//            if (savedCity != null) {
-//                cityEditText.setText(savedCity);
-//            }
-//            if (savedCountry != null) {
-//                countryEditText.setText(savedCountry);
-//            }
-//        }
+        CreateAccommodationActivity activity = (CreateAccommodationActivity) getActivity();
+        if (activity != null) {
+            String savedAddress = activity.getLocation().getAddress();
+            String savedCity = activity.getLocation().getCity();
+            String savedCountry = activity.getLocation().getCountry();
+
+            if (savedAddress != null) {
+                addressEditText.setText(savedAddress);
+            }
+            if (savedCity != null) {
+                cityEditText.setText(savedCity);
+            }
+            if (savedCountry != null) {
+                countryEditText.setText(savedCountry);
+            }
+        }
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override

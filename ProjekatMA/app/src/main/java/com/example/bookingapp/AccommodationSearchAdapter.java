@@ -70,15 +70,20 @@ public class AccommodationSearchAdapter extends ArrayAdapter<AccommodationSearch
 
         // Učitavanje slike pomoću Picasso biblioteke
         //Picasso.get().load(accommodation.getImageUrl()).into(ivImage);
-        String imageUrl = "http://172.20.10.5:8081/";
+//        String imageUrl = "http://172.20.10.5:8081/"; BOKI
+        String imageUrl = "http://192.168.0.15:8081/";
+        String newPath = accommodation.getPhoto().getPath();
+        if (!accommodation.getPhoto().getPath().contains(".jpg") && !(accommodation.getPhoto().getPath().contains(".png"))) {
+            newPath = newPath + ".jpg";
+        }
         Glide.with(context)
-                .load(imageUrl + accommodation.getPhoto().getPath())
+                .load(imageUrl + newPath)
                 .into(ivImage);
-        Log.d("URL image", imageUrl + accommodation.getPhoto().getPath());
+        Log.d("URL image", imageUrl + newPath);
 
         // Implementacija za dugme "Show more"
         btnShowMore.setOnClickListener(v -> {
-            Toast.makeText(context, "stisnuo", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "stisnuo", Toast.LENGTH_SHORT).show();
             if (listener != null) {
                 listener.onShowMoreClick(accommodation);
             }

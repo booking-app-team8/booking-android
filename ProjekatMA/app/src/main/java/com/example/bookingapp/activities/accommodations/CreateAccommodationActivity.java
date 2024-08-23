@@ -46,21 +46,22 @@ import retrofit2.Callback;
 import retrofit2.Response;
 public class CreateAccommodationActivity extends AppCompatActivity {
 
-    public String name;
-    public String description;
-    public Location location;
-    public int minGuests;
-    public int maxGuests;
-    public int cancellationDaysInAdvance;
-    public double defaultedPrice;
+    public String name = "";
+    public String description = "";
+    public Location location = new Location();
+    public int minGuests = 0;
+    public int maxGuests = 0;
+    public int cancellationDaysInAdvance = 0;
+    public double defaultedPrice = 0;
 
     public PriceUnit priceUnit;
     public TypeOfAccommodation typeOfAccommodation;
-    public List<Accessories> accessories;
-    public List<Photo> images;
-    public List<Pricelist> priceLists;
+    public List<Accessories> accessories = new ArrayList<>();
+    public List<Photo> images = new ArrayList<>();
+    public List<Pricelist> priceLists = new ArrayList<>();
 
-    public List<TimeSlot> timeSlots;
+    public List<TimeSlot> timeSlots = new ArrayList<>();
+    public List<Uri> photoUris = new ArrayList<>();
 
     public MultipartBody.Part[] uris;
 
@@ -181,6 +182,14 @@ public class CreateAccommodationActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public List<Uri> getPhotoUris() {
+        return photoUris;
+    }
+
+    public void setPhotoUris(List<Uri> photoUris) {
+        this.photoUris = photoUris;
     }
 
     public void setBasicData(String name, String description) {
@@ -306,6 +315,7 @@ public class CreateAccommodationActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Accommodation created with ID: " + accommodationId, Toast.LENGTH_LONG).show();
 //                  //OVDE SADA IDE UPLOAD SLIKA NA BACK
                     uploadImages(accommodationId);
+//
 
                 } else {
                     // Greška sa servera
@@ -330,6 +340,7 @@ public class CreateAccommodationActivity extends AppCompatActivity {
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(CreateAccommodationActivity.this, "Images uploaded successfully", Toast.LENGTH_SHORT).show();
+                        finish();
 //                    ((CreateAccommodationActivity) getActivity()).loadTypeFragment();
                     } else {
                         Toast.makeText(CreateAccommodationActivity.this, "Failed to upload images", Toast.LENGTH_SHORT).show();
@@ -344,6 +355,16 @@ public class CreateAccommodationActivity extends AppCompatActivity {
             });
 
         }
+
+    @Override
+    public void onBackPressed() {
+//        Toast.makeText(this, "OnBackPressed", Toast.LENGTH_SHORT).show();
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     }
 

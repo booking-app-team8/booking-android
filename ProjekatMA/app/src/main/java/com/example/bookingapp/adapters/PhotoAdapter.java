@@ -18,6 +18,10 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     private List<Uri> photoUris;
     private OnPhotoRemoveListener onPhotoRemoveListener;
 
+    public void setPhotoUris(List<Uri> photoUris) {
+        this.photoUris = photoUris;
+    }
+
     public interface OnPhotoRemoveListener {
         void onRemove(int position);
     }

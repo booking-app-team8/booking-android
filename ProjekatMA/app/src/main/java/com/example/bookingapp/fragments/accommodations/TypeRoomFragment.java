@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.bookingapp.R;
 import com.example.bookingapp.activities.accommodations.CreateAccommodationActivity;
 import com.example.bookingapp.models.accommodations.PriceUnit;
+import com.example.bookingapp.models.accommodations.Pricelist;
 import com.example.bookingapp.models.accommodations.TypeOfAccommodation;
 
 
@@ -44,16 +45,48 @@ public class TypeRoomFragment extends Fragment {
 
         // Postavljanje opcija za spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.accommodation_types, android.R.layout.simple_spinner_item);
+                R.array.accommodation_types, R.layout.spinner_item);
 //        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(R.layout.spinner_item_selected);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerAccommodationType.setAdapter(adapter);
 
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getContext(),
-                R.array.price_per_unit, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.price_per_unit, R.layout.spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPricePerUnit.setAdapter(adapter2);
 
+        CreateAccommodationActivity activity = (CreateAccommodationActivity) getActivity();
+        if (activity != null) {
+            double price = activity.getDefaultedPrice();
+            int cancelDays = activity.getCancellationDaysInAdvance();
+            int minGuests = activity.getMinGuests();
+            int maxGuests = activity.getMaxGuests();
+            TypeOfAccommodation typeRoom = activity.getTypeOfAccommodation();
+            PriceUnit priceUnit = activity.getPriceUnit();
+
+            if (price != 0) {
+                editTextDefaultedPrice.setText(String.valueOf(price));
+            }
+            if (cancelDays != 0) {
+                editTextCancellationDays.setText(String.valueOf(cancelDays));
+            }
+            if (minGuests != 0) {
+                editTextMinGuests.setText(String.valueOf(minGuests));
+            }
+            if (maxGuests != 0) {
+                editTextMaxGuests.setText(String.valueOf(maxGuests));
+            }
+            if (typeRoom != null) {
+                int position = adapter.getPosition(String.valueOf(typeRoom));
+                spinnerAccommodationType.setSelection(position);
+                adapter.notifyDataSetChanged();
+            }
+            if (priceUnit != null) {
+                int position = adapter2.getPosition(String.valueOf(priceUnit));
+                spinnerPricePerUnit.setSelection(position);
+                adapter2.notifyDataSetChanged();
+            }
+        }
 
         buttonSaveDetails.setOnClickListener(v -> saveAccommodationDetails());
 

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class IntervalAdapter extends RecyclerView.Adapter<IntervalAdapter.IntervalViewHolder> {
 
-    public final List<Pricelist> priceIntervalList;
+    public List<Pricelist> priceIntervalList;
 
     public IntervalAdapter(List<Pricelist> priceIntervalList) {
         this.priceIntervalList = priceIntervalList;
@@ -46,6 +46,10 @@ public class IntervalAdapter extends RecyclerView.Adapter<IntervalAdapter.Interv
     @Override
     public int getItemCount() {
         return priceIntervalList.size();
+    }
+
+    public void setList(List<Pricelist> priceIntervalList) {
+        this.priceIntervalList = priceIntervalList;
     }
 
     // ViewHolder za prikaz svakog intervala
