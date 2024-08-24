@@ -4,19 +4,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.bookingapp.R;
 import com.example.bookingapp.activities.startup.LogInActivity;
@@ -31,12 +39,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class User_Account extends AppCompatActivity {
+public class User_Account extends AppCompatActivity implements SensorEventListener {
 
     private EditText emailField, passwordField, firstNameField, lastNameField, addressField, phoneNumberField;
     private Button saveChangesButton, deleteAccountButton, logOutButton;
     private IUserService userService;
     private UserDto user;
+
+    private SensorManager sensorManager;
+    private Sensor lightSensor;
+    private SensorEventListener lightEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +59,17 @@ public class User_Account extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Drawable drawable = getResources().getDrawable(R.drawable.ic_back);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        if (sensorManager != null) {
+            lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+            if (lightSensor != null) {
+                sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            } else {
+                Toast.makeText(this, "Light sensor not available", Toast.LENGTH_SHORT).show();
+            }
+        }
 
         int width = 28; // širina u pixelima
         int height = 28; // visina u pixelima
@@ -224,6 +247,52 @@ public class User_Account extends AppCompatActivity {
                 Toast.makeText(User_Account.this, "An error occurred!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_LIGHT) {
+
+            float lux = sensorEvent.values[0]; // Uzimamo vrednost svetlosti u luksima
+            WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+            layoutParams.screenBrightness = lux / SensorManager.LIGHT_SUNLIGHT_MAX;
+            getWindow().setAttributes(layoutParams);
+            getWindow().getDecorView().requestLayout();
+//
+        }
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_LIGHT) {
+            float lightValue = sensorEvent.values[0];
+            Log.d("LightSensor", "Light value: " + lightValue);
+            float brightnessIncrement = 0.1f; // Možete prilagoditi vrednost
+            float newBrightness = lightValue / SensorManager.LIGHT_SUNLIGHT_MAX + brightnessIncrement;
+
+            // Ako je novi nivo svetlosti van opsega [0.0, 1.0], postavite ga na granice
+            newBrightness = Math.max(0.0f, Math.min(1.0f, newBrightness));
+
+            WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+            layoutParams.screenBrightness = newBrightness;
+
+            // Postavljanje promenjenih vrednosti u okviru ekrana
+            getWindow().setAttributes(layoutParams);
+            updateColorsBasedOnBrightness(newBrightness);
+        }
+    }
+
+    private void updateColorsBasedOnBrightness(float brightness) {
+        // Prilagodite ove boje prema vašim potrebama
+        int whiteColor = getResources().getColor(android.R.color.white);
+        int blackColor = getResources().getColor(android.R.color.black);
+
+//                    User_Account binding = User_Account.inflate(getLayoutInflater());
+        ConstraintLayout rootLayout = findViewById(R.id.root_id);
+        if (brightness < 0.5f) {
+            rootLayout.setBackgroundColor(getResources().getColor(android.R.color.white));
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
     /*

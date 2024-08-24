@@ -71,9 +71,9 @@
         <activity
             android:name=".activities.home.admin.AdminMainActivity"
             android:exported="false" />
-        <activity
-            android:name=".activities.user.ReportedUsersActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".activities.user.ReportedUsersActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".activities.accommodations.CreateAccommodationActivity"
             android:exported="false" />
@@ -89,9 +89,9 @@
         <activity
             android:name=".activities.home.guest.GuestMainActivity"
             android:exported="false" />
-        <activity
-            android:name=".activities.grades.ReporetdCommentsActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".activities.grades.ReporetdCommentsActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".activities.startup.LogInActivity"
             android:exported="false" />
