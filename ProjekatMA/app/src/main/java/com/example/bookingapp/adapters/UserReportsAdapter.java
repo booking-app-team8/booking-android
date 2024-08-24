@@ -1,6 +1,8 @@
 package com.example.bookingapp.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +57,7 @@ public class UserReportsAdapter extends ArrayAdapter<ReportUserGetDTO> {
         tvAccommodationAddress.setText("Address: " + reportUserGetDTO.getAccommodationGetDTO().getLocation().getAddress() + ", " + reportUserGetDTO.getAccommodationGetDTO().getLocation().getCity());
         tvReason.setText("Reason: " + reportUserGetDTO.getReason());
 
+        /*
         btnBlockUser.setOnClickListener(v -> {
             String email = reportUserGetDTO.getTo().getEmail();
             BlockDTO blockDTO = new BlockDTO(true);
@@ -74,6 +77,41 @@ public class UserReportsAdapter extends ArrayAdapter<ReportUserGetDTO> {
                     Toast.makeText(context, "Failed to block user", Toast.LENGTH_SHORT).show();
                 }
             });
+        });
+         */
+
+        btnBlockUser.setOnClickListener(v -> {
+            // Kreiranje dijaloga za potvrdu
+            new AlertDialog.Builder(context)
+                    .setTitle("Confirm Block")
+                    .setMessage("Are you sure you want to block this user?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String email = reportUserGetDTO.getTo().getEmail();
+                            BlockDTO blockDTO = new BlockDTO(true);
+
+                            ApiUtils.getUserReportsService().blockUser(email, blockDTO).enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.isSuccessful()) {
+                                        Toast.makeText(context, "User blocked", Toast.LENGTH_SHORT).show();
+                                        reportUserGetDTOList.remove(position);
+                                        notifyDataSetChanged();
+                                    } else {
+                                        Toast.makeText(context, "Failed to block user", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
         });
 
         return  convertView;
