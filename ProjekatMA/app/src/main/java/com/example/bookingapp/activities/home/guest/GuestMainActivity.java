@@ -4,7 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +52,8 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -54,7 +61,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GuestMainActivity extends AppCompatActivity implements AccommodationSearchAdapter.OnShowMoreClickListener
+public class GuestMainActivity extends AppCompatActivity implements AccommodationSearchAdapter.OnShowMoreClickListener, SensorEventListener
 
 {
     private DrawerLayout drawerLayout;
@@ -66,6 +73,20 @@ public class GuestMainActivity extends AppCompatActivity implements Accommodatio
     private AccommodationSearchAdapter adapter;
     private List<AccommodationSearchRequestDTO> accommodationSearchRequestDTOS;
 
+    private long lastShakeTime = 0;
+
+
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    private float x, y, z;
+    private float lastX, lastY, lastZ;
+    private long lastUpdate = 0;
+    private static final int SHAKE_THRESHOLD = 800;
+
+    private static final long SHAKE_DEBOUNCE_TIME = 500;
+
+    private int shakeTime = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +96,10 @@ public class GuestMainActivity extends AppCompatActivity implements Accommodatio
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
 
         etStartDate = findViewById(R.id.et_start_date);
         etEndDate = findViewById(R.id.et_end_date);
@@ -211,6 +236,8 @@ public class GuestMainActivity extends AppCompatActivity implements Accommodatio
         RadioButton rgStudio = dialogView.findViewById(R.id.rb_studio);
         EditText etMinPrice = dialogView.findViewById(R.id.et_min_price);
         EditText etMaxPrice = dialogView.findViewById(R.id.et_max_price);
+
+
 
         // Dodavanje dugmadi za akciju
         builder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
@@ -427,5 +454,87 @@ public class GuestMainActivity extends AppCompatActivity implements Accommodatio
 //        Toast.makeText(this, "accommodationID:" + accommodation.getName(), Toast.LENGTH_SHORT).show();
         intent.putExtra("accommodation_data", accommodation.getId()); // Pass any needed data
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        long curTime = System.currentTimeMillis();
+
+        // Proveravamo da li je prošlo više od 100ms od poslednje promene
+        if ((curTime - lastUpdate) > 100) {
+            long diffTime = (curTime - lastUpdate);
+            lastUpdate = curTime;
+
+            // Uzimamo vrednosti ubrzanja po osi
+            x = event.values[0];
+            y = event.values[1];
+            z = event.values[2];
+
+            // Izračunavanje brzine promene
+            float speed = Math.abs(x + y + z - lastX - lastY - lastZ) / diffTime * 10000;
+
+            // Provera da li brzina prelazi definisani prag i debounce vreme
+            if (speed > SHAKE_THRESHOLD && (curTime - lastShakeTime) > SHAKE_DEBOUNCE_TIME) {
+                lastShakeTime = curTime; // Ažuriramo poslednje vreme shake-a
+                onShakeDetected();
+            }
+
+            lastX = x;
+            lastY = y;
+            lastZ = z;
+        }
+    }
+
+    private void onShakeDetected() {
+        Toast.makeText(this, "Shake Detected", Toast.LENGTH_SHORT).show();
+        if (shakeTime == 0) {
+            sortData();
+        } else {
+            sortReverse();
+        }
+    }
+
+    private void sortData() {
+        shakeTime = 1;
+        Collections.sort(accommodationSearchRequestDTOS, new Comparator<AccommodationSearchRequestDTO>() {
+            @Override
+            public int compare(AccommodationSearchRequestDTO o1, AccommodationSearchRequestDTO o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    public void sortReverse() {
+        shakeTime = 0;
+        accommodationSearchRequestDTOS.sort(Comparator.comparing(AccommodationSearchRequestDTO::getName).reversed());
+        Collections.sort(accommodationSearchRequestDTOS, new Comparator<AccommodationSearchRequestDTO>() {
+            @Override
+            public int compare(AccommodationSearchRequestDTO o1, AccommodationSearchRequestDTO o2) {
+                return o2.getName().compareTo(o1.getName());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }

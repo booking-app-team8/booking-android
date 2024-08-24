@@ -4,8 +4,11 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -37,6 +40,7 @@ import retrofit2.Response;
 public class LogInActivity extends AppCompatActivity {
 
     EditText passwordEditText, emailEditText;
+    private static final String CHANNEL_ID = "Zero channel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,7 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
+        createNotificationChannel();
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,12 +111,14 @@ public class LogInActivity extends AppCompatActivity {
                                 Toast.makeText(LogInActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(LogInActivity.this, GuestMainActivity.class);
                                 startActivity(intent);
+//                                finish();
                             break;
                         }
                         case "OWNER": {
                                 Toast.makeText(LogInActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(LogInActivity.this, HostMainActivity.class);
                                 startActivity(intent);
+                                finish();
                             break;
                         }
                         case "ADMIN":
@@ -119,6 +126,7 @@ public class LogInActivity extends AppCompatActivity {
                                 Toast.makeText(LogInActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(LogInActivity.this, AdminMainActivity.class);
                                 startActivity(intent);
+//                                finish();
                             break;
                     }
 
@@ -137,12 +145,29 @@ public class LogInActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Notification channel";
+            String description = "Description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 
 
 
 
     private void saveToken(String token, String email,String role) {
-        // Sačuvaj token (npr. u SharedPreferences)
+        // SharedPreferences
         //DODATI OVO OBAVEZNO
         //kao localStorage
         getSharedPreferences("app_prefs", MODE_PRIVATE)
