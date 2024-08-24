@@ -23,21 +23,21 @@ public class ApiUtils {
 
 
 //    public static final String BASE_URL = "http://192.168.1.5:8081/api/"; // NOVI SAD WIFI;
-    public static final String BASE_URL = "http://192.168.0.15:8081/api/"; //zr
-//public static final String BASE_URL = "http://172.20.10.5:8081/api/";
+//    public static final String BASE_URL = "http://192.168.0.15:8081/api/"; //zr
+public static final String BASE_URL = "http://172.20.10.5:8081/api/";
     public static final String BASE_URL_OWNER_GRADES = BASE_URL + "ownerGrades/";
     public static final String BASE_URL_ACCOMMODATION_GRADES = BASE_URL + "accommodationGrades/";
 //    public static final String BASE_URL = "http://192.168.1.7:8081/api/";
 
 
 
-//    public static final String BASE_URL_ACCOMMODATION = "http://172.20.10.5:8081/api/accommodations/";
+    public static final String BASE_URL_ACCOMMODATION = "http://172.20.10.5:8081/api/accommodations/";
     // LUKA
-        public static final String BASE_URL_ACCOMMODATION = "http://192.168.0.15:8081/api/accommodations/";
+//        public static final String BASE_URL_ACCOMMODATION = "http://192.168.0.15:8081/api/accommodations/";
 
-//    public static final String BASE_URL_2 = "http://172.20.10.5:8081/api/accommodations/";
+    public static final String BASE_URL_2 = "http://172.20.10.5:8081/api/accommodations/";
 //     LUKA
-    public static final String BASE_URL_2 = "http://192.168.0.15:8081/api/accommodations/";
+//    public static final String BASE_URL_2 = "http://192.168.0.15:8081/api/accommodations/";
 
 //    public static final String BASE_URL = "http://192.168.1.5:8081/api/" NOVI SAD WIFI;
     //public static final String BASE_URL = "http://192.168.0.15:8081/api/";

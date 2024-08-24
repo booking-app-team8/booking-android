@@ -182,6 +182,22 @@ public class LogInActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    public void logout() {
+//        accessToken = null;
+//        currentUser = null;
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear(); // Briše sve vrednosti
+        editor.apply(); // ili editor.commit();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        Log.d("Log out", "log outovao");
+//        Toast.makeText(this, "USAO", Toast.LENGTH_SHORT).show();
+        logout();
+    }
 
 }
