@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <!-- Levi deo sa podacima -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- ID rezervacije -->
+            <TextView
+                android:id="@+id/tv_reservation_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reservation ID: "
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:paddingBottom="4dp"/>
+
+            <!-- Naziv smeštaja -->
+            <TextView
+                android:id="@+id/tv_reservation_accommodation_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accommodation name: "
+                android:textSize="14sp"
+                android:paddingBottom="4dp"/>
+
+            <!-- Adresa smeštaja -->
+            <TextView
+                android:id="@+id/tv_reservation_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address: "
+                android:textSize="14sp"
+                android:paddingBottom="4dp"/>
+
+            <!-- Ime gosta -->
+            <TextView
+                android:id="@+id/tv_reservation_guest_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guest: "
+                android:textSize="14sp"
+                android:paddingBottom="4dp"/>
+
+            <!-- Broj gostiju -->
+            <TextView
+                android:id="@+id/tv_reservation_guests"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Number of guests: "
+                android:textSize="14sp"
+                android:paddingBottom="4dp"/>
+
+            <!-- Datumi -->
+            <TextView
+                android:id="@+id/tv_reservation_start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start date: "
+                android:textSize="14sp"
+                android:paddingBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/tv_reservation_end_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End date: "
+                android:textSize="14sp"
+                android:paddingBottom="4dp"/>
+
+            <!-- Ukupna cena -->
+            <TextView
+                android:id="@+id/tv_reservation_total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total price: "
+                android:textSize="14sp"
+                android:paddingBottom="4dp"/>
+
+            <!-- Status -->
+            <TextView
+                android:id="@+id/tv_reservation_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total price: "
+                android:textSize="14sp"
+                android:paddingBottom="4dp"/>
+
+        </LinearLayout>
+
+        <!-- Desni deo sa dugmadima -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <!-- Cancel dugme -->
+            <Button
+                android:id="@+id/btn_reservation_cancel"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:backgroundTint="@color/red"
+                android:textColor="@android:color/white"/>
+
+            <!-- Rate accommodation dugme -->
+            <Button
+                android:id="@+id/btn_reservation_rate_accommodation"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Rate"
+                android:backgroundTint="@color/login_button"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Rate owner dugme -->
+            <Button
+                android:id="@+id/btn_reservation_rate_owner"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Rate owner"
+                android:backgroundTint="@color/login_button"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp"/>
+
+
+            <!-- Report user dugme -->
+            <Button
+                android:id="@+id/btn_reservation_report"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Report"
+                android:backgroundTint="@color/colorRed"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp"/>
+
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

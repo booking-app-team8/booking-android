@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="?android:attr/colorBackground"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Top Part: Reported User Details and Block Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Left Part: Reported User Information -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_guest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Guest: John Doe"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_owner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Owner: Jane Smith"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Time: 2024-08-15 15:25:30"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_report_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Report status: Not reported"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_accepted_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Accepted status: Accepted"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <!-- Right Part: Block Button -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+<!--                <Button-->
+<!--                    android:id="@+id/btn_block_user"-->
+<!--                    android:layout_width="100dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Accept"-->
+<!--                    android:textColor="@android:color/white"-->
+<!--                    android:backgroundTint="@color/login_button"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:layout_marginLeft="10dp"/>-->
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Bottom Part: Reason -->
+        <TextView
+            android:id="@+id/tv_grade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Grade: 5"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/tv_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Comment: User violated house rules by causing property damage."
+            android:textSize="16sp"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

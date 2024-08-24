@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.BookingApp"
+        tools:targetApi="31">
+        <activity
+            android:name=".activities.reports.OwnerReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.reports.GuestReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.commentsAndGrades.OwnerGradesComments"
+            android:exported="false" />
+        <activity
+            android:name=".activities.commentsAndGrades.AccommodationDetailsGradesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.reservations.HostReservationsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.reservations.GuestReservationsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.commentsAndGrades.OwnerGradeCommentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.user.ReportedUsersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.grades.ReporetdCommentsActivity"
+            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".activities.aap"-->
+<!--            android:exported="false" />-->
+        <activity
+            android:name=".activities.commentsAndGrades.AccommodationGradeCommentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.home.guest.GuestReservationsScreen"
+            android:exported="false" />
+        <activity
+            android:name=".activities.home.host.HostMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.home.admin.AdminMainActivity"
+            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".activities.user.ReportedUsersActivity"-->
+<!--            android:exported="false" />-->
+        <activity
+            android:name=".activities.accommodations.CreateAccommodationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ApprovalAccommodationRequestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.user.User_Account"
+            android:exported="false" />
+        <activity
+            android:name=".activities.startup.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.home.guest.GuestMainActivity"
+            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".activities.grades.ReporetdCommentsActivity"-->
+<!--            android:exported="false" />-->
+        <activity
+            android:name=".activities.startup.LogInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.startup.SplashScreenActivity"
+            android:exported="true"
+            android:label="@string/title_activity_splash_screen"
+            android:theme="@style/Theme.BookingApp">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.startup.MainActivity"
+            android:exported="true" />
+    </application>
+
+</manifest>
