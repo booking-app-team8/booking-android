@@ -11,6 +11,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,8 +36,10 @@ import com.example.bookingapp.activities.reservations.HostReservationsActivity;
 import com.example.bookingapp.activities.user.User_Account;
 import com.example.bookingapp.models.accommodations.Accessories;
 import com.example.bookingapp.models.accommodations.AccommodationSearchRequestDTO;
+import com.example.bookingapp.models.users.User;
 import com.example.bookingapp.services.IAccommodationService;
 import com.example.bookingapp.utils.ApiUtils;
+import com.example.bookingapp.utils.AuthService;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -68,6 +71,7 @@ public class HostMainActivity extends AppCompatActivity implements Accommodation
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        checkForRateOwner();
 
         etStartDate = findViewById(R.id.et_start_date_host);
         etEndDate = findViewById(R.id.et_end_date_host);
@@ -419,5 +423,46 @@ public class HostMainActivity extends AppCompatActivity implements Accommodation
                 Toast.makeText(HostMainActivity.this, "Failed to fetch accommodations", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+
+    public void checkForRateOwner() {
+        User user = AuthService.getCurrentUser();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                boolean stop = false;
+//                Ride thisRide;
+//                try {
+//                    if (user != null) {
+//                        thisRide = RideService.getPassengerPendingRide(user.getId());
+//                        if (thisRide != null) {
+//                            stop = true;
+//                            setCancelButtonVisible();
+//                            findViewById(R.id.fragment_container).setVisibility(View.GONE);
+//                            setBackButtonInvisible();
+//                        }
+//                    }
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+                //ZNACI OVDE NA SVAKE 2 SEKUNDE PROVERI DA LI GA JE NEKO OCENIO NPR SMISLITI KAKO
+
+                if (!stop) {
+                    handler.postDelayed(this, 2000);
+                }
+            }
+        }, 2000);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
     }
 }

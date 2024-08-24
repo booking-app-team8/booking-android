@@ -51,6 +51,15 @@
             android:name=".activities.commentsAndGrades.OwnerGradeCommentActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.user.ReportedUsersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.grades.ReporetdCommentsActivity"
+            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".activities.aap"-->
+<!--            android:exported="false" />-->
+        <activity
             android:name=".activities.commentsAndGrades.AccommodationGradeCommentActivity"
             android:exported="false" />
         <activity
