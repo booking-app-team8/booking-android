@@ -3,6 +3,9 @@ package com.example.bookingapp.activities.user;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -36,6 +39,23 @@ public class ReportedUsersActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
+
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_back);
+
+        int width = 28; // širina u pixelima
+        int height = 28; // visina u pixelima
+        drawable.setBounds(0, 0, width, height);
+
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        Drawable scaledDrawable = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, width, height, true));
+
+        toolbar.setNavigationIcon(scaledDrawable);
+
+        toolbar.setNavigationOnClickListener(v -> {
+            onBackPressed(); // Ili finish(), zavisno od potreba
+        });
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         listView = findViewById(R.id.listview);
         reportUsers = new ArrayList<>();

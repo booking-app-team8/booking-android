@@ -1,6 +1,9 @@
 package com.example.bookingapp.activities.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +60,7 @@ public class ReportedOwnerGradesAdapter extends ArrayAdapter<OwnerCommentDTO> {
         tvGrade.setText("Grade: " + grade);
         tvComment.setText("Comment: " + comment);
 
+        /*
         btnDeleteComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +82,75 @@ public class ReportedOwnerGradesAdapter extends ArrayAdapter<OwnerCommentDTO> {
                 });
             }
         });
+         */
+
+        btnDeleteComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Kreiranje dijaloga za potvrdu
+                new AlertDialog.Builder(context)
+                        .setTitle("Confirm Delete")
+                        .setMessage("Are you sure you want to delete this comment?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Pozivanje API metode za brisanje komentara
+                                ApiUtils.getGradesService().deleteOwnerGrade(id).enqueue(new Callback<Boolean>() {
+                                    @Override
+                                    public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                                        if (response.isSuccessful() && response.body() != null && response.body()) {
+                                            Toast.makeText(context, "Grade deleted.", Toast.LENGTH_SHORT).show();
+                                            ownerCommentDTOS.remove(position); // Uklanjanje komentara iz liste
+                                            notifyDataSetChanged(); // Osvježavanje liste
+
+                                            // Pozivanje metode za ponovno učitavanje
+                                            loadReportedOwnerGrades();
+                                        } else {
+                                            Toast.makeText(context, "Failed to delete grade.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Boolean> call, Throwable t) {
+                                        Toast.makeText(context, "Error occurred.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+            }
+        });
 
         return convertView;
+    }
+
+
+    // Metoda za ponovno učitavanje ocena
+    private void loadReportedOwnerGrades() {
+        ApiUtils.getGradesService().getReportOwnerGrade().enqueue(new Callback<List<OwnerCommentDTO>>() {
+            @Override
+            public void onResponse(Call<List<OwnerCommentDTO>> call, Response<List<OwnerCommentDTO>> response) {
+                if (response.isSuccessful()) {
+                    List<OwnerCommentDTO> grades = response.body();
+                    if (grades != null) {
+                        Log.d("ReportedOwnerGradesAdapter", "Grades loaded successfully, number of grades: " + grades.size());
+                        ownerCommentDTOS.clear(); // Očistimo trenutnu listu
+                        ownerCommentDTOS.addAll(grades); // Dodamo nove ocene
+                        notifyDataSetChanged(); // Osvježimo prikaz
+                    } else {
+                        Log.d("ReportedOwnerGradesAdapter", "Grades list is null");
+                    }
+                } else {
+                    Toast.makeText(context, "Failed to load grades", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<OwnerCommentDTO>> call, Throwable t) {
+                Log.d("ReportedOwnerGradesAdapter", "Error: " + t.getMessage());
+                Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
